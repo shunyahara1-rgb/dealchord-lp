@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DealChord — M&Aの判断を、会社の資産にする。</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050a12;
+  --bg2: #0a0f1a;
+  --bg3: #0d1117;
+  --bg4: #161b27;
+  --accent: #0ea5e9;
+  --accent-soft: rgba(14,165,233,0.08);
+  --accent-border: rgba(14,165,233,0.2);
+  --text: #e2e8f0;
+  --text-muted: rgba(255,255,255,0.58);
+  --text-dim: rgba(255,255,255,0.38);
+  --border: rgba(255,255,255,0.07);
+  --border-soft: rgba(255,255,255,0.04);
+}
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { max-width: 1100px; margin: 0 auto; }
+
+/* ── NAV ── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 40px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(5,10,18,0.92);
+  backdrop-filter: blur(14px);
+}
+.nav-logo { display: flex; align-items: center; gap: 9px; }
+.logo-mark {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+}
+.logo-text { font-size: 15px; font-weight: 700; color: white; letter-spacing: -0.3px; }
+.nav-links { display: flex; gap: 28px; }
+.nav-link { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+.nav-link:hover { color: white; }
+.nav-cta {
+  font-size: 12px; font-weight: 600; color: white;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 7px; padding: 6px 16px; cursor: pointer; transition: all 0.15s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: rgba(255,255,255,0.14); }
+.nav-login {
+  font-size: 13px; font-weight: 500; color: var(--text-muted);
+  text-decoration: none; transition: color 0.15s;
+  padding: 6px 4px;
+}
+.nav-login:hover { color: white; }
+
+/* ── HERO ── */
+.hero {
+  padding: 72px 40px 0;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.grid-bg {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.025;
+  background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.hero-glow {
+  position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 320px; pointer-events: none;
+  background: radial-gradient(ellipse, rgba(14,165,233,0.1) 0%, transparent 65%);
+}
+.intel-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 11.5px; color: #7dd3fc; margin-bottom: 28px; position: relative;
+}
+.badge-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+
+h1 {
+  font-size: 56px; font-weight: 700;
+  line-height: 1.1; letter-spacing: -2px;
+  color: white; position: relative;
+}
+h1 .muted { color: rgba(255,255,255,0.48); }
+.hero-sub {
+  font-size: 16px; color: var(--text-muted); line-height: 1.75;
+  max-width: 500px; margin: 20px auto 34px; position: relative;
+}
+.hero-sub em { color: #7dd3fc; font-style: normal; }
+.hero-btns {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin-bottom: 56px; position: relative;
+}
+.btn-primary {
+  background: var(--accent); color: white; border: none;
+  border-radius: 8px; padding: 12px 26px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-secondary {
+  background: transparent; color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+  padding: 12px 20px; font-size: 14px; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.btn-secondary:hover { color: white; border-color: rgba(255,255,255,0.25); }
+
+/* Hero product window */
+.hero-window {
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  position: relative;
+}
+
+/* ── SHARED MOCKUP STYLES ── */
+.win-bar {
+  background: #1a1f2e; padding: 9px 16px;
+  display: flex; align-items: center; gap: 7px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.wd { width: 10px; height: 10px; border-radius: 50%; }
+.win-lbl { font-size: 11px; color: var(--text-dim); margin-left: 8px; font-family: 'DM Mono', monospace; }
+
+/* shared sidebar */
+.msb {
+  border-right: 1px solid var(--border);
+  background: var(--bg2); flex-shrink: 0; padding: 10px 0;
+}
+.msb-logo { display: flex; align-items: center; gap: 6px; padding: 0 11px 9px; border-bottom: 1px solid var(--border-soft); margin-bottom: 7px; }
+.msb-lm { width: 16px; height: 16px; border-radius: 3px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: white; flex-shrink: 0; }
+.msb-lt { font-size: 10.5px; font-weight: 700; color: white; }
+.msb-sec { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; padding: 0 11px; margin-bottom: 3px; }
+.msb-item { display: flex; align-items: center; gap: 6px; padding: 4px 11px; font-size: 10.5px; color: var(--text-muted); white-space: nowrap; }
+.msb-item.act { border-right: 2px solid var(--accent); color: #7dd3fc; }
+.msb-item.act-v { border-right: 2px solid #8b5cf6; background: rgba(139,92,246,0.08); color: #c4b5fd; }
+.msb-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.msb-cnt { margin-left: auto; font-size: 8.5px; color: var(--text-dim); background: rgba(255,255,255,0.05); border-radius: 3px; padding: 0 4px; font-family: 'DM Mono', monospace; }
+.msb-div { height: 1px; background: var(--border-soft); margin: 5px 0; }
+
+/* ── PROBLEM ── */
+.section { padding: 72px 40px; border-top: 1px solid var(--border); }
+.sec-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 10px; }
+h2 { font-size: 34px; font-weight: 700; letter-spacing: -0.8px; color: white; line-height: 1.2; margin-bottom: 8px; }
+h2 .muted { color: rgba(255,255,255,0.48); }
+
+.prob-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 32px; }
+.prob-card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 10px; padding: 20px 18px; }
+.prob-num { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 9px; font-family: 'DM Mono', monospace; }
+.prob-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1.5; margin-bottom: 6px; }
+.prob-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.65; }
+
+/* ── FEATURE SPLIT ── */
+.feat-section { padding: 72px 40px; border-top: 1px solid var(--border); }
+.feat-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: center;
+}
+.feat-split.rev .feat-text { order: 2; }
+.feat-split.rev .feat-mock { order: 1; }
+
+.feat-num { font-size: 11px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.08em; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-variant-numeric: tabular-nums; margin-bottom: 10px; }
+.feat-heading { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: white; line-height: 1.25; margin-bottom: 14px; }
+.feat-heading .muted { color: rgba(255,255,255,0.4); }
+.feat-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+.feat-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+.ftag { font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px; }
+
+/* Mockup wrapper - scales 900px → fits column */
+.feat-mock { position: relative; }
+.mock-wrap {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 20px 60px rgba(0,0,0,0.5);
+}
+.mock-inner {
+  transform-origin: top left;
+  /* JS sets scale based on actual width */
+}
+
+/* ── KNOWLEDGE BASE MOCKUP STYLES ── */
+.kb-hd{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.kb-hdt{font-size:12px;font-weight:600;color:white;}
+.kb-hds{font-size:9px;color:var(--text-dim);margin-top:1px;}
+.kb-btn-s{font-size:9.5px;color:var(--text-muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;padding:3px 8px;}
+.kb-btn-s.p{background:rgba(16,185,129,0.15);color:#6ee7b7;border-color:rgba(16,185,129,0.3);}
+.kb-filters{display:flex;gap:5px;padding:7px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.kb-filter{font-size:9px;padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--text-dim);white-space:nowrap;}
+.kb-filter.act{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:#6ee7b7;}
+.kb-stats{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
+.kb-stat{flex:1;padding:7px 10px;border-right:1px solid var(--border);text-align:center;}
+.kb-stat:last-child{border-right:none;}
+.kb-stat-val{font-size:15px;font-weight:700;color:white;font-family:'DM Mono',monospace;line-height:1;}
+.kb-stat-lbl{font-size:8px;color:var(--text-dim);margin-top:2px;}
+.kb-col-hd{display:flex;align-items:center;gap:10px;padding:5px 14px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border-soft);}
+.kb-ch{font-size:8px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;text-transform:uppercase;}
+.kb-list{flex:1;overflow:hidden;}
+.kb-row{display:flex;align-items:center;gap:10px;padding:7px 14px;border-bottom:1px solid var(--border-soft);}
+.kb-row.hl{background:rgba(16,185,129,0.04);border-left:2px solid #10b981;}
+.kb-row.dm{opacity:0.42;}
+.kb-status{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;min-width:34px;text-align:center;}
+.st-win{background:rgba(16,185,129,0.15);color:#10b981;}
+.st-loss{background:rgba(239,68,68,0.12);color:#f87171;}
+.st-hold{background:rgba(245,158,11,0.12);color:#f59e0b;}
+.kb-company{font-size:10.5px;font-weight:600;color:white;min-width:128px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kb-sector{font-size:9px;color:var(--text-dim);min-width:52px;white-space:nowrap;}
+.kb-tags2{display:flex;gap:3px;flex:1;}
+.kb-tag2{font-size:8px;color:var(--text-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border-soft);border-radius:3px;padding:1px 5px;white-space:nowrap;}
+.kb-tag2.warn{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#f87171;}
+.kb-tag2.match{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:#6ee7b7;}
+.kb-score2{font-size:10px;font-weight:600;color:white;font-family:'DM Mono',monospace;min-width:26px;text-align:right;}
+.kb-date2{font-size:8.5px;color:var(--text-dim);white-space:nowrap;min-width:48px;text-align:right;}
+.kb-sim2{font-size:9px;font-weight:700;font-family:'DM Mono',monospace;min-width:32px;text-align:right;}
+/* Similar cases panel */
+.sim-panel2{position:absolute;left:16px;top:14px;width:310px;background:#1a2d20;border:1px solid rgba(16,185,129,0.25);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.5),0 28px 64px rgba(0,0,0,0.7);z-index:10;}
+.sim-hd2{background:linear-gradient(135deg,#0d2318,#142d1e);padding:12px 14px;border-bottom:1px solid rgba(16,185,129,0.15);}
+.sim-hd2-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.sim-label2{font-size:8px;font-weight:700;color:#6ee7b7;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.sim-dot2{width:5px;height:5px;border-radius:50%;background:#10b981;animation:pulse 2s ease-in-out infinite;}
+.sim-title2{font-size:14px;font-weight:700;color:white;line-height:1.3;margin-bottom:3px;}
+.sim-sub2{font-size:9.5px;color:rgba(16,185,129,0.7);}
+.sim-case2{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.sim-case2:last-child{border-bottom:none;}
+.sim-case2-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.sim-case2-name{font-size:10.5px;font-weight:600;color:white;}
+.sim-result2{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;}
+.sim-r2-win{background:rgba(16,185,129,0.15);color:#10b981;}
+.sim-r2-lose{background:rgba(239,68,68,0.12);color:#f87171;}
+.sim-tags2{display:flex;gap:4px;margin-bottom:5px;}
+.sim-tag2{font-size:8px;color:var(--text-dim);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:3px;padding:1px 5px;white-space:nowrap;}
+.sim-tag2.bad{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#f87171;}
+.sim-learning2{font-size:10px;color:rgba(255,255,255,0.45);line-height:1.55;margin-bottom:5px;}
+.sim-learning2 strong{color:rgba(255,255,255,0.75);font-weight:500;}
+.sim-match2{display:flex;align-items:center;gap:7px;}
+.sim-bar2-track{flex:1;height:3px;background:rgba(255,255,255,0.07);border-radius:2px;}
+.sim-bar2-fill{height:3px;border-radius:2px;}
+/* AI Insight panel */
+.ins-panel2{position:absolute;right:14px;top:14px;width:205px;background:#1a1f2e;border:1px solid rgba(139,92,246,0.25);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.5),0 20px 48px rgba(0,0,0,0.65);z-index:10;}
+.ins-hd2{padding:10px 12px;border-bottom:1px solid rgba(139,92,246,0.15);}
+.ins-label2{font-size:8px;font-weight:700;color:#c4b5fd;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.ins-ldot2{width:5px;height:5px;border-radius:50%;background:#8b5cf6;}
+.ins-title2{font-size:12.5px;font-weight:700;color:white;line-height:1.3;}
+.ins-body2{padding:10px 12px;}
+.ins-rate-lbl2{font-size:8px;color:var(--text-dim);margin-bottom:2px;}
+.ins-rate-val2{font-size:26px;font-weight:700;color:#10b981;font-family:'DM Mono',monospace;line-height:1;}
+.ins-rate-note2{font-size:8.5px;color:var(--text-dim);margin-top:2px;line-height:1.4;}
+.ins-rate-note2 span{color:#6ee7b7;}
+.ins-div2{height:1px;background:var(--border-soft);margin:8px 0;}
+.ins-break-lbl2{font-size:8px;color:var(--text-dim);margin-bottom:5px;}
+.ins-bar2-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.ins-bar2-name{font-size:8.5px;color:var(--text-muted);min-width:44px;}
+.ins-bar2-track{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;}
+.ins-bar2-fill{height:4px;border-radius:2px;}
+.ins-bar2-pct{font-size:8.5px;font-weight:600;font-family:'DM Mono',monospace;min-width:26px;text-align:right;}
+.ins-alert2{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:5px;padding:7px 9px;margin-top:8px;}
+.ins-alert2-ttl{font-size:8px;font-weight:700;color:#fcd34d;margin-bottom:3px;}
+.ins-alert2-txt{font-size:9px;color:rgba(255,255,255,0.45);line-height:1.5;}
+.ins-alert2-txt strong{color:#fcd34d;font-weight:500;}
+/* kb sidebar active green */
+.msb-item.act-kb{background:rgba(16,185,129,0.1);color:#6ee7b7;border-right:2px solid #10b981;}
+
+/* ── INTELLIGENCE ── */
+.intel-wrap {
+  background: rgba(14,165,233,0.04); border: 1px solid rgba(14,165,233,0.12);
+  border-radius: 14px; padding: 40px 44px; margin: 0 40px 72px;
+}
+.intel-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 12px; }
+.intel-wrap h2 { font-size: 30px; margin-bottom: 16px; }
+.intel-body { font-size: 15px; color: var(--text-muted); line-height: 1.85; }
+.intel-body strong { color: #7dd3fc; font-weight: 500; }
+
+/* ── CTA ── */
+.cta-wrap { padding: 80px 40px; text-align: center; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
+.cta-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 600px; height: 260px; pointer-events: none; background: radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 65%); }
+.cta-wrap h2 { font-size: 36px; margin-bottom: 12px; position: relative; }
+.cta-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.75; position: relative; }
+.cta-sub em { color: #7dd3fc; font-style: normal; }
+.fm-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); border: 1px solid var(--accent-border); border-radius: 20px; padding: 5px 16px; font-size: 11.5px; color: #7dd3fc; margin-bottom: 28px; position: relative; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.02em; }
+.fm-badge-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+.fm-badge-sep { width: 1px; height: 12px; background: rgba(14,165,233,0.3); }
+.fm-badge-limit { font-size: 10.5px; color: rgba(14,165,233,0.6); font-weight: 500; }
+.fm-benefits { display: flex; align-items: center; justify-content: center; gap: 28px; margin-bottom: 36px; flex-wrap: wrap; position: relative; }
+.fm-benefit { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
+.fm-benefit-icon { width: 18px; height: 18px; border-radius: 50%; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fm-benefit strong { color: rgba(255,255,255,0.82); font-weight: 600; }
+.fm-benefit-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.fm-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; border: none; border-radius: 9px; padding: 14px 32px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s, transform 0.12s; margin-bottom: 14px; position: relative; }
+.fm-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.fm-btn-sub { font-size: 12px; color: var(--text-dim); margin-bottom: 36px; font-family: 'Inter', sans-serif; position: relative; }
+.fm-progress-wrap { max-width: 320px; margin: 0 auto; position: relative; }
+.fm-progress-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.fm-progress-title { font-size: 11.5px; color: var(--text-muted); font-family: 'Inter', sans-serif; }
+.fm-progress-count { font-size: 12px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; }
+.fm-progress-count span { color: var(--text-dim); font-weight: 400; }
+.fm-progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.fm-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent) 0%, #38bdf8 100%); border-radius: 3px; position: relative; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+.fm-progress-fill::after { content: ''; position: absolute; top: 0; left: -60px; width: 60px; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); animation: shimmer 2.4s ease-in-out infinite; }
+@keyframes shimmer { 0% { left: -60px; } 60%, 100% { left: 100%; } }
+.fm-progress-seats { display: flex; justify-content: space-between; align-items: center; }
+.fm-seats-left { font-size: 11px; color: #7dd3fc; font-family: 'Inter', sans-serif; font-weight: 600; }
+.fm-seats-right { font-size: 11px; color: var(--text-dim); font-family: 'Inter', sans-serif; }
+
+/* ── COMPANY SECTION ── */
+.company-section { padding: 56px 40px; border-top: 1px solid var(--border); }
+.company-inner { max-width: 480px; }
+.company-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; width: fit-content; }
+.company-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 1.8px; text-transform: uppercase; }
+.company-arrow { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; }
+.company-arrow svg { display: block; }
+.company-toggle.open .company-arrow { transform: rotate(180deg); }
+.company-body { overflow: hidden; max-height: 0; transition: max-height 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease; opacity: 0; }
+.company-body.open { max-height: 300px; opacity: 1; }
+.company-name { font-size: 20px; font-weight: 700; color: white; letter-spacing: -0.3px; margin: 20px 0 24px; }
+.company-table { width: 100%; border-collapse: collapse; }
+.company-table tr { border-bottom: 1px solid var(--border-soft); }
+.company-table tr:last-child { border-bottom: none; }
+.company-table td { padding: 11px 0; font-size: 13px; line-height: 1.6; }
+.company-table td:first-child { color: var(--text-dim); width: 120px; }
+.company-table td:last-child { color: var(--text-muted); }
+.company-table a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+.company-table a:hover { color: white; }
+
+/* ── DEMO MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(5,10,18,0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: #0d1117;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  width: 100%; max-width: 520px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 32px 80px rgba(0,0,0,0.7);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-header {
+  background: linear-gradient(135deg, #050a12 0%, #0a1628 100%);
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+}
+.modal-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  border-radius: 20px; padding: 3px 12px;
+  font-size: 10.5px; color: #7dd3fc;
+  font-family: 'Inter', sans-serif; font-weight: 600;
+  margin-bottom: 14px;
+}
+.modal-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+.modal-title { font-size: 20px; font-weight: 700; color: white; letter-spacing: -0.4px; margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.modal-sub em { color: #7dd3fc; font-style: normal; }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 28px; height: 28px; border-radius: 6px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-dim); font-size: 16px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.1); color: white; }
+
+.modal-body { padding: 24px 28px 28px; }
+.modal-seats {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(14,165,233,0.05); border: 1px solid rgba(14,165,233,0.15);
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 22px;
+}
+.modal-seats-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+.modal-seats-fill { height: 100%; width: 60%; background: linear-gradient(90deg, var(--accent), #38bdf8); border-radius: 2px; }
+.modal-seats-txt { font-size: 11px; color: #7dd3fc; font-family: 'Inter', sans-serif; font-weight: 600; white-space: nowrap; }
+.modal-seats-sub { font-size: 10.5px; color: var(--text-dim); white-space: nowrap; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-group.half { margin-bottom: 0; }
+.form-label { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
+.form-label span { color: var(--accent); margin-left: 2px; }
+.form-input, .form-select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 7px;
+  padding: 10px 13px;
+  font-size: 13px; color: var(--text);
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+  outline: none;
+  width: 100%;
+  appearance: none; -webkit-appearance: none;
+}
+.form-input::placeholder { color: var(--text-dim); }
+.form-input:focus, .form-select:focus {
+  border-color: rgba(14,165,233,0.45);
+  background: rgba(14,165,233,0.04);
+}
+.form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.3)' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+.form-select option { background: #0d1117; color: var(--text); }
+
+.modal-submit {
+  width: 100%; padding: 13px;
+  background: var(--accent); color: white; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: opacity 0.15s, transform 0.12s;
+  margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.modal-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+.modal-note { font-size: 11px; color: var(--text-dim); text-align: center; margin-top: 10px; line-height: 1.6; }
+
+/* success state */
+.modal-success { display: none; padding: 48px 28px; text-align: center; }
+.modal-success.show { display: block; }
+.modal-body.hide { display: none; }
+.success-icon { width: 52px; height: 52px; border-radius: 50%; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-title { font-size: 20px; font-weight: 700; color: white; margin-bottom: 8px; letter-spacing: -0.3px; }
+.success-sub { font-size: 14px; color: var(--text-muted); line-height: 1.75; max-width: 360px; margin: 0 auto; }
+.success-sub em { color: #7dd3fc; font-style: normal; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: white; }
+.footer-note { font-size: 11px; color: var(--text-dim); }
+
+/* ===== COLLAB MOCKUP STYLES ===== */
+.co-tl-hd{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.co-tl-hdt{font-size:12px;font-weight:600;color:white;}
+.co-tl-hds{font-size:9px;color:var(--text-dim);margin-top:1px;}
+.co-tl-btn{font-size:9.5px;color:var(--text-muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;padding:3px 8px;}
+.co-phase-bar{display:flex;padding:8px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.co-phase{flex:1;text-align:center;padding:5px 4px;font-size:8px;font-weight:600;color:var(--text-dim);border-radius:4px;position:relative;}
+.co-phase.done{color:rgba(255,255,255,0.55);}
+.co-phase.active{background:rgba(139,92,246,0.12);color:#c4b5fd;border:1px solid rgba(139,92,246,0.25);}
+.co-phase-line{position:absolute;right:-6px;top:50%;width:12px;height:1px;background:var(--border);transform:translateY(-50%);}
+.co-activity{flex:1;overflow:hidden;padding:8px 14px;display:flex;flex-direction:column;opacity:0.38;}
+.co-act{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-soft);}
+.co-act:last-child{border-bottom:none;}
+.co-act-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0;margin-top:1px;}
+.co-act-who{font-size:10px;font-weight:600;color:rgba(255,255,255,0.65);}
+.co-act-badge{font-size:8px;padding:1px 5px;border-radius:3px;margin-left:4px;}
+.co-act-when{font-size:8.5px;color:var(--text-dim);margin-left:auto;}
+.co-act-what{font-size:9.5px;color:rgba(255,255,255,0.38);margin-top:1px;line-height:1.5;}
+.co-act-what strong{color:rgba(255,255,255,0.55);font-weight:500;}
+.co-sb-notif{margin-left:auto;width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0;}
+/* Mention panel */
+.co-mn-panel{position:absolute;left:16px;top:14px;width:310px;background:#1a1f2e;border:1px solid rgba(139,92,246,0.25);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.5),0 28px 64px rgba(0,0,0,0.7),0 0 30px rgba(139,92,246,0.05);z-index:10;}
+.co-mn-hd{background:linear-gradient(135deg,#1a1230,#1e1638);padding:11px 14px;border-bottom:1px solid rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:space-between;}
+.co-mn-tag{font-size:9px;font-weight:700;color:#c4b5fd;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2);border-radius:3px;padding:1px 7px;}
+.co-mn-title{font-size:11px;font-weight:600;color:white;}
+.co-mn-sub{font-size:8.5px;color:var(--text-dim);margin-top:1px;}
+.co-mn-thread{padding:10px 14px;display:flex;flex-direction:column;gap:9px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.co-mn-msg{display:flex;gap:8px;}
+.co-mn-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0;}
+.co-mn-top{display:flex;align-items:baseline;gap:5px;margin-bottom:2px;}
+.co-mn-name{font-size:10.5px;font-weight:600;color:white;}
+.co-mn-role{font-size:8.5px;color:var(--text-dim);}
+.co-mn-time{font-size:8.5px;color:var(--text-dim);margin-left:auto;}
+.co-mn-txt{font-size:10.5px;color:rgba(255,255,255,0.48);line-height:1.6;}
+.co-mn-mention{color:#c4b5fd;font-weight:500;}
+.co-mn-alert{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:4px;padding:5px 8px;margin-top:5px;font-size:9.5px;color:rgba(245,158,11,0.85);line-height:1.5;}
+.co-mn-reacts{display:flex;gap:5px;margin-top:4px;}
+.co-mn-react{font-size:9px;padding:1px 6px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border-soft);color:var(--text-muted);}
+.co-mn-input{padding:8px 14px;display:flex;align-items:center;gap:7px;}
+.co-mn-input-av{width:22px;height:22px;border-radius:50%;background:rgba(14,165,233,0.2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#7dd3fc;flex-shrink:0;}
+.co-mn-input-box{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 10px;font-size:10px;color:rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:space-between;}
+.co-mn-send{font-size:9px;color:var(--accent);font-weight:600;}
+.co-mn-tl{padding:7px 14px;border-top:1px solid rgba(255,255,255,0.05);}
+.co-mn-tl-lbl{font-size:7.5px;color:var(--text-dim);margin-bottom:4px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.co-mn-tl-bar{display:flex;gap:2px;align-items:center;}
+.co-mn-tl-ph{flex:1;height:3px;border-radius:2px;}
+.co-mn-tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.18);background:transparent;}
+.co-mn-tl-dot.done{background:#10b981;border-color:#10b981;}
+.co-mn-tl-dot.active{background:#8b5cf6;border-color:#8b5cf6;box-shadow:0 0 0 2px rgba(139,92,246,0.25);}
+/* Slack panel */
+.co-sl-panel{position:absolute;right:14px;top:14px;width:210px;background:#1a1218;border:1px solid rgba(100,70,180,0.3);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,0.5),0 20px 48px rgba(0,0,0,0.65);z-index:10;}
+.co-sl-hd{padding:9px 12px;border-bottom:1px solid rgba(100,70,180,0.15);display:flex;align-items:center;gap:7px;}
+.co-sl-icon{width:20px;height:20px;border-radius:5px;background:rgba(74,21,75,0.5);border:1px solid rgba(100,70,180,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.co-sl-title{font-size:11px;font-weight:600;color:white;}
+.co-sl-sub{font-size:8.5px;color:var(--text-dim);margin-top:1px;}
+.co-sl-live{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:8px;color:#6ee7b7;}
+.co-sl-live-dot{width:5px;height:5px;border-radius:50%;background:#10b981;animation:pulse 2s ease-in-out infinite;}
+.co-sl-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+.co-sl-msg{display:flex;gap:7px;}
+.co-sl-av{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;flex-shrink:0;}
+.co-sl-who{font-size:10px;font-weight:600;color:white;display:flex;align-items:baseline;gap:4px;}
+.co-sl-bot{font-size:7.5px;background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);border-radius:2px;padding:0 4px;}
+.co-sl-tm{font-size:8px;color:var(--text-dim);}
+.co-sl-txt{font-size:10px;color:rgba(255,255,255,0.43);line-height:1.55;margin-top:2px;}
+.co-sl-txt strong{color:rgba(255,255,255,0.72);font-weight:500;}
+.co-sl-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-left:3px solid #8b5cf6;border-radius:0 5px 5px 0;padding:6px 8px;margin-top:5px;}
+.co-sl-card-t{font-size:10px;font-weight:600;color:white;margin-bottom:3px;}
+.co-sl-card-r{display:flex;align-items:center;gap:5px;margin-bottom:2px;}
+.co-sl-card-r:last-child{margin-bottom:0;}
+.co-sl-card-lbl{font-size:8.5px;color:var(--text-dim);}
+.co-sl-card-val{font-size:10px;font-weight:600;font-family:'DM Mono',monospace;}
+.co-sl-card-badge{font-size:7.5px;padding:1px 5px;border-radius:3px;}
+.co-sl-div{height:1px;background:rgba(255,255,255,0.05);}
+.co-sl-notif{background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.2);border-radius:6px;padding:7px 9px;}
+.co-sl-notif-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
+.co-sl-notif-title{font-size:9px;font-weight:700;color:#c4b5fd;}
+.co-sl-notif-time{font-size:8px;color:var(--text-dim);}
+.co-sl-notif-txt{font-size:9px;color:rgba(255,255,255,0.43);line-height:1.5;}
+.co-sl-notif-txt strong{color:rgba(255,255,255,0.68);font-weight:500;}
+.co-sl-channel{display:flex;align-items:center;gap:5px;padding:4px 0;}
+.co-sl-ch-name{font-size:9px;color:rgba(100,70,180,0.8);}
+.co-sl-ch-count{font-size:8.5px;color:var(--text-dim);margin-left:auto;}
+
+/* ===== HERO KANBAN STYLES ===== */
+.hk-body { display: flex; background: var(--bg3); height: 280px; }
+.hk-sb { width: 140px; }
+.hk-main { flex: 1; display: flex; flex-direction: column; }
+.hk-hd { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; background: var(--bg3); }
+.hk-hd-title { font-size: 11px; font-weight: 600; color: white; }
+.hk-btn { font-size: 9px; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; }
+.hk-btn.p { background: var(--accent); color: white; border-color: var(--accent); }
+.hk-cols { display: flex; flex: 1; overflow: hidden; }
+.hk-col { flex: 1; border-right: 1px solid var(--border); padding: 8px; }
+.hk-col:last-child { border-right: none; }
+.hk-col-hd { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.hk-cnt { background: rgba(255,255,255,0.05); border-radius: 3px; padding: 0 4px; font-family: 'DM Mono', monospace; }
+.hk-card { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; margin-bottom: 4px; }
+.hk-card.hl { border-color: rgba(14,165,233,0.4); background: #161e30; }
+.hk-card.dm { opacity: 0.4; }
+.hk-co { font-size: 10px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.hk-sc-wrap { display: flex; align-items: center; gap: 3px; margin-top: 3px; }
+.hk-sc { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; font-family: 'DM Mono', monospace; white-space: nowrap; }
+.sg { background: rgba(16,185,129,0.15); color: #10b981; }
+.sy { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.sb { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+.hk-tag { font-size: 8px; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border-soft); border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+.hk-ai { margin-left: auto; font-size: 7.5px; color: #7dd3fc; background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.15); border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+.hk-panel { width: 160px; border-left: 1px solid var(--border); background: var(--bg2); flex-shrink: 0; overflow: hidden; }
+.hk-ph { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.hk-pc { font-size: 10px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hk-pl { font-size: 8px; color: var(--text-dim); margin-top: 1px; }
+.hk-pb { padding: 8px 10px; }
+.hk-rings { display: flex; gap: 5px; margin-bottom: 8px; }
+.hk-ri { text-align: center; flex: 1; }
+.hk-rl { font-size: 7.5px; color: var(--text-dim); margin-bottom: 3px; }
+.hk-rr { width: 32px; height: 32px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+.hk-rv { font-size: 11px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; }
+.hk-gb { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.18); border-radius: 4px; padding: 5px 7px; margin-bottom: 7px; }
+.hk-gt { font-size: 8.5px; color: #fcd34d; font-weight: 600; margin-bottom: 3px; }
+.hk-gtr { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+.hk-gf { height: 3px; width: 66%; background: #f59e0b; border-radius: 2px; }
+.hk-gs { font-size: 7.5px; color: var(--text-dim); margin-top: 3px; }
+.hk-at { font-size: 7.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
+.hk-ai2 { display: flex; align-items: flex-start; gap: 4px; padding: 3px 0; border-bottom: 1px solid var(--border-soft); }
+.hk-ai2:last-child { border-bottom: none; }
+.hk-ack { width: 9px; height: 9px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0; margin-top: 1px; }
+.hk-atx { font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.4; flex: 1; }
+.hk-apt { font-size: 7.5px; font-weight: 700; color: #10b981; font-family: 'DM Mono', monospace; }
+
+/* ===== VALUATION MOCKUP STYLES ===== */
+.vm-body { display: flex; background: var(--bg3); height: 420px; position: relative; }
+.vm-sb { width: 130px; }
+.vm-main { flex: 1; display: flex; flex-direction: column; }
+.vm-hd { padding: 7px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.vm-hdt { font-size: 10.5px; font-weight: 600; color: white; }
+.vm-hdb { font-size: 9px; color: var(--text-dim); margin-top: 1px; }
+.vm-hdb span { color: var(--text-muted); }
+.vm-badge { font-size: 8px; color: #7dd3fc; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); border-radius: 3px; padding: 1px 6px; }
+.vm-bg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; flex: 1; overflow: hidden; opacity: 0.3; }
+.vm-bc { background: var(--bg4); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
+.vm-bct { font-size: 8.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 5px; }
+.vm-kr { display: flex; justify-content: space-between; align-items: baseline; padding: 2px 0; border-bottom: 1px solid var(--border-soft); }
+.vm-kr:last-child { border-bottom: none; }
+.vm-kl { font-size: 9.5px; color: var(--text-dim); }
+.vm-kv { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.45); font-family: 'DM Mono', monospace; }
+.vm-rr { display: flex; align-items: center; gap: 5px; padding: 3px 0; border-bottom: 1px solid var(--border-soft); }
+.vm-rr:last-child { border-bottom: none; }
+.vm-rd { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.vm-rt { font-size: 9.5px; color: var(--text-dim); }
+
+/* DCF overlay */
+.vm-dcf {
+  position: absolute; left: 16px; top: 14px; width: 280px;
+  background: #1a1f2e;
+  border: 1px solid rgba(255,255,255,0.13); border-radius: 9px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 24px 56px rgba(0,0,0,0.6);
+  z-index: 10;
+}
+.vm-dcf-hd { background: linear-gradient(135deg,#001f3f,#0a2d54); padding: 11px 13px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.vm-dcf-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.vm-dcf-co { font-size: 10.5px; font-weight: 700; color: white; }
+.vm-dcf-bg { font-size: 8px; color: #7dd3fc; background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.25); border-radius: 3px; padding: 2px 6px; }
+.vm-dcf-val { display: flex; align-items: baseline; gap: 4px; }
+.vm-dcf-cur { font-size: 12px; color: rgba(255,255,255,0.45); }
+.vm-dcf-amt { font-size: 32px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; letter-spacing: -1px; line-height: 1; }
+.vm-dcf-unit { font-size: 12px; color: rgba(255,255,255,0.45); }
+.vm-dcf-lbl { font-size: 8.5px; color: rgba(255,255,255,0.3); margin-top: 3px; }
+.vm-dcf-range { display: flex; align-items: center; gap: 7px; margin-top: 9px; }
+.vm-dcf-rb { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; }
+.vm-dcf-rf { position: absolute; left: 20%; right: 25%; height: 4px; background: var(--accent); border-radius: 2px; }
+.vm-dcf-rth { position: absolute; left: 47%; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: white; border: 2px solid var(--accent); transform: translateX(-50%); }
+.vm-dcf-rn { font-size: 8.5px; color: rgba(255,255,255,0.3); font-family: 'DM Mono', monospace; }
+.vm-dcf-params { padding: 9px 13px; border-bottom: 1px solid rgba(255,255,255,0.06); display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.vm-dcf-p { background: rgba(255,255,255,0.03); border-radius: 4px; padding: 5px 7px; }
+.vm-dcf-pl { font-size: 8px; color: var(--text-dim); margin-bottom: 1px; }
+.vm-dcf-pv { font-size: 11px; font-weight: 600; color: white; font-family: 'DM Mono', monospace; }
+.vm-dcf-methods { padding: 9px 13px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.vm-dcf-ml { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+.vm-dcf-mr { display: flex; align-items: center; gap: 7px; padding: 4px 0; border-bottom: 1px solid var(--border-soft); }
+.vm-dcf-mr:last-child { border-bottom: none; }
+.vm-dcf-mn { font-size: 10px; color: var(--text-muted); flex: 1; }
+.vm-dcf-mb { width: 50px; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+.vm-dcf-mf { height: 3px; border-radius: 2px; }
+.vm-dcf-mv { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; min-width: 32px; text-align: right; }
+.vm-dcf-gap { padding: 8px 13px; display: flex; align-items: center; gap: 9px; }
+.vm-dcf-gl { flex: 1; }
+.vm-dcf-gt { font-size: 8.5px; font-weight: 700; color: rgba(245,158,11,0.9); margin-bottom: 2px; }
+.vm-dcf-gd { font-size: 9.5px; color: var(--text-muted); }
+.vm-dcf-gp { font-size: 17px; font-weight: 700; color: #f59e0b; font-family: 'DM Mono', monospace; }
+.vm-dcf-gs { font-size: 8px; color: var(--text-dim); text-align: right; }
+
+/* Multiple panel */
+.vm-mult {
+  position: absolute; right: 14px; top: 14px; width: 200px;
+  background: #1a1f2e; border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 9px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.55);
+  z-index: 10;
+}
+.vm-mult-hd { padding: 8px 11px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+.vm-mult-t { font-size: 10px; font-weight: 600; color: white; }
+.vm-mult-s { font-size: 8px; color: var(--text-dim); margin-top: 1px; }
+.vm-mult-b { font-size: 7.5px; color: #c4b5fd; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); border-radius: 3px; padding: 1px 5px; }
+.vm-mult-body { padding: 9px 11px; }
+.vm-mult-st { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+.vm-mult-row { display: flex; align-items: center; gap: 5px; padding: 3px 0; border-bottom: 1px solid var(--border-soft); }
+.vm-mult-row:last-of-type { border-bottom: none; }
+.vm-mult-row.hl { background: rgba(14,165,233,0.06); border-radius: 4px; padding: 3px 5px; margin: 0 -5px 3px; }
+.vm-mult-co { font-size: 9.5px; color: var(--text-muted); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vm-mult-co.own { color: #7dd3fc; font-weight: 600; }
+.vm-mult-v { font-size: 10.5px; font-weight: 600; font-family: 'DM Mono', monospace; color: white; min-width: 32px; text-align: right; }
+.vm-mult-bw { width: 44px; }
+.vm-mult-bg { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+.vm-mult-bf { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.18); }
+.vm-mult-bf.own { background: var(--accent); }
+.vm-mult-div { height: 1px; background: var(--border-soft); margin: 7px 0; }
+.vm-mult-sum { background: rgba(14,165,233,0.05); border: 1px solid rgba(14,165,233,0.12); border-radius: 5px; padding: 6px 8px; }
+.vm-mult-sr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+.vm-mult-sr:last-child { margin-bottom: 0; }
+.vm-mult-sl { font-size: 8.5px; color: var(--text-dim); }
+.vm-mult-sv { font-size: 10.5px; font-weight: 600; font-family: 'DM Mono', monospace; color: white; }
+.vm-mult-sv.ac { color: #7dd3fc; }
+
+/* ===== SCORING MOCKUP STYLES ===== */
+.sm-body { display: flex; background: var(--bg3); height: 400px; position: relative; }
+.sm-sb { width: 130px; }
+.sm-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.sm-hd { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.sm-hdt { font-size: 11px; font-weight: 600; color: white; }
+.sm-hds { font-size: 9px; color: var(--text-dim); margin-top: 1px; }
+.sm-kanban { display: flex; flex: 1; overflow: hidden; opacity: 0.28; }
+.sm-kc { flex: 1; border-right: 1px solid var(--border); padding: 8px; }
+.sm-kc:last-child { border-right: none; }
+.sm-kch { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+.sm-kcard { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; margin-bottom: 4px; }
+.sm-kco { font-size: 10px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.sm-ksec { font-size: 8.5px; color: var(--text-dim); white-space: nowrap; }
+
+/* Score detail modal */
+.sm-modal {
+  position: absolute; left: 50%; top: 14px; transform: translateX(-50%);
+  width: 420px;
+  background: #1a1f2e; border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 28px 64px rgba(0,0,0,0.7);
+  z-index: 10;
+}
+.sm-modal-hd {
+  background: linear-gradient(135deg,#001f3f,#0a2d54);
+  padding: 14px 16px 0;
+}
+.sm-modal-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.sm-modal-co { font-size: 13px; font-weight: 700; color: white; }
+.sm-modal-sub { font-size: 9px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.sm-modal-rings { display: flex; gap: 10px; }
+.sm-modal-ri { text-align: center; }
+.sm-modal-rl { font-size: 8px; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+.sm-modal-rr { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.sm-modal-rv { font-size: 16px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; line-height: 1; }
+.sm-modal-tabs { display: flex; margin-top: 12px; }
+.sm-modal-tab { padding: 7px 14px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; background: none; border-top: none; border-left: none; border-right: none; }
+.sm-modal-tab.act { color: white; border-bottom-color: var(--accent); }
+.sm-modal-body { padding: 14px 16px; }
+.sm-modal-gap { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sm-modal-gt { font-size: 11px; font-weight: 700; color: #fcd34d; }
+.sm-modal-gbar { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.sm-modal-gf { height: 4px; width: 66%; background: #f59e0b; border-radius: 2px; }
+.sm-modal-gpct { font-size: 11px; font-weight: 700; color: #fcd34d; white-space: nowrap; }
+.sm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.sm-col-title { font-size: 8.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+.sm-axis { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+.sm-axis-name { font-size: 9.5px; color: var(--text-muted); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sm-axis-bar { width: 48px; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+.sm-axis-fill { height: 3px; border-radius: 2px; }
+.sm-axis-val { font-size: 9.5px; font-weight: 600; font-family: 'DM Mono', monospace; color: white; min-width: 30px; text-align: right; }
+.sm-suggest-title { font-size: 8.5px; font-weight: 700; color: var(--accent); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+.sm-suggest { display: flex; align-items: flex-start; gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--border-soft); }
+.sm-suggest:last-child { border-bottom: none; }
+.sm-suggest-chk { width: 11px; height: 11px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0; margin-top: 1px; }
+.sm-suggest-txt { font-size: 10.5px; color: rgba(255,255,255,0.45); line-height: 1.4; flex: 1; }
+.sm-suggest-pt { font-size: 10px; font-weight: 700; color: #10b981; font-family: 'DM Mono', monospace; white-space: nowrap; }
+
+/* ===== GMAIL MOCKUP STYLES ===== */
+.gm-body { display: flex; background: var(--bg3); height: 400px; position: relative; }
+.gm-sb { width: 130px; }
+.gm-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.gm-kanban-bg { flex: 1; display: flex; overflow: hidden; opacity: 0.3; }
+.gm-kc { flex: 1; border-right: 1px solid var(--border); padding: 8px; }
+.gm-kc:last-child { border-right: none; }
+.gm-kch { font-size: 8px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.gm-cnt { background: rgba(255,255,255,0.05); border-radius: 3px; padding: 0 4px; font-family: 'DM Mono', monospace; }
+.gm-card { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; margin-bottom: 4px; }
+.gm-card.dm { opacity: 0.5; }
+.gm-card.hl { border-color: rgba(14,165,233,0.35); background: #161e30; }
+.gm-co { font-size: 10px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.gm-sec { font-size: 8.5px; color: var(--text-dim); margin-bottom: 4px; white-space: nowrap; }
+.gm-meta { display: flex; align-items: center; gap: 3px; }
+.gm-sc { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; font-family: 'DM Mono', monospace; white-space: nowrap; }
+.gm-tag { font-size: 8px; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border-soft); border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+.gm-ai { margin-left: auto; font-size: 7.5px; color: #7dd3fc; background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.15); border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+
+/* Gmail overlay panel */
+.gm-panel {
+  position: absolute; left: 20px; top: 16px; width: 310px;
+  background: #1a1f2e; border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 9px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 24px 56px rgba(0,0,0,0.65);
+  z-index: 10;
+}
+.gm-ph { padding: 10px 13px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-between; }
+.gm-phl { display: flex; align-items: center; gap: 7px; }
+.gm-icon { width: 19px; height: 19px; border-radius: 4px; background: rgba(234,67,53,0.15); border: 1px solid rgba(234,67,53,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.gm-pt { font-size: 11px; font-weight: 600; color: white; }
+.gm-ps { font-size: 8.5px; color: var(--text-dim); margin-top: 1px; }
+.gm-dots { font-size: 13px; color: var(--text-dim); }
+.gm-subj { padding: 8px 13px 7px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.gm-sl { font-size: 10.5px; font-weight: 600; color: white; margin-bottom: 3px; }
+.gm-mr { display: flex; align-items: center; gap: 5px; }
+.gm-bg { font-size: 8px; padding: 1px 5px; border-radius: 3px; background: rgba(14,165,233,0.1); color: #7dd3fc; border: 1px solid rgba(14,165,233,0.18); }
+.gm-bw { font-size: 8px; padding: 1px 5px; border-radius: 3px; background: rgba(245,158,11,0.1); color: #fcd34d; border: 1px solid rgba(245,158,11,0.2); }
+.gm-dt { font-size: 8.5px; color: var(--text-dim); margin-left: auto; }
+.gm-thread { padding: 9px 13px; display: flex; flex-direction: column; gap: 10px; }
+.gm-msg { display: flex; gap: 8px; }
+.gm-av { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; flex-shrink: 0; }
+.gm-mc { flex: 1; }
+.gm-sr { display: flex; align-items: baseline; gap: 5px; margin-bottom: 2px; }
+.gm-sn { font-size: 10.5px; font-weight: 600; color: white; }
+.gm-sd { font-size: 8.5px; color: var(--text-dim); }
+.gm-tm { font-size: 8.5px; color: var(--text-dim); margin-left: auto; }
+.gm-tx { font-size: 10.5px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+.gm-tx strong { color: rgba(255,255,255,0.78); font-weight: 500; }
+.gm-att { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 3px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; font-size: 9.5px; color: var(--text-muted); }
+.gm-aib { margin: 0 9px 9px; background: rgba(14,165,233,0.06); border: 1px solid rgba(14,165,233,0.15); border-radius: 6px; padding: 7px 9px; }
+.gm-ail { font-size: 8px; font-weight: 700; color: var(--accent); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+.gm-aidot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+.gm-ait { font-size: 10px; color: rgba(255,255,255,0.48); line-height: 1.5; }
+.gm-ait strong { color: #7dd3fc; font-weight: 500; }
+.gm-acts { padding: 7px 13px 11px; display: flex; gap: 6px; }
+.gm-abtn { flex: 1; padding: 6px 0; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; text-align: center; }
+.gm-abtn.p { background: var(--accent); color: white; }
+.gm-abtn.s { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); }
+
+/* Score mini (gmail mockup right) */
+.gm-score {
+  position: absolute; right: 14px; bottom: 16px; width: 164px;
+  background: #1a1f2e; border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 9px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 14px 36px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+.gm-sch { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.gm-sco { font-size: 9.5px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gm-scl { font-size: 7.5px; color: var(--text-dim); margin-top: 1px; }
+.gm-scb { padding: 8px 10px; }
+.gm-scr { display: flex; gap: 5px; margin-bottom: 8px; }
+.gm-scri { text-align: center; flex: 1; }
+.gm-scrl { font-size: 7px; color: var(--text-dim); margin-bottom: 2px; }
+.gm-scrr { width: 30px; height: 30px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+.gm-scrv { font-size: 11px; font-weight: 700; color: white; font-family: 'DM Mono', monospace; }
+.gm-sgb { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.18); border-radius: 4px; padding: 5px 7px; margin-bottom: 6px; }
+.gm-sgt { font-size: 8px; color: #fcd34d; font-weight: 600; margin-bottom: 3px; white-space: nowrap; }
+.gm-sgtr { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+.gm-sgf { height: 3px; width: 66%; background: #f59e0b; border-radius: 2px; }
+.gm-sgs { font-size: 7.5px; color: var(--text-dim); margin-top: 3px; }
+.gm-sai { display: flex; align-items: flex-start; gap: 4px; padding: 3px 0; border-bottom: 1px solid var(--border-soft); }
+.gm-sai:last-child { border-bottom: none; }
+.gm-sack { width: 9px; height: 9px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0; margin-top: 1px; }
+.gm-satx { font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.35; flex: 1; }
+.gm-sapt { font-size: 7.5px; font-weight: 700; color: #10b981; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- NAV -->
+<nav>
+          <div class="nav-logo">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnkAAABPCAYAAACXtdM4AAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAABXRUlEQVR42u19d3hU1fb2npoGBFAUr9iu2L3+vKGG4gWCIEVEQEABgUhHigUsqCAdBSmKokgVRAy9hRACoQXSCSGFhEBCgITUSaadOW1/f8g635qTSZ+ZJHDe58lDMiTn7Lr2u+omRIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKFCgQIECBQoUKKg/UClDoECBAgUKqoI33nhj1JNPPvni008//Z8XX3yxwyOPPPKgXq8nWq2WeHp6Ek9PT6JSqQjDMMRkMhGDwUBu3759PSEh4cyZM2f2nTp1aq872+vn59ddq9XqNBqN9vz580eUGVSgkDwFCuox5s2b9+fAgQPfpZQ6XtAqFVGpVHbf4y9CCFGr1ZW+x2w2k4KCgpKcnJzM27dvX7t+/XpSSkpK9NmzZw8os6CgNti2bVuSv7//i6IoEg8PDyIIAvHy8iI8zxNKKXnsscfqjVweNGjQlL59+47p0qVLu1atWhGdTkcIIUSv10u/A+2GPaZWq4kgCIRSSrRarbTvjEYjMRgMJDExseDEiRN/r1ixYqqr2n327Fmxc+fOKkIIMZlMRKPREC8vLwI/v/POO+8fPXr0D2U1KmgISEhIoM899xzx8PAgHMcRQRCIIAhEpVKR06dPF/Xp0+cBZZQU3BOIj4+noihKX4IgUEEQ7D7DX85EaWkpzcrKolFRUXTNmjVh/fv3D1RmREFNSB7LstRms0nrl1JKWZalHMfRum5fnz593l+3bt25nJwcSil1uI84jqMWi4XabDa7z202G+V53u73bDYbZVmW8jxPeZ6X+ms0GumRI0cKRo4c+Zmz+xAXF0dZlqUMw1CLxUIppVQQBFpcXEzNZjPt1q3bYGUlKmgoSE1NpSzL0tLSUkoppTzPU6PRSHmep6dOnWIr+lttQ+pou3bteur1ek+1Wq25u2l5lmWZ2NjYEw1t0tq0adPD09PTW6fTeRBCCMdxNoZhLA2xL+6E2WymoiiqKrLkAaryO44gCALRav/ZGjabjVBKiYeHB2ncuDFp3Lgx+de//kX8/Px6fPjhhz2Kioo2RERE5O7atevHrVu3LlZmSEFlYBjGrNPpiCAIhOd5Qsg/ljGGYaR1VxcYPHjw1Pfee29W//79n9DpdESlUhGe54koikSj0RCVSiVZDzQaDdFqtUQQBMKyrPSZTqcjlFIiiqK0/7RarWQ9BwsfIYR4eXmRXr16PdC7d++lX3311dLff//9l+XLl09xRl90Oh1Rq9VSGzmOI4QQ0rRpU0IIIeqqmPMVKKgnKC0tlda0zWYjOp2O6HQ6otFoSNOmTXUNhuR17NjxjRdeeKH9K6+80vnhhx9+/Iknnnj+kUceIY0bNyZ6vZ5A7IdWqyWiKEoCiOd5YjQaSUFBASkpKRGvX7+edPv27WspKSnRycnJkdHR0cfroj/t27fv9fzzz7d9/vnn2z7zzDOvPvnkk0898MAD5NFHHyVqtZqo1WqJcIBgFEWRFBYWEoPBQG7evFmakZGRmJqaGnP58uXzYWFhO+/3xa7RaFQajYZwHEdUKpUkxPFYiqIIgtzub+FwUavV0veYCGI3Lxy+EGMEB7JarSYajYbYbDaiUqlI06ZNyZtvvtnyzTffXPTpp58u2r9/f9DXX389VBFLCipYw1q8FmE9+/j4EJZl66RN27ZtSxo4cOCLPj4+QEQl0iaKoh1Jg/1DKZXkGOwlSinheV46kDDhAyIIhEuj0RBBEIgoiuS5554j8+fPnzxq1KjJc+fOnbxv3751temPxWKRng/tw/tagYKGBLx2IWQC9lddKoZVwsSJExft2LHjytWrVyXTf2VuNkEQJNO//HN4BnxvMpno9evX6d69e7OnT5++8rXXXhvoqr4EBAQM+/jjj38KDQ01JiYmUoPBILUNuyk4jqM8z9v1UxRFyvM85ThO+hl+n1JKrVYrvXr1Ko2IiKBz587d3rNnz+H342I/f/685J4F9xDAZDJRi8VSrutW7uIt7wuvJ5grPEfyNVdaWiq5hERRpHl5eXTp0qX7FNGkwBE2bdoUBzKM4zgqiiJlWZYKgkCtVqtb3bWzZ8/+1WAwSPsJuzZhv4BMAjmG5avVaqUMw0j7BPYP7B28n1iWpWazWXoO3sNms9lOPv7xxx+JtenXhQsXpGfhkA44NwICAoYpK1FBQ0FMTIwkL2A9syxLRVGkSUlJtN41+OOPP/5pz549NwoLC+2EB8RvgICw2WyUYRgppgO+5Icsx3FSzAcIDiw4MXiep1FRUXTlypUhnTp16lfbvnTt2vWt5cuXH0lISKAMwzgkpTzPS/E28vgxTPLwF8dxlGEYSYDKYTKZaFJSEv3xxx9PupK41jeA8IaxxqQLPgMiBwIdxwLB2OKf5eTParVSjuOkuCOr1Sr9LsMw1GQySbFHctJ3151MKaU0MzOTfvTRR2sUEaWgKiRPFEW3krxTp06xeN+AwgQ/C4JAGYaR9oTRaJT2nFxJhc+tVqudzIN9huWwPG4PPwf+nlJKb968STt37ty/psogEEs5yRMEgd6vSrKCe4/kJScnVygz3JrFtWbNmrBhw4b1aNasmWRytFqthBAiZT6BKR/MkRqNpsxzBEGw+xzHf6hUKmK1Womnp6f0OxzHEZ7nJfcDuBMYhiGZmZlk3bp1q1evXj2zOn0ZOXLkZ4GBgfM6dOjg6e3tLX1utVqlTDme5yWXIrQFuz7kMWOOYsUgngTiYsA0i820HMeRhIQEsnHjxmW//PLL5/c6yevQoYMUl4BdQhqNhhQUFJDGjRtLriO8LnD2H/4egF1Q2PVLKXW4DjFYliWiKBJPT0/CMAzx9PQkhPzj9kpISCAdO3ZUMtkVEEII2bhxY+zo0aP9YL1pNBrC8zzRarWEZVni6enp0rXy9ttvT16+fPnP//73v6XPSkpKSJMmTaR1D+2R7w1Y0zdu3CCJiYnXUlNTY3Jycq5brVbTXZmtUavVGi8vL59WrVo988orr3R+9tlnmz/wwAPEw8NDkoXl7S9RFAnHcYRSKu2liRMnzqluvOu5c+dop06dCMdxdvsd5G/v3r3fCw0N3aGsRgUNAbGxsfTVV1+Vwh6AG+h0OpKSkkJefPHFcmWGy525r7/++rtz5szZ3KVLF70gCESv19vFnXh5eZWJ2cAkCAJ15Sn6GPKfIa4EoNPp7OL4tFotsVgsRK/XE7VaTWJiYqocs+fv7993zZo1h5999lnSpEkTQsg/5TZUKhXx9PQkXl5ehGVZ6Z2YrOG2ymPCVCqV1EfoM5BcTDAgyBlIMsuyRBAE0rZtW+Ln5/fZvHnzPlu8eHG1SWtDAs/zUukJOBQ8PDwIIYQsXrz4x7S0tHgwEtC7A6z6B2qVSqXS6/WeKvhArdagg4zeXS96jUajfeihhx574YUX2j3//PNt//Wvf6l9fX2Jt7c38fDwIGq1mvA8L801lJQAosfzPLHZbMTHx4d06NCB5Ofn048++ujzbdu2LVNElgJHSp478PHHH/+0ePHiqVgp1el0xNfX147csSxLNBoNoZQSg8FARFEkZ8+evbly5cppp0+f3leTd3/xxRcb/ve//w0KCAhoCsQO5CHDMEStVhO9Xk88PDwIz/PEYrEQrVZLtmzZsuiJJ554fsGCBe83hDFWoMDZkBuA5KXC6gxbtmxJwO5FeUwTNuHjmDQcc4XdaI7coOB6g+/BRQAlCuTuNOxi27dv383q9Oe77747KIqiFIsCbj0M7PqDNsljU8qLDZO7cMFlbbPZJLeOoxg//FlpaSllWZZGRUXR//3vf2/fa4s9MjJScivhf8F95O/v39eV7x87duw3Bw4cyElLSyuzDuUuX1x6BbBw4cIgRWTd39iwYUMMlg3groW17Kr3zpgxYxV2uYIMhlASkGUgV0wmE42IiKDTp09f6cx2BAQEDAsKCrrGMIydixfctYIgSLGB0M6SkpJqjcu5c+fsZIPirlXQkAGlw+RhR5RSmpqa6n5NZvTo0XOuXLki1UKCxmAShokcECL4WU6KMAmEGAt5zSX57zr6W3inIAjVipX69NNPf4ZDvbxYEkw4y2sHCK/KEgPktadgQvHzIF4Rj6OjWlZbtmxJuNdIHhxMOAbParVSURRp3759x7irLe+///6XJ06csJpMJrt1AO3BCRswH5RSevDgwVxFbCkkD5M8WBuuInlTp079Hp4P6xUnegGABMbFxVFX1K/D8Pf37xsUFHQN9ge8G+ICgfwVFBTQTz75ZG11nh0RESHF5MlJnpJ4oaCh4eLFi3bGHWwwczvJW7Zs2QEgKrjIp9yiVp5FSm7pw2QOW7zKy7gFoekooxKeNWXKlCq5zMaNGzcfyCpY03AGL7a2ObLqYIKGk0DKK9Qr/1w+NjhpQF6AFH8PliR4VlZWFn3nnXem3yskD2frybP0evXqNcLdberUqVO/3bt3Z+KgWABYJPAasNls9MSJE1ZFdCkkzx0kb+bMmauNRqNd0hpOEIIEL5CPX3/99VZ3jscHH3wwLzU1VWoLtBOU4k8//fTn6j6zIpLHcRzt0aPHO8pKVNBQkJCQUD9IXnh4uK08kiXPKJW7K+XZWmC1w59BJq2c1FVEAuH3eZ6nDMPQyZMnL62sH+3atet58ODBXPxe7FJxlFWGiRh2vToqy1He78ktmY4ycOHv5Zmd2MoJ78EZODzP0/Xr10c29MUeHR1t52KCMYF5rkvhPXjw4KkpKSllrMtA9MBSAf9/9OjRYkV83X9Yu3btKVCEcTgHKALOfFevXr1GGI1GKWRAFEVpPcLaBDmSkZFRpxau8PBwGzYIsCxLJ06cuKgmz4qLi7ML5cFnA8dx92Qoi4J7F5cuXbLjM9holZmZ6XqS1759+16XL1+2q3NXlS9HlqzyiJrVaqU2m81OG4OSKnJXJrjxQCsEoTZhwoSFlfVl/PjxC27evGkXTwVCB7s2TCYTxW46rIFiFzH0CcrAAFmUX/WDP8OEFsYK+iofN3lcoNxfD8IStPcLFy406EhkTPJwXBH0t3v37kPquo2bNm2Kk5eDkK8NKJGzffv2ZEWE3V/46aefwkEm4DhkV5C8c+fO2ckNHPuHwx3OnDkj1IexWbp06T6QrYMGDarx7RcKyVNwP5A8QRBcT/ICAgKG5efn27lmq0ry5NYuEHJYu8WWGuxecJRQAQkRQMIABQUF9N133/2ksr6sWrUqFBcwlr8H2iavhycvFopr4pXnji2vTh620smFE26HvF6g2WyW+o7JoqPYmzoJ1HQiyZO7rfH6qA8kj5B/shihfbBeoOCrPAFp7ty52xUxdv9gzZo1YeBZwPvc2SQPlA1s3Qf5gIvGVzcBzdWYNWvWutrG1gLJw4ch3nsKyVNwv5C8WpVQ6d69+5A9e/b81aRJE2IymYi3t7d0d2FFwLVeRFGUyqLIa5YxDCPdjWgwGODaslKbzWaFchharVbn4+PT5MEHH1S1bNmS+Pr6EovFIl0RxDAMWb169R87duxYUVGbdu7cmT506NDWhBBiMpmkVH5oC6VUKlsCJQYI+ac8C5Q9gZIAUL+GkH/uPuU4jnAcRwwGAykqKiJ37twpMBgM+QUFBbdNJpOBEEIaNWrU9MEHH/xX06ZNWzz77LMPNm/enDRu3NiurhshRKrBBqVDoMwK1OqjlErlPKBWH1wFBzX3nnvuOZKenk6HDRvWIy4u7mRDW/C45l19xQ8//PBhTk7O9XXr1i2HufH29ra7+9NisRBPT0/yySefvBcfHx9+4MCB9Yo4u/dxl9uXWdOwf52BESNGzB4zZsx/GYaRZBHP89L1kIT8U9YpJCSkYODAga3q0/h8//33k5wlI/DPjq4yVKCgIQKXT3HZOdilS5cBxcXFlFJK8c0VVXHX4hg5bHGyWq00Ly+PHj9+3LR27dpTY8aM+apDhw69q9omf3//vn379h2zcOHCoJCQEENUVBRdtWpVaGV/d/r0aR7e7+hGDbPZ7PDWCWxZg2xK6F9BQQE9ceKEdcGCBX/36dPn/ZqM8YABA8YvWrRoV1hYmDk3N9fOcuXoei2wIMpvgZC7eEGLz87ObnDSLjo6ukxSSn205AF69+49Uu66xVnlsK4uXryonDz3CVavXn0cPAJyN6KzLHnx8fFlkrJw/DDHcTQlJeWeXXPx8fGSjMBhMzDO99MtQQruPUseXs83btxwzT6GrFOIdwNhAlmdFX3JY+isVis9d+4cnT179q/t27fvVRekAbcJajfJCR/ExoGbBYgVoKSkhEZGRlYp9q8m+OKLLzacP3++wthACOh2ROwsFotd4obFYmlwgt4RycPuz/qYNTdgwIDxuESFPEMblKU5c+ZsUsTZvY8ff/zxJKwBuRuRZVnapk2bHrV5/tdff70Vy2J5BQLItH3zzTfH3atjfPHiRbtxxYciy7K0a9eubykrUUFDJnmwtysjeTVy1547d44+/vjjhBBCPD09pSumeJ4nnp6eVXbXGo1GEhwcfHXLli2Ljhw5stndAxcZGUnbtm0r3bhBKSU2m414enqWuUVDFEVCCLFzw2q1WqLT6UhBQQEJDg5O3LJly6KwsLCdrmrvkiVLPliyZMkHAwcOnDRu3Lj5/fr1a+Hj40NsNpv0OxzHEb1eL7lzwZyr0WgkN43FYiHe3t5Eq9WS559/nvzyyy9nJ0+e3KWhLHh8A4ocKpVKXd/ae+DAgfXLli3rN2vWrLcaNWpk5zZSqVRSWMC4cePGLFq0aGxdtLFPnz7v/+c//+n82GOPPevt7d1Yr9d73FXijMXFxXl37ty5kZWVlZqbm5t1/vz5I/V5fbRt2zbgoYceeuypp5566Yknnni+RYsWj3p5eTXSaDRalUqlKikpKTSZTIbs7Oy01NTUmEOHDm10Z/vUarUau1nwWr77ea38L5MmTRolCALx9PQkHMcRrVZLVCoVXJlGGjVqRNauXXvq4MGDv98PB6R8OO/K+yort926dRv86quvvvbSSy91fOSRR55q0qRJc71erxEEgeTn59/KyspKvXLlSmxCQsKZc+fOHarv49GrV68RTz755AsvvPBCuyeeeOKFZs2aPaTRaLRWq9VkMpkMVqvVnJOTcz0lJSX68uXL56Oioo415Pl/7bXXBj766KNP+/r6PqjT6fQqlUq9Zs2aj1z1vkGDBk3517/+9e+nn376P61atXqmefPmD+t0Og+r1WoyGo3FGRkZiampqTEJCQlnahIuVZXrUGuFb7755g+woICmiC1acLNFZe7aw4cP5/fr129sXU38mTNnBAiGxyn78kxIXO8PJ1ZAXzdv3nyxY8eOb9RFH4YPH/4xWLZEUbQr0YETPOTuW3lSCcdxdPjw4R83FEseWIPl5WgopfW6yGlkZKSdJoatx5AtXJOaYDVBp06d+i1ZsmRvZGQkLS4uLreUkTzhp6SkhN64cYPu3r07c+zYsd/Ul7EdNWrU59u3b09OTU2lJpOpjDVbHoCPLfMcx9E7d+7Q3bt3Zzr7dgdH+OWXX87CeOIxhySMdu3a9azps8eNGzcf19yT3wgjCAJNS0u750MDEhIS7BL38L8Mw9AuXboMqOjvR44c+dnu3bszc3Jy7PaG3AqPZavVaqXZ2dl0/fr1kXVRr7MiBAYGzt21a9f1zMxMu8RBeU1befgPy7L09u3bNCgo6NrQoUNnuKu9GzdujD158iQTGhpqDA8Ptx0+fDg/PDzcFhISYlizZk1YZX//1ltvTdiwYUNMWlqaFEoFFSysVqvTvW2BgYFz9+7dm33r1q0y1S7w2OJzi+d5eu3aNfrrr79GvP766+9W1ZIn51JODbvq1q3b4IKCgjLXcJUXc4fdueDOLCkpqXNCcerUKRayaOUTgMuPwBU7DMPYZaNRSmloaKixvrg7VqxYEYwXFJ4HvKHLu9KI53l68+bNBiH4sXsdE1roe10qDlUB3IYhj8kDxcHVJW66d+8+5MKFC3YxgjijG2e6y6/Uw+WLAFlZWXTdunXn6mo8V65cGXL79m27fYsz83EtTUyo5VcFYvmVl5dHV6xYEezKAwzHzuJ2i6JYq8zP8+fP2ykNmIRAWMfMmTNX3+skD9y1mETjOqTl/d2sWbPWZWRkSHNisVikvQkVHHDpLoijxCWx4IzYtWvX9bq2YG3fvj05IyNDOgfkdWOhH7jEF8SKQukyGDer1Upv3LhBv/rqqy2ubvu1a9fK1JUFJCYmljt/Y8aM+SomJoaaTCa7uYB+lpaWUqPR6DQOsnDhwqDExMQyMfuwLuThUvAv8CJcyzY8PNxWXtmgpKQkO8UNr2unkrzt27cnOyITjkqiQCdgkVitVpqenl7nRGLFihXBOIYNxxDiYsfymzdgk9y5c4e6Q9uvLoYOHTrDYDDYjT0QWUd3+OLCyaDJzZ8/f2d9F94NneRt3br1Er5BRS7AcnJyXBYUvn///tv4sIdDC5N9OTHACQG47hjEFmIC4S6y5+/v33fnzp3p0E5sWcFKpdwyKY+hBbmEP4MDDiwYrrgmb+PGjbF4nOUkr1u3boNrap3Nz88vk5SECfC1a9fuiwSf8kgeWK78/Py6499//fXX301ISLDz6mBFyGw2SwWlcZksrCQ4KsBvMBhqXNC5pujQoUPvv//+O8NRTKb8ykVH12fi/wMCiK9oBAvU1KlTv3dVH9LS0uzkDsgnjuPopUuXqCNCGxYWZsY3UOFalFBP1maz0aKiIjpq1KjPa9O+OXPmbLp9+3aZeH2j0WinCEA9Snl8Pz5/4arTiuRobGys3XpzCckLCAgYZjabaVVInqMbKupDsc0hQ4ZMkxeoxcQO/g8Lg5KSEun3IyMjaefOnfvXV8E2fPjwj2HhyRcVtt7JiR/8bkOw5jV0ktepU6d++N5hOUkRBIF+8803fzjznePHj1+AhbijzGv5rSyVFS/HFj9QgKxWK42Nja114kBFWLp06T5snZZbIeRWSUeAa7zkQhdbbLAV3Nl1DDdt2hRXEcmrafLQN99884d878M8wRpbuXJlyP1C8uQJF/BltVrtXOLjx49fAEXzsYIP10PKE9gc1WgFIgJrBqw28P/Lli074I5+f/bZZ79h8oGvfgTCJG87hO7gO97le0ee6Ab/hoWFmV3RjytXrpS5DQb+lYcbjBkz5quioiLJUwW/i6tiYHetIAi1suSdPXtWNJvNlGEYKWkOFAFH161ihQvGGsteuKcZ1qnJZKLHjh0rwe9MTk4uU5kB5sxp2bVbtmxJwANYEcnDpm6O42h8fHy9IA9AEBiGkRaQfLHLBxL+DQoKutYQhNt77703C5e0Ae3T0eGHLRtAOmbMmLFKIXmuxenTp3m5+xArGc681/avv/5KAwIDmr2juDso1IzJm6MDwWq12mVpgzKESdPt27ddst9TUlKk9WqxWOyyyssrEg4EB4SonNCC4JcXVccHm8VioUuWLNnrrH5s2bIlAZdBwgeRKIq0Z8+ew2vy3ODg4ELcP7zXYe7atm0bcD+QPCih4ojkGY1GaX3OmjVrnfx6SLzuQYmQW3ytVis1GAxlStTIi+NjojVt2rQVruzzX3/9lQbeGyCcOJYQ9ismdeXdPgX9xnvFZrPZWTNhT5lMpipdNlAdpKenl7k8ANb2nTt3KCZ42FADRB3HaeN9De7Smt7lnpqaWmaNyGU5vmpVfouXPEZUDuwBjYyMlPp57do1u6sJ8bxmZWU5R94aDAa7mIPKLHlgASsqKqoXBG/BggV/4zg7OfHBAZGwaODQ3bRpU1xDEnBffPHFBkzw5K5n3Fccq2Gz2WhsbGy9tubdCyRv5syZq/EmhT0DB0ZBQYFT5mDv3r3ZOB5EHqMJLgPcBovFQktLS2lBQQG9c+cOzc/Pp8XFxRIJlNdalKfzgzabn5/vtHU0ePDgqSB/HFkdcZIF/A6sZ4ZhqMlkogaDgRoMBrsSNnJZIN8r2PVLKaU1rXcpx9atWy/JEy6cQfJu3bpl1wd8+IiiWGEs072GuLi4MiQP/rVYLJQQQmbMmLEKrxl825EjqxdY+7BygUvh8DxfxpqDlWyTyUQ7derUzxX9PXDgQA62VMtvXMJGDNgf2JqE7z6viPQ6sorDuM2ePftXZ/UnLS2tjBUMu4rh94DImkwmO4UGrOIsy1KwuuF5rIklLzs7u4wXA5flwXIIu72tVivFlkbs+gY5ZTKZJL4Bv8cwDD106FAeIYTExMTYeV+cfuPFtGnTVvj6+hKe58stXYEhCAJp0qQJ4TiOzJ0794e63vB+fn7dJ0yY8A7cBiG/WQNujSDkn6rwOp2OsCxLPDw8yC+//HJ2ypQpXRuSgLtbZiWwffv20nzgWyK0Wq10c4ZarSYcxxGdTkc4jiMvvfQS6dSpU7+IiIjDRIFLcPbs2QM2m226p6entM5gHVJKiY+PDxk0aNCUPXv21DjTNjg4uPCNN95oXlpaSpo0aUII+f+lc1iWJXq9XiqtwXEcSU1NJeHh4SfCw8N3O3rv6NGj5wQEBAzz8/P7z7PPPkv0ej2hlBKz2Wx3i4KXlxfJz88nLVq0IOnp6fSZZ56pdX5/ly5dBvj6+hKO44jZbCY+Pj6E4zhp/wJEUSRWq5WcOHHCcOXKldi4uLiT6enpF+VruVevXiNeeumlDq+99trbfn5+rR5++GGi0WikUkM2m43wPE98fHykcfP09CTbtm3b8sADD2ytbX/UarVGpVJJZZnkEEWx2qEt3bt3H9KiRQtJRms0Gkmmwf6Pj49PvF/2GJRZcgSVSkXWrl17avjw4a/dnQ9is9mIr68vsdlsxMPDg5jNZpKZmUni4+PjoqOjQ7OyslJtNptVEAS+cePGzZo1a/aQn59f9x49evR87rnnpHd5e3sT2HNWq5U0btzY7v+WLVt2oGvXrhpn9vXw4cP5ffv2fdBgMJBGjRpJJZlgT5jNZuLt7U08PDyI1WolFouFxMXFlZ45c2b/5cuXz9+6dSsjKirqWLt27Xo2a9bs4Zdfftm/ffv2vbp06fLMo48+Kp2LgiAQURSJl5cXsVqtRBAE6bmEEDJv3rwJhBDy3XffTaxtn8opj0VUKhWxWv9xdJw/f57CTU5QSkylUhG9Xi+VD9NoNMRsNhObzWbXZq1Wq6tOezIyMmirVq1IUVERady4MdHpdHZnp06nk/YZy7IkMjJSOHnyZFBSUtKFW7duZUBpnS5dugx4+umn/9OpU6d+Xbt29X/qqaeIp6cn0ev1RBAESe6AfOvXr1+LNWvWhDVt2pQQQhzeKOaUG1xCQ0ON+G7Fyix5wEjPnj0r1ocND3c4gmYObh1H5lLQgniepydPnmQaqpAbOHDgJMgKBg1IrmnIk0pAO1i0aNEuxZLnWkAxcWwFwCn+tYnL27t3bzYOQMaaOHZpFhYW0q1bt17q379/YHWe/+abb447fPhwPnbzYDcntmCcP3/eKdaj48ePm+QB4tgqkZCQQL/88ssa1bubOHHiopiYmDIJV/AOs9ks7Rtn7I3t27cn4xI62PImCEKNEi8mTZq0BCfSyLNJeZ6n48ePX3C/kDwcqC6XETjm0mKxUKvVKiVCsSxLN27cGFudPdGnT5/39+/ffxtb+HAsNy5ZJQhCjV2FjrB58+aLjmKwwb2M13NsbCz98MMPl1d3r+/YseNKUVFRudY8o9FoF1c6cuTIz2rbr4yMjDLxf/BvZmYm/eqrr7bg8mfy8JJTp06xS5Ys2esoW7W62euQ2YqttDi0Cz4vLCysdsxr+/bte61ZsyYM4ijl8dnwbCzzcFiNIAj0+vXrtZexeXl5dvFbVcmutVqtdMyYMV/Vhw0PFd5x/BNe/ODWwaZrl10V4kbs27fvpjzwGh/GeEHh710VTKuQvP+PI0eOFOBsVWzyp5TSHTt2XKnJc2fMmLEKJxDhmo5YCJ4+fZqvLrlzRI6uXr1aJnkAu3g4jnNaORKIBcSutMTERDp58uSlznj+0qVL9+G+OEpguHr1aq3lAlQpKI/k1aSEypIlS/biwxDvc2h7da6IvJdJHii72CBBKaXx8fG1kh9ffvnlRqvVKj0TDmh5mMG5c+eccrYsWLDgbzBWyMMUMJm9evVqtcmdHJ07d+7/xx9/JOLr+HBtVpy174xwk4yMDLv4YeziBIIFCiuWN2fOnBGGDBkyzVnraNeuXdcxqcOxmThrNjQ01Fjbqghr1649BbGOcgUBl7CSk7xaZ8z37t17JK6XVRHJwz70K1eu1AuSNG/evD/xBpBbOLAgxwt29OjRcxq6oPPz8+sOcUfy6+dACMgXDc/zNC8vr94SXCiGDGRdvg5rS1zcheXLlx+RZ7LhmNfLly9Xew7at2/fC7RbHMsizwb84YcfjjqzLydOnLCCbMB7COKAGIapcVkQjE8++WQtPjSd3Q9CCFm8ePEeR+OG11ptyy9AGR04OHAQPM/zNcrgDw4OLsTlMeTxWCUlJffV3chnz54VcdF0fI8tyECcxBMcHFzojPdOnDhxEVYUHN0dzDAMre31nZ06deoHmZ1ACrASB9bJ0NBQozPH9e233558584dOwsTzmyHjNbaevFu3LghjR/ee7i/QLggztLZ9fvmzJmzCbwS8mx87BVzZvb9oEGDppSUlNhlcWMLIo7jhvmu9dWk48ePX4DdtFUhefUpGxUCFnHxQRx4Cp/h2mEQ7FjVRR8YGDg3MDBwbk0Dpl2JY8eOlWCLDtYqyyN5JpOp3h4IUVFR9wTJ++yzz36D2k3y8gVQZLim5AELQrmWPWvWrHWu6M/x48dNkNUNBxvWup1VGPa77747mJSURHv37j3SVXMDrmF5MVVYaz///PMZV5K8mgTnR0REOEy2gL2Sk5OjkDykUOHQnT///DPFme8GF6o8KxQXFf/iiy821OYd4eHhNlCqHNXCYxiGbtmyJcEVY9uuXbueubm5diVK5IkeZrOZjhs3bn5N3wFJDo7kvHxsMzMz6YABA8Y7s48dO3Z8Izc3106OYgsi9HXKlCnLnD2+r7/++rvwXgh7AdLuqPZlrUne6tWrjzty1VZG8upLwWBot6NUd3nMkiAItLS0tEpWhwkTJiy8fPlymfTnkydPMq7KoKqp9QNbJbDrQp4pjYnfsGHDPqqPwhtIXnnu2oZC8saMGfMVWN2wyxaER2FhYbU27sCBAydhN5SjDEtX10hLSUmxK1yK9xjP8zWu/1YXcwMxVNgiA2ssISGhVkK1MpLn7+/ft7rPTE1NLZMpjZWHjIyM+4rknTlzRsBxj3KSAN6NuLg4p49Lu3bteoLCI79CD76vjct25syZq+VXbOLseIZh6L59+266cnw7duz4BsQdOjIAUUrpxYsXa9zHmzdv2p3N8uodxcXFlOd5Wlpa6pLi8VAyDpQB2Eu4PXPmzNnkqvF95513puPsXEfl65xG8oKDgwtxTFdFdfLwBDvDPeMMFBcXl7niSz5xWMBu3br1UlWsCdDPgoICyQUAqeT1KZ7vjTfeGGU2m+3iveSEHM8fzK8z0+GdicjIyDKbrSHG5A0aNGgKLr6Kr9SDGyWq87ygoKBrOHFIbt6vjcCtKiZPnrwUXAvYMg7t2bZtW1JDIQnXrl2zW2fY3VfbslCVkbya3IV948aNMqUzMAGoL+Ez7iR52HomP69KS0spx3EuK2mya9eu6zgoH98WwXFcrdbQ9evXKcMwdi5TbHV2F6GfOnXq93KvAVbwBEGg77333qyaPBvKATkieViRcUUykb+/f1+bzSaNL469g/6FhIQYXD2+CxcuDAK+gq2k8nrEycnJtZtvuXusKiRPEIR6I1BwVhDU+sKV7WGgDAZDhXcaAoYOHToDXL2OrIMQk3T06NHi+tD/tm3bBuTl5VGO4yRyWx7Jw/UCly5duq8+Cu8LFy443PxwALviGqq6IHmlpaVV3kN+fn7dS0tLy9yViONknBmMXBFOnjzJYJIHc2MymWhxcXGDIRohISEGuYyANWa1Wl1K8moSr5Wdna2QvCqSPDi8f//99yhXWmIc3ZiBY8hqQuYnT568FFvIHdWIdEZ2a1UBWfaOKlVYrVYaHR1do3VXEckDOCuBRY5Vq1aFOiqmDNyhqKioRnNXEyQkJNglTtaE5KkrewnUclKpVFL9pcrA83y92ewsyxJCCLHZbMTLy4sQ8k+tGZ7niVqtlmqT+fr6kp07dyZX9rzPPvtslVarleriQI0almWlGjxms5m8/PLLTetD/2NiYsKgr1rtP2URcV2d8uoRabVafX0U3o5qAuE+UEpF0gDQpEmT5pRSu/1FCJFqNtpstio/a/DgwVMbN25cZkzgmdHR0eyuXbt+dEe/tm3btlQURanGnCiKRK1WE29vb+Ll5UUCAwPnNoT5yc7OTpPLQIBGoyGu9FTUZA1bLBai1+ulen+wlmCNwd6/n1BePVeo6bhhw4Z5rnp3UFDQmsLCQuLp6UlEUZTORNiXoiiSxx9//LnqPrdPnz6jRVGUzmGoBycIAtHpdCQiIoJs27ZtmbvGeOnSpeM4jpPOQkopEQQBGxmcJufxfrRareT33393iSzp3bt3T6vVSkRRlGoDCoIgjfGxY8fSL1y4cNQd47tmzZpv1Wo10ev1EseAdV1RLchqkbzi4uIiURSJSqUiPM9XWggZhEvXrl3fqg8bfevWrYegsKBKpZIKIcMmgYKGN2/eJCNHjnypomcFBgbO9fPzkwiil5eXVPwQio9CYcbmzZuT2gSeOgvdunUb7OXlRQRBIFqttiokiYiiSBiGqZdlVOTtr8p6rI94+OGHH4dDGNYhJhNGY9WT4nr27DmYYRhJeRFFUSqaaTQayV9//eW2guSXL18+X1hY6FCZYFmWBAQEDGsI82MymUrgQIFxhbWmUqmIl5eXjwvXeLUtFEVFRZIijuUw9MHb2/t+I3gqLDPwl1arJZcvXybnz58/4so2xMfHlxDyTzFqtVotHdBAFpo3b96yus9s06ZNSyjezHEc8fHxkUgIIYT88ssvn7tznM+cObM/LCysUK1WE7PZLPVPFEWpyPu8efP+rKmcx/MmJ3mbNm1y+vnau3fvkU8//TTx9vYmPM9LPAEKHttsNrJy5cpp7hrfDRs2zLt+/bo0x46MbJWJi0pJnsFgKBBFsQxDrwharZb4+vo+UB82++zZs9+8ffu2VO0bGDml1M7i+MMPP1Rq6Zg2bdo8juOIVqsloihK1hao/g8HgCAIxMvLi/A8z9Z1/x944IGWjRs3ljS+qpCiuzcLlDY0we6Uyt9uQosWLVpB1XSs3cM+qw7Je+qpp8rc4gLC0GazkXXr1n3hrn5FRkaG3LlzhzAMQ8DiwLIsoZSSxo0bk1dfffWFhrSecBV7rChSFy62mjy7pKTEQAiRSD4o5tDe+43kVTSnPM+TuLi4S65+V0JCwhkgPLA/wVii1+uJh4eHV3We984770x/+OGHCc/zcGuDtM/1ej0pKipyqxUPsGrVqhkajYY0atSI8DxPtFqtRGpFUayRYodJnlyp12q1JCYmpsQVfXnmmWde1Wg00i03FotFmjuLxUKSk5NJZGRkiDvH98cff/wRy/fqGjcqteHfvHkzXafTPVtUVESaN29uZ20oTxaJokj8/Py6Hzp0aGN92NhPPvmkKiIigvr7+0vXkFitVuLl5UVMJhOZPXv2sso0oHnz5v350ksvSUxapVJJmgosPFjgcH2UXq/3rOu+9+zZ812NRiPNG8/zhOd54unpSaxWK9HpdNL1VnC1lkqlIkVFRbn1UUjzPC9QSjVApvFiv3tdm6UhHDZ+fn7dQTvz9PSU5gbmo6CgoEr9GDZs2Eeenp52Gh7LssTLy4toNBoSHR1d6O6+ZWdnF7744osPgAYOrga9Xk9atmzp8vf36dPn/aZNm7Zo3rx5S29v78Z6vd7Dw8PDW6/Xe6jVag1cG6ZSqdQqlUp1N84FAnBEo9FoeOGFF9qZzWbSqFEjQsg/17UBCb+r2NV4b6vVag2EvoB2Dv+Wd9VZZcjMzEy22WydQHGQy+YmTZqQNm3a9IiNjT1xP5A5rVarAsUJPBhgpNBqteTMmTP7Xd2GtLS0eI1G01+j0UjeH7hqSxTFahtCXn75ZX+4tk6r1UpXIgLZi4iIuFMXY33s2LHtN27c2NaqVSupLSzLSt6EF198UV3dZ+K5whZqOGPDwsJ2uqIvr7zyShew3BFCJNnMcRzx9vYmp06dOubu8V25cuX0xYsXT/Py8pLGFXslK9MJKyV5KSkp0TzP9wOCB4NcGQsfMGDAyPnz54+qL5u+U6dOqrFjx37Ts2fP4U8++eQLoiiKJ06c+Hvu3LnvVva33bt3H/Lpp5++q9Pp7O7/pJRKiwDcofD/DMOQhISEM3Xdb39//86UUtKoUSOJ2ML8abVaSViAQPTw8CA2m41cuXIlrj4K77sHtAZrNA3Jggd47LHHPGGzgpVIr9dLpDUtLS2+Ks959NFHn/by8pIO9ruuREIpJTabjbRu3fqBXbt2Xffy8mrEMIxZrVZrwFokiqIgiqIoCAKPSQ7LsjZKqRThfHecAWofH58mGo1Gq9FotOAWU6vVGr1e76HVavVPPvlkI9DkoU0wRz4+PqRr165vOeuQfe211wb26NFj6P/93/91bd26davHH3+cQHwikGh8NzX8DGunIo1YEARis9mkeFb8jPqGqKioYxMmTOgEbmUgizju8/nnn297v5C8yggEy7Iuv7KS53kWz0Nt5VSLFi1a6fV6yQMF6xgIZGZmZkpdjemNGzfEli1bqlUqlZ3hAORRu3btekZHRx+vjiWvvNAilmVJZmZmsiv68eijjz4NoTO4DeCRqKszPTMzkzz77LNluFdV1lSlJO/ixYunWZaVHl4VM6FKpSIvv/xyvdvcmzZtml8TP/6vv/4aRCklJpNJ0uzxYMNBoNFoJKtFdna22826cgwcOHDSK6+84jAeDzQCWCjY5Ww2m0l4ePjuekryRLzOHAiHes/4Onfu3B8sWmq1Wor9wJacqKioKmmMjz/++HNwSTcII47jCATrPv300+SZZ555kuM4Iorig/jycnncC6Cy5CpslQACB2QOLKxAsnDsqyAIxMPDg7Ro0eLR2o7hxIkTF40ePfrLtm3bSklQ0HZoC4xpRQeJXG7B5yzLSmOIlQmbzUb0ej0BslxfsHHjxm83bNgwT57Ig0MBunbt+tb27du/ux+IXHkJZbB+3RFzzPM8B0oFXls1RcuWLZ9A4QJS2BDsv5SUlKi6Gu8rV67Etm/fvh0oFdjK5OXlRZ544okXqkPycL9wKBTMX0ZGRqKLSN6DIEewMgdxkImJiRF1RKJLnn32Wd+qyDE5KjWjxsXFnczNzSVms9kuQ7OyDaZWq4kzr/uoK/zxxx+JrVu3Jo0aNbLT5OUHCBAmOFzCw8Mj67rtEyZMWAgCHoKv4RAAwSO3bHAcR9LT0+vtfICrrYKDu95n1wYEBAzD1mAI6gXLk8ViqbLG6Ovr+wDEGcFm1+l0ZRKLdDod8fDwICzLEp7n7TLDMSEC4QZf4N7Hn0HMjfwgFQSBcBwnPQMLaK1WSyABSqvV6mo6dtOmTVtx9epV+tNPP33p7+8vhUlAVqnNZpPi0sBFB+2HduB2w97AGXSEEOLh4SG5RRiGkWJa4TNVPcz4KSgosMvkhOoBoDy0a9euE1EAZN3qDoUUFA6Yi9rA19f3AaxAYSKv0WhIVlZWal2N6c2bN6+C3MHWS1iLLVu2fKK6c+TImgdj6SqLtI+Pj5RkpdFoCLbqaTQaUleWcJPJZABZXl1FoUqr7uTJk9HgD66KbIODa/z48e81ZGHw22+/XRgyZMjLsKm8vLwksgsHFs/zBKwjFotF2oA7duxYXpdtHzJkyLQePXo8AJm/sNnwoQvtx+RVpVKR0NDQoIaksTe0DNv+/fuPxO5VEP5Wq5VotVqSmppK4uLiTlblWVqtVoctaVgLBhIJAdCEELBClUnDx4QOhBsQBPnPoK3j54ICCFY1eI5cC6eUVjvgHBAUFHTt22+//fipp56S3CeQ/ASkEsgZjn8CKzbHcRJZk/cPfwFRgv55eXlJShzs+/qI48ePp3l4eEhzA/MEc9y6dWtSH69edJclD1tlOI5zeVLc3ZCHSttTVWi1Wp2jmE14ttForLParAzDWDDphD2JlCYvZ82nK+V9edmr8uoH7gas15pYgqtE8vbs2fMzJjZVmRBBEMijjz5K1q9fH9kQhcRvv/124b333uvg6elJOI4jLMsSi8VCfHx87A4seYaTRqMhW7ZsiTp58uSuumz/xx9/vEav10uxRHq9XnKfgeCHNoMpGiwwhw8f3lhf5wW7yRqiu7Zbt26DIZQBrEqYgKlUKnL06NEqu8p5nueAsIDrFwifp6cnsdlsxNPTU7IQYgsP/gIyhBOLMAl0NN7lCVuNRkM8PDzsCBZYx+4+r9pzlJiYSN9+++2nmjVrJikjer2eeHp6Su2mlBKz2SyRMZPJRKDeFRBQnU5HWJYlLMsSjuPsyBzsC4g7hkxI+D9IWKppH1yNw4cPbwSyjeO1YK01adKEDBo0aOr9TvLuKr1uZevlWaaqA5ZlbY7CpuC5Op3Oo67G29vbuzGQOmyxhO9rmhDnSIl3ZUwsyArY95j4Qex0XQDCo7EntarrqUoVMo8cObI5NjZ20//93/+VyWgsb2IYhiFeXl5k3Lhx7cPDw2c3pFiQrVu3Xho5cuR/QEDq9XrJRQsHAFgswKIAwjU5OZmMHz++Q122f82aNWE4kxhvDrAgQdthLmEhR0VFCe4q9FhDkqeubDPU57U1duzYb+6W15GsTRCvptPpSH5+Ptm3b9+6qj7PbDaXYhIGbgUgeuA+BTcjFl5YgMoPIVgjcpcu/ldetgV+F68zeSFYhmGqHSB++fJl+tJLLxGLxVLmvRaLRVJibDYbMRqN5ODBg2nZ2dlpGRkZl3Jzc7PMZnMpHOpqtVrt6+v7oEqlUqnVag1OKAHrC8/z3OjRo7/q2bPnI7j0CFhG72r19S77Ytu2bcvmzp27tHXr1pI7D2f/E0JIv379upD7GLDm3VHeSqPRaGGPO0MsGY3GYpVK1QjIE46DFUWRNG/e/OG6GtcWLVo8il3IMNaw7oqLi/NqMk+V1XV1NkBJxAodVg7qKkO9WbNmD5Xntap1di2y5m1q06bNWKvVSnDwdnlaCwhHQRDI5s2blxmNxuIDBw6sr88CwM/Pr/uvv/56om3bttIhDAQOV5EH8mSxWEjjxo0lgmez2cjq1asX1WUfxowZ89W0adN6QMkKsFLguC/5IW21WqXK7Pv37/+1Ps8RWPJqstjrGm3atOkxYsSIVzCphr4A6U5KSrJVJ0DZbDaXQsV5eC6QLI7jyJEjR9KHDx/+bNeuXd+CWDiIJ4MM27vgeZ5nKaU0JiYmrKJ3tm3bNkCr1ep0Op2HVqvVYZIEREmtVmsEQeB1Op0Hx3E2juNYtVqtPn369L7qjNnu3bszX3rpJVJaWkqaNGkifQ59htjGkJCQoo0bN34bFBS0xhlz1adPn9He3t6PgNvbw8NDknv1MbsWEB4eHvXUU0+1x8HvgNLSUvL444+TNWvWhE2fPj3gfrXk3bXYuNz3djcDvQzxqamcMplMBkrpY9gjg5/frFmzh+pqvJs3b/4wvkEKF3m/W5S9uLrzV5GnwFUoKSkRCCEarAjDXvLy8iLPPfdcm7ogeS1btmwKsselt9fk5+dTi8Ui3blotVrt7tCD+yrhUl18P6PRaKTTp09fWV+FwhdffLEhJydHulcQ7q0r714+lmXtPmcYhh4+fDi/Lvvw/vvvf3nnzp0ydwrLvwDQfp7nKcMwtb543R2IiIhw2Be4W7BHjx7v1Oe2sywr3TkIgPs1eZ6no0ePnlOdZ06YMGEh3H0KY2C1WqV7iXfu3JlOGigmT5681GKx2N3bCPezwpzn5OTQd955Z7qz3719+/Zkq9UqvQvmCGRCbWLbtmzZkuDo7lq4a9Xf379vTZ/ds2fP4fhuUwyGYaggCNRsNt/z99hGR0dTPA54f3AcR//3v/+97eo2TJw4cRHcVQtrx2azUZ7nKc/zdPbs2dVSqFesWBEMzzGZTJL8hn+XLVt2oC7HWxRF6a5euIMbzv527dr1rM7zMjMz7e6uBXkGY+iqfsC90mazWXo33AnMsixdsGDB33Uxvrm5uXZ3zeN75i9evFi7u2sxli9fvt7Ly0uKzdPr9USv15PS0lKi0WikK1YgbdpmsxEPDw+pQveyZctmfv/994fqkzAYPHjw1IiICLp48eLAli1bSrFMwOBxliHE5sAVUhCMybIsycjIIP369WtRV/2YNWvWuhUrVix66KHKlTmGYSRrCLj3PDw8yOeff76IKHAJvv76663+/v5SnBpkbBJCpBiQS5cukS1btlRrDuLi4k7CFUfgpvX09JRcwG3btm3dUMdsxIgRs0HGUEoJwzBS8Vez2Uxyc3PJm2++2dNZ1jsMi8ViBMs3Tk6pSXabO3H8+PG/zp07R6GemiiKkgsKLJHe3t4kIiKCKrvStbgbDkAIcY6XISEh4czd8i/Ex8enTDLAiy++2L6u+vrMM89IJZIgpAn2TU5ODqmOd6IukZ6efpFhGOLt7S0la+l0OunMh2LJ7kSvXr1GQOm2Gq3D6vzysmXLJsTGxkqFddVqNTGZTKRJkyaSEAaTIr7YF8y4np6eZPr06f1OnDhhrevJ7NSpU7/9+/ff3rVr10///e9/pSw9o9FoV/sLF0KFfkDtLMjuMxqNJDAw8I266svmzZsvzp07d2LTpk2r5EqCZBIPDw8pTuvs2bPib7/99lUDEJzS9/K7Uesr+vXrN3b+/PmjIAQA6hJCvCTcPLJq1ao51X12TExMWF5enqSA4ExqlUpFnnzySTJo0KApDe2A7N2798iOHTuq8PziOeZ5nnz00UczKnMt1xRarVYHex6IOLiJ6mviBQBqgUJMpI+PDzEYDIQQIpGCF198kdSVVcIdqA/TAzF5uD21KaOydevWxTj5ked5qSYmIYS8+uqrdRKT9+GHHy739fWVEr9wlr9KpSKXL1/ObijrJjo6OhTvefgezlU/P79H3N2mnj17DgfS6ZZ13a9fv7Fms1kyfYNJFkyq8HNpaankigDcuXNH+qykpIQuWrTI7Rmobdq06bF///7b0D6z2Sy1D0zNYA7F7kC529ZoNFJRFGlJSQnt1avXiLpYkJMmTVqSkpJiN8aVuWqhT2CKLi0tpQaDgXbt2vWthrAJIyMjpX6A6Rqb82tyT6Ir0b179yEFBQWSa47juDJuAI7jaHBwcI2vHwsKCrrGcZwULgHvAuzatet6QzuklyxZspdhGGkv4j0qiiINCwtzaTHb48ePm+RuIthfHMfVKizAle5awKVLl+z2uyiK0nrD8rquZJerERUVZbcXsLuWZVn62muvDXR1G6ZPn74SxhmHGNTUXUsIIampqdLzeJ63c8uLokinTJmyrC7GGsbXZrNJ6w7W24wZM1ZV95kVuWsZhnEp0ykpKaEmk0mSO/Bu+Hn8+PEL3Dm+iYmJktwB93913LU1wqxZs9ZB3B3LsmWEB44TwOQJkyNoZEZGBv3uu+8Ounqg3n///S+Dg4MLRVEscwjCBLIs6zCWBRYsy7KU53kp3tBoNNLhw4d/7O5NNXPmzNWRkZF24wt9sFgslZI8m80mHZaUUjpz5szVDUl4l0fyahsr5QqF6MaNG9LBgoUWxH06IxZy1KhRn+NYPPweURSpwWCgnTt37t+QDulDhw7lwZgxDCPtWUEQqMVicflhduvWLenAApkAcXksy9Lu3bsPqc8kb/To0XNEUbSLLcJyGBTckpIS2qVLlwH3GskD+eiI5NlsNrcotTNmzFgFaxbWMsjpmpK85cuXH8FGFBxTTSmlsbGxbjVh9urVa4T8nMfks6bxn3VJ8g4ePJgLMhp4Cl5L0dHRbhvjadOmrYD1Am1wC8kjhJDff/89Ck8Cx3HSJAMJAiGJ/89ms1GbzWZHtBiGoUajke7Zs+eGMzWswMDAuTt27LiSnp4utUmukWMrgSPINXlAQUEBHTly5GfumuyBAwdO2rRpU9zNmzeldpnNZjshhrX2qiReMAxDN2/efLEhCe+YmBipHyC06yPJGz9+/AIQxFgJwgIQ5mLEiBGza/u+9PR0O6EotyCEhoYaG9I8nzhxwirfq0CEGIZxqQXq888//x0LdZxc1lBIHn4PPoBBGQCLAKWU5uXl1SsL+NatWy9lZWXV6uDCJE8uL9xF8hxZ8mpL8vz8/Lpj4o7lPTx33rx5f7prrsDizXGcnSIGcvnYsWMlziZ5VqvVpSRr1KhRn8O7Ye8DUYc2BAYGznWXFQ8seFgGuYXkwQSDgIJGWK1WO+IE34uiSAsLC+0yCgEmk8nObZqTk0NPnTrFfvfddweHDRv2UZs2bXpU1pY333xz3MyZM1d/9913B5OTk2lOTk4ZNyZY4/Ahi7VbhmEoZs1wuGAYjUaalpZG+/XrN7ai9vTp0+f9b7/9dsesWbPWDR48uFoFSLt16zb43Xff/WT+/Pk7jx07VlJQUCC132q10tLSUru+mUwmirOuqkLyLBYL3b17d2ZD09BjY2OlA1FO8iil9PXXX3+3rtt48ODBXBhnWF8sy9KSkhJp7cNadNbVf3Pnzt0OghD2otydM3/+/J0NZZ5PnjzJyLNEWZaVDpIBAwaMd9W7ExISymSf438bCskjhJALFy5Qo9FYRubK1yfDMHTq1Knf1+Wc+/v79w0ODi6klNKioiKakJBAa9Nv8NrISR7DMG6xXk6bNm0FfrczSB4hhGzbti0JZ0vjM5XjOFpUVETfeuutCa7u35IlS/bC+gUjCiZlBoOhxpnvdUnysNIM8ya35l29etXlbVi1alUoKGW4AoNbSR4hhISEhBhg4coXs6ODBn+P45NAeALZA0IDnbNarTQ/P59mZWXR1NRUmpaWRrOzs6nBYKBms1kyrcoBGoacrAGhg7biDYN/F5dOKC4upikpKbQy0tmjR493zp8/X8ZFUlxcTAsLC2lWVha9cuUKjYuLoxcuXKDR0dE0JSWF3rp1ixoMBjtXG1gb5W5xOMyxuxKT08pI3l9//ZXWEN0wsbGxdjES9YnkzZo1a92tW7ekvQCbEFut8Xxt2LAhxpnvhzR7OSnBRMJdwfabN2++WBtSGR0dbWf9x1ZqjuPo2LFjv3FFu3/55ZezOKxE7vqGnxsKySOEkGvXrpVZD7A2cf9sNhs9cuRIQV3sndmzZ/+anZ1NeZ6XYktLS0vpqVOnalS0GEgehKXUBcmbOnXq9+BhwOdhbUlex44d3wBPDswb9qjxPE9v3bpF27ZtG+DK+cIx7fj9cO7Fx8fXmHzUNcmbP3/+TtgvckUTfnYlufroo4/WyONo5WvZbSSPkH/iZ3AwORaKuN6cvLacI5cpbIqKvmDCsVYEX9Dxir6wJUj+d/J4Qkz+qlJzrFevXiMKCwulmCsgaNVJjpD3CYQTHhs4GOTWRhxD4IisiqJIf/755zOkgSI+Pt7uUJJbjOvCXfvtt9/uAM0P14uEmCis4DAMQ1mWpTt27LjiKsGLBRFed7AmFy9evMdVY9G2bduAsLAwM1grBw4cOKkmz4F6VVhJgrEUBIGGhIQYXEHSca1BubKIldZu3boNrul7/v777wwsp3B8KcuyLjmcb9++LSm2WLmGmEMsp+/cuUNnzZq1zh17Z9CgQVPOnj0r4vhaeW3CmtR6hGfCmYPPC4Zh3FIn74MPPpjnKGkPlJYvv/yyxtdHrlu37hyuSYfDpGDP37hxwymhIHIsWrRol9xog5VaOO9qEweMw0/k57LJZHJLTFxSUpLkvcNECxuHLly44PS2fPvttzscGZ+w/MM1Q1NSUtwTI/jjjz+edOTilJMuXBDSUYIDJi9VIXmOCF9lJM9RrB0mR/AsmFyz2Uy//vrrrZWNQd++fceUlJSUKaYM7cLCvCYkrzxShy1FmEiDVgykw2g00oZeNuHixYtlLMG4/+4KIn/33Xc/2b59e3J2drZkgcbtANcsbieseVfGQYaFhUms0mAwlFFa4Ps//vgj0dnvXrp06T6wvkNfa+rWGDNmzFd4HOF5xcXF0vp35kG9cOHCICwDYC/J3VBAoGtjyYNs6PJIXlXCU2qCrKwsu4NZ7uqDcQa5l56eTj/55JO1rto/R44cKcAHKMhakL9QxYFSWm2lqCKSV1uSXlUEBgbOxecVJtW1JXng1cDyHifVwbrNzc2lP/zwg1OuqWzTpk2PkJAQA05EwoQD//vVV19tqc270tLSyiV57irmPWjQoCmOkubAygx9TUhIoH379h3jjHfu3LkzXRAEajKZpOdjpd0Rj0pNTXVfss2oUaM+h4PFZrNJmZ6OXLXy5AY8mdUleVUpG4K/QEPkOM7uBg95aRFKKY2Li6sScRg3btx8YNq4z9g6id3aNSGx2N0qvzkBDla86bAV6fLlyy65GaAuSJ7cBQrrqrCwkPbu3Xuks9/p5+fXffjw4R8vXbp0X1BQ0LWbN2+Wu5ZxRiiu+A6atrNi8CoTkLA24N24JACs7evXr9P33ntvVm3ft2DBgr9zcnLshDwWgjXN+MvLy7PTYKEvoAg564aWbdu2JeF4OyxQ8eEF761tTN6uXbuuy63zmOT5+fl1d9XaiI2NtQsjkR9c2IMBAf4ZGRn0p59+Cq9NnwFTpkxZFhkZafcuRyE2IOeMRiNlGIYeOHAgx1kkr7bzV1WMHTv2G1xqDK8fSmmtSR4h/4Ro4HAkRzcaCYJAIyIiahVzuWzZsgP5+fllrOrwbvyuPXv23Khtv65cuVLm5gx4h8VicRupmTdv3p/yJAxs5Yd1XFRURNevXx9Z0/d8+eWXG7Ozs8vkAuA+y404EK6Vlpbm3qKQHTp06B0dHW2nAWOygTNw5LEo1SV5jjJGq5NdioG1H6vVSo1GY5Xr+E2ZMmVZaWmpVK6isrZW9as8IisvASMPwIXSNoBNmzbFkXsE8fHxdq5HuUsyNDTUGBISYjh69Gjx0aNHi4ODgwuPHDlScPjw4fxDhw7lHTp0KG///v239+3bd3Pv3r3Ze/bsubFnz54be/fuzd63b9/N/fv33z5+/Ljp7NmzYlJSEs3NzbUrTYLXGJT2wEIIYidhncFcZWVluS0bu0+fPu9Dm/FawRZh3J/Y2Fi6cOHCoKomM3Tp0mXAlClTlu3Zs+cGEDGLxWLnpoZ9BAd2UFDQter2Y8eOHVfk8YWYALAsSw0GA/3ggw/mVffZnTt37r9+/frIvLw8KncVOtLeMRGrbZ283bt3Z8oPf1xbzNXrAxLmcDwg/Gw2m+0UArmV7cqVK3Tjxo2xX3zxxYbKFKo2bdr0GDVq1Oc//fRT+IULF6TEO1yPFJM9cIVhZcQV7trazl91rNEVkbw5c+Zsqu07XnvttYHYsIKJF7YWw+fx8fH0yy+/3FhZ4mC7du16jhw58rOtW7degvmC9xgMhjLeAZCDtUmWwUhNTZX2uHytuiMmD2PLli0JmFjBWsW8Btp38+ZN+u233+6oirEhICBg2LJlyw5A/WB5WRwIeYmOjqZXr14tc96BbEpPT6+byt/z58/fCQeAfEFAGRV5MgR2a1ZGfioibVVxh8L7iouL7e7cNRqN1co6Bf+5PD4BF6yUt7W2RA8nqcA4wthhDT0pKYkOGTJkGrmHEBcXZ7cJHGmwVRlHLPCxFRQf9pis4TJB8H9ydz/8Lk6AqatixEOHDp2B3bVGo7GMpRcLLGhrcnIyjYqKoocOHcrbuHFj7Nq1a0+tW7fu3Pbt25PDw8NtKSkp1Gg02lmeHMWuwdjB/9c0BrGwsNBOsQHBigWiKIr09u3b9K+//kqbNGnSkgEDBozHpZi6du361vDhwz/+5ptv/tiwYUNMcnKyQwID85aenk6hdAEm8c4qhrx3795sTDrkNSzdsT6+/fbbHTiQ3VFSHA48x7FINptN8iRYrVYpmSw9PZ2mpaXRrKwsWlJSYref5JZuXNIKExG8jziOq3FsYH0jeVhBcKYljxBChgwZMg3OWkexuBBzic8fi8VCc3NzaWJiIj1y5EjB1q1bL/35558phw8fzk9NTaWQxCWXFRhATuC56enpTosnTUlJkeQHJsjQdnfL0507d6Y7Cm2Ql8cCuVdQUEDj4+Ppvn37bv7yyy9nf/jhh6Pr1q079+eff6aEhoYaIeYQV/mAtQFzaDQa6aVLlyghhISGhhpx7T7cDndk+laoDfz5558pJpOJWq1WSRNwVIhY7rao7ld1SB42t8KAGQwGun79+sjq1E/666+/0nDsGyaucgFeE4teeW7b8mIaAVeuXKH36pVFMTEx0gGBzdocx0mZ1nAA4S95fCNOuMH/LyeDcpe7o6xVEEQQ7wPrICoqitbllWJvv/325KtXr9opMfiybbl7EisIFa0xuSUQ9hQIKnnWXW0uTp8+ffpK+f7GymFJSYkk+CE+FSwLUJrJYrE4FI5Go7FM1npycjKdMGHCwg0bNsTg2lRYWa2tu2/fvn035eEb+EB21/ro1q3bYDg8sAzDyoD8xhEYX7lShUmhXImC/Yj/Dq8VTHyA6F67dq1W4SX1wV07evToOTjhDcbJWTF5GH379h0DLk55KA+2lGIrqlyJxTJCnokN84ethdijkpiY6NR1m5ycXIbkQRuMRmOdkJpNmzbF4THEZwGOn3NUV1cuu0CBhOfhswXWbU5OjtRPSG7Fc1MvSB52jWzfvj0ZfPr40AHrE7bI1ParqokXVquVpqSk1OjGjfDwcJs87kGeQCK39FS1xAnuh6MkDFwHDZdcSUpKqtWB2hAQGRlpV69M7rqWF4Yuj6RUZw4cWfVgg8qts5RSmpKSQidNmrSkvoxZcHBwIXbdQjIDdjc4uvIKLDhWq9UuAxNbdxy5f2E9pqWlOaWe3YIFC/7GliN4J7Y8QV+AWDgiqPjaJfw70N7ExEQ6ceLERYQQsnr16uO43A3MNTyjNiRh//79t3EZBAx3kjzA1KlTv79x40aZOC75bTKOlAP5vGNCLCcKmHDJb0DCysL27duTa9un+pB48f77738pfz/ILEEQ6BdffLHBme/r0KFDbywfcbw5JutY+YV5ZBhGstBiOWkymcp8hpUrSildvXr1cWePXXJysl2mLiZ5BoOhzkjNr7/+GoEVG7D0Y68ItBlkKCiacIbI5a4jXnDt2jW7PuIKJvLSR3Xmri0PM2bMWBUZGUlv3bplpy3iOKeqWO2qQ+rkX1lZWXTnzp3ptdEUR48ePefgwYO5t27dsouJA9M2tuo50nSrSlQdkTy5deH06dO8u+/TqytcuHChTNwUzjCWC9XKklgcjTvWqORaGNRvxOQC4k6DgoKuuaMIaU3Qv3//wISEBMkK6ijTHdYUJrR4z2FNvrxAeTgwfvzxx5PObH9gYOBcSOTCcw/ZmDg5Ql5LUr4P4TM4PBiGoQcPHszF2bp79+7NxvHE0G+wdtWGJBw4cCCnPpE8wOLFi/fcvn3bLkZa7jmQhzXIbyRxFJ4jtwpiOY8PuwMHDuQ46yaT+lBCZeTIkZ/B2MEXKIc8zzud5AF++OGHo3l5eXZ7F9/eIleAHHktcNIkrAewrMFeuHz5Mu3fv3+gK/qQlJRkt/YwySsuLq5TUtO7d++Rly5dKlOPFHsqHe1tTLSxCxzLKEEQ6NGjR4sdGZXkt27UWeJFVdG+ffteX3/99dawsDBzTk6O3cXGciuMvNYcaBxyVwcWIvL4v+vXr9Off/75zJtvvjnO2X358MMPlx86dCjv5s2bDgsvy91fcjeGXKtydEDBZyaTiRYWFtKQkBDDtGnTVpD7DNHR0dUm9VUleJVZBLF7zWq10szMTLp3795ssP40BPTr12/siRMnrAUFBWUOZEzu5NZLWKP40JDXNcvKyqJr16495UqZsWPHjiuYZMvvm5YfqvIDDfoERCMyMpI6mr8///wzRU5swS1ss9noG2+8Mao27lpoF06QgbIhrixiWxUsXLgwCIq5OyL98jAUHEstH2OQvziGE7umMjIy6M8//3zG2deqJSQkSPIS1ii+L9qZ12eWhwkTJizE8wxxsRBP6spahB06dOi9Zs2aMCibI495l9eGxSWDsIsZJ5LBXkhOTnZ5HcVbt26VKUUGPxcWFtYLUjNr1qx1ly9fLnN7ltyDh2/aAq+Io5CjpKQk+tlnn/3m6F1QOgz+HpNfZ7vKXYahQ4fO+OGHH44ePHgw986dO7SkpMShC8mRewCyHOHrzp079Ny5c3TlypUhQ4cOneHOfnTo0KH3ypUrQ3bs2HElJiaG5ufnlykIXZ5LEW8k2HC5ubk0OjqabtiwIWbSpElL3BEwXJ9x6tQpFjZNeV+wCcr7cvQ3crINa8lms9HS0lKanp5Ojx07VrJly5aE8ePHL3CHJcCV6NGjxzvz58/fefjw4fxbt25J4ya3YMpLGDAMI2XSCoJA8/Ly6I4dO66MGzduvjvbvmTJkr1JSUmSxRwnBjgK9gfNmeM4mpubS9evXx9ZEVH77rvvDhYUFFCLxUKNRiO1Wq0SEcvKyqr0WsOKEBwcXGgymezcm/i6wfqyRgICAoYtWLDg71OnTrF5eXkOY+uwpQf2l1ymyZXUy5cv07Vr155yRbkjQGhoqBHWqsFgkNxlFouFZmRkuMVd+8EHH8zLzs6WspXBMAGHvbsKTk+ZMmXZrl27rgPhkxsO5G5aeSawKIo0NzeXbt68+aK7ynBdvHhRIk1QRgeuT0tOTq5XpGb06NFzgoODCwsKCqQzw5H1Wh4fCWN9+vRpvrLbT4KCgq7hZDMcJwnJGeVBVZ8PooEDB05q3br1K0888cQLLVu2fKJZs2YPeXl5+VBKKSGE8DzPlZaWFt2+ffva1atXE65evXrpzp07N86fP3+kvh2ojz/++HOtWrV6plmzZg899NBDrfR6vaeHh4eXVqvVC4LAm0wmQ0lJSaHFYjFeuXIltqioKDc7Ozs9KirqGFFQxqJT0f+LoihUuOhVKpXsZzX+Wa/XewqCwLMsy8TGxp64H8Z0xIgRs//73/92e+655/z+/e9/P+zr60s8PDwIz/OEEEI0Gg0xm82kqKiIpKWlpUVFRYVERUUdO3fu3KG6bPfrr7/+bocOHd5o06ZNj6eeeqpV48aNia+vL2FZlgiCQHQ6HeF5nly9epU9efLkrqioqJDg4OCttXlnu3btekZHR9cqDqlLly4DVHeh1Wp1oiiKWq1WV1JSUlDbZ7sKw4cP//i///1vtxdeeKGdr6/vAw8//LDuwQcfJN7e3kSlUhGe56X1IooisVgsJD8/n2RlZd1MSkq6EBcXd3LPnj0/13U/unTpMuDs2bNuiV1u06ZNj9jY2BPt2rXrKYqiGBsbe6Jt27YBTZs2bXH8+PG/3N33IUOGTAsICBjWqlWr1q1bt364ZcuWRKfTEZvNRmw2G+F5nuj1elJYWEjS09NvxcTEhEVHR4eGhIRsq4u5gpqROp1Or9PpPM6ePXvAGfvPVQgMDJzbq1evEQ899NBjrVq18mzevDnR6/WE53lpjIuLi0liYmJidHR06MWLF0+fOXNmf3Xf07FjxzdUKpVaFEVBo9FoIyIiDivMQIECBQoUuAxt27YNqEwBU6BAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoqCL+H5l+Arb+3uJEAAAAAElFTkSuQmCC" height="14" alt="DealChord" style="display:block;">
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="#" class="nav-cta">デモを申し込む →</a>
+    <a href="https://app.dealchord.com" class="nav-login" target="_blank" rel="noopener">ログイン</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="intel-badge">
+    <span class="badge-pulse"></span>
+    過去20年分 国内M&Aディールを学習 — DealChord Intelligence
+  </div>
+  <h1>
+    M&Aの判断は、<br>
+    <span class="muted">誰かの頭の中に</span><br>
+    あってはいけない。
+  </h1>
+  <p class="hero-sub">
+    市場に出ない案件こそ、本物のデータだ。<br>
+    検討した一件一件が蓄積され、<br>
+    <em>使うほど判断は速く、正確になる。</em>
+  </p>
+  <div class="hero-btns">
+    <button class="btn-primary">デモを申し込む →</button>
+    <button class="btn-secondary">資料を見る</button>
+  </div>
+
+  <!-- Hero Kanban Window -->
+  <div class="hero-window">
+    <div class="win-bar">
+      <span class="wd" style="background:#ef4444;"></span>
+      <span class="wd" style="background:#f59e0b;"></span>
+      <span class="wd" style="background:#10b981;"></span>
+      <span class="win-lbl">DealChord — 案件パイプライン</span>
+    </div>
+    <div class="hk-body">
+      <div class="msb hk-sb" style="width:140px;">
+        <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+        <div class="msb-sec">Pipeline</div>
+        <div class="msb-item act"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+        <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+        <div class="msb-item"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+        <div class="msb-item"><span class="msb-dot" style="background:#f59e0b;"></span>データルーム</div>
+        <div class="msb-div"></div>
+        <div class="msb-sec">Connect</div>
+        <div class="msb-item"><span class="msb-dot" style="background:#ea4335;"></span>Gmail<span class="msb-cnt" style="color:#fca5a5;background:rgba(239,68,68,0.1);">3</span></div>
+        <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+      </div>
+      <div class="hk-main">
+        <div class="hk-hd">
+          <span class="hk-hd-title">案件パイプライン</span>
+          <div style="display:flex;gap:5px;"><span class="hk-btn">フィルター</span><span class="hk-btn">並び替え</span><span class="hk-btn p">＋ 追加</span></div>
+        </div>
+        <div class="hk-cols">
+          <div class="hk-col">
+            <div class="hk-col-hd">初期評価 <span class="hk-cnt">4</span></div>
+            <div class="hk-card hl"><div class="hk-co">株式会社アオバ精工</div><div class="hk-sc-wrap"><span class="hk-sc sy">66</span><span class="hk-tag">後継者</span><span class="hk-ai">AI済</span></div></div>
+            <div class="hk-card dm"><div class="hk-co">テックフォース株式会社</div><div class="hk-sc-wrap"><span class="hk-sc sg">82</span><span class="hk-tag">事業拡大</span></div></div>
+            <div class="hk-card dm"><div class="hk-co">北陸物流サービス</div><div class="hk-sc-wrap"><span class="hk-sc sb">–</span><span class="hk-tag">未解析</span></div></div>
+          </div>
+          <div class="hk-col">
+            <div class="hk-col-hd">TOP面談 <span class="hk-cnt">3</span></div>
+            <div class="hk-card dm"><div class="hk-co">アクシスメディカル</div><div class="hk-sc-wrap"><span class="hk-sc sg">78</span><span class="hk-tag">資金調達</span></div></div>
+            <div class="hk-card dm"><div class="hk-co">関西フードテック</div><div class="hk-sc-wrap"><span class="hk-sc sy">61</span><span class="hk-tag">後継者</span></div></div>
+          </div>
+          <div class="hk-col">
+            <div class="hk-col-hd">LOI <span class="hk-cnt">2</span></div>
+            <div class="hk-card dm"><div class="hk-co">デジタルコア株式会社</div><div class="hk-sc-wrap"><span class="hk-sc sg">91</span><span class="hk-tag">成長重視</span><span class="hk-ai">AI済</span></div></div>
+          </div>
+          <div class="hk-col">
+            <div class="hk-col-hd">DD <span class="hk-cnt">1</span></div>
+            <div class="hk-card dm"><div class="hk-co">東京ライフサイエンス</div><div class="hk-sc-wrap"><span class="hk-sc sg">88</span><span class="hk-tag">シナジー</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="hk-panel">
+        <div class="hk-ph"><div class="hk-pc">株式会社アオバ精工</div><div class="hk-pl">スコアリング</div></div>
+        <div class="hk-pb">
+          <div class="hk-rings">
+            <div class="hk-ri"><div class="hk-rl">ハード</div><div class="hk-rr" style="border:2px solid #10b981;"><span class="hk-rv">77</span></div></div>
+            <div class="hk-ri"><div class="hk-rl">ソフト</div><div class="hk-rr" style="border:2px solid #f59e0b;"><span class="hk-rv">42</span></div></div>
+            <div class="hk-ri"><div class="hk-rl">総合</div><div class="hk-rr" style="border:2px solid #60a5fa;"><span class="hk-rv">66</span></div></div>
+          </div>
+          <div class="hk-gb"><div class="hk-gt">LOI基準まで あと4点</div><div class="hk-gtr"><div class="hk-gf"></div></div><div class="hk-gs">価格期待値の確認で達成</div></div>
+          <div class="hk-at">推奨アクション</div>
+          <div class="hk-ai2"><div class="hk-ack"></div><div class="hk-atx">第2回面談を設定し議事録を記録</div><div class="hk-apt">+6</div></div>
+          <div class="hk-ai2"><div class="hk-ack"></div><div class="hk-atx">価格確認QAシートを送付</div><div class="hk-apt">+8</div></div>
+          <div class="hk-ai2"><div class="hk-ack"></div><div class="hk-atx">Gmail連携で応答速度を計測</div><div class="hk-apt">+3</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section">
+  
+  <h2>御社のM&A判断、<br><span class="muted">こんな状態ではありませんか？</span></h2>
+  <div class="prob-grid">
+    <div class="prob-card"><div class="prob-num">01</div><div class="prob-title">判断が個人に依存している</div><div class="prob-desc">評価基準が担当者の頭の中にあり、退職や異動で失われる。</div></div>
+    <div class="prob-card"><div class="prob-num">02</div><div class="prob-title">検討の軌跡が残らない</div><div class="prob-desc">なぜ進め、なぜ見送ったか。その理由が組織に蓄積されない。</div></div>
+    <div class="prob-card"><div class="prob-num">03</div><div class="prob-title">経験が次に活かされない</div><div class="prob-desc">100件の経験があっても、101件目は1件目と同じ時間がかかる。</div></div>
+  </div>
+</section>
+
+<!-- FEATURE 1.0 — AI Analyst / Valuation (text left, mockup right) -->
+<section class="feat-section">
+  <div class="feat-split">
+    <div class="feat-text">
+      <div class="feat-num">1.0</div>
+      <div class="feat-heading">AI Analyst —<br><span class="muted">自動解析</span></div>
+      <p class="feat-desc">IMをアップロードするだけで、財務・リスク・バリュエーションを自動構造化。ベテランが3時間かけていた初回評価を10分に短縮します。<br><br>DCF・マルチプル・純資産の3手法を含む6種類で自動計算し、売主希望価格との乖離率まで即座に提示。</p>
+      <div class="feat-tags">
+        <span class="ftag">財務KPI抽出</span>
+        <span class="ftag">リスク所見生成</span>
+        <span class="ftag">DCF自動計算</span>
+        <span class="ftag">業種別マルチプル比較</span>
+      </div>
+    </div>
+    <div class="feat-mock">
+      <div class="mock-wrap">
+        <!-- Valuation mockup -->
+        <div class="win-bar">
+          <span class="wd" style="background:#ef4444;"></span>
+          <span class="wd" style="background:#f59e0b;"></span>
+          <span class="wd" style="background:#10b981;"></span>
+          <span class="win-lbl">DealChord — AI Analyst</span>
+        </div>
+        <div class="vm-body">
+          <div class="msb vm-sb">
+            <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+            <div class="msb-sec">Pipeline</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+            <div class="msb-item act-v"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#f59e0b;"></span>データルーム</div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Connect</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#ea4335;"></span>Gmail</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+          </div>
+          <div class="vm-main">
+            <div class="vm-hd">
+              <div><div class="vm-hdt">AI Analyst</div><div class="vm-hdb">案件一覧 › <span>株式会社アオバ精工</span> › 解析結果</div></div>
+              <div style="display:flex;gap:5px;"><span class="vm-badge">AI解析済</span><span style="font-size:8.5px;color:var(--text-muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:3px;padding:2px 7px;">再解析</span></div>
+            </div>
+            <div class="vm-bg">
+              <div class="vm-bc">
+                <div class="vm-bct">財務KPI</div>
+                <div class="vm-kr"><span class="vm-kl">売上高</span><span class="vm-kv">2.21億円</span></div>
+                <div class="vm-kr"><span class="vm-kl">EBITDA</span><span class="vm-kv">0.38億円</span></div>
+                <div class="vm-kr"><span class="vm-kl">営業利益率</span><span class="vm-kv">12.4%</span></div>
+                <div class="vm-kr"><span class="vm-kl">純有利子負債</span><span class="vm-kv">0.22億円</span></div>
+              </div>
+              <div class="vm-bc">
+                <div class="vm-bct">リスク所見</div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#ef4444;"></span><span class="vm-rt">顧客集中リスク（上位1社38%）</span></div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#ef4444;"></span><span class="vm-rt">オーナー依存度 高</span></div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#f59e0b;"></span><span class="vm-rt">有利子負債あり（D/E 0.58x）</span></div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#10b981;"></span><span class="vm-rt">法務リスクなし</span></div>
+              </div>
+              <div class="vm-bc">
+                <div class="vm-bct">事業概要</div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#94a3b8;"></span><span class="vm-rt">自動車部品の精密加工・製造</span></div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#94a3b8;"></span><span class="vm-rt">従業員43名・設立1989年</span></div>
+              </div>
+              <div class="vm-bc">
+                <div class="vm-bct">売却理由</div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#94a3b8;"></span><span class="vm-rt">オーナー高齢化・後継者不在</span></div>
+                <div class="vm-rr"><span class="vm-rd" style="background:#94a3b8;"></span><span class="vm-rt">希望スキーム：株式譲渡100%</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- DCF overlay -->
+          <div class="vm-dcf">
+            <div class="vm-dcf-hd">
+              <div class="vm-dcf-top"><span class="vm-dcf-co">株式会社アオバ精工</span><span class="vm-dcf-bg">AI DCF</span></div>
+              <div class="vm-dcf-val"><span class="vm-dcf-cur">¥</span><span class="vm-dcf-amt">2.2</span><span class="vm-dcf-unit">億円</span></div>
+              <div class="vm-dcf-lbl">フェアバリュー（中央値）— 3手法加重平均</div>
+              <div class="vm-dcf-range"><span class="vm-dcf-rn">1.4億</span><div class="vm-dcf-rb"><div class="vm-dcf-rf"></div><div class="vm-dcf-rth"></div></div><span class="vm-dcf-rn">3.1億</span></div>
+            </div>
+            <div class="vm-dcf-params">
+              <div class="vm-dcf-p"><div class="vm-dcf-pl">WACC</div><div class="vm-dcf-pv">8.4%</div></div>
+              <div class="vm-dcf-p"><div class="vm-dcf-pl">ターミナル成長率</div><div class="vm-dcf-pv">1.0%</div></div>
+              <div class="vm-dcf-p"><div class="vm-dcf-pl">予測期間</div><div class="vm-dcf-pv">5年</div></div>
+              <div class="vm-dcf-p"><div class="vm-dcf-pl">純有利子負債</div><div class="vm-dcf-pv">0.22億</div></div>
+            </div>
+            <div class="vm-dcf-methods">
+              <div class="vm-dcf-ml">手法別評価</div>
+              <div class="vm-dcf-mr"><span class="vm-dcf-mn">DCF法</span><div class="vm-dcf-mb"><div class="vm-dcf-mf" style="width:65%;background:#0ea5e9;"></div></div><span class="vm-dcf-mv" style="color:#0ea5e9;">2.0億</span></div>
+              <div class="vm-dcf-mr"><span class="vm-dcf-mn">EV/EBITDA倍率法</span><div class="vm-dcf-mb"><div class="vm-dcf-mf" style="width:72%;background:#10b981;"></div></div><span class="vm-dcf-mv" style="color:#10b981;">2.3億</span></div>
+              <div class="vm-dcf-mr"><span class="vm-dcf-mn">純資産法</span><div class="vm-dcf-mb"><div class="vm-dcf-mf" style="width:55%;background:#8b5cf6;"></div></div><span class="vm-dcf-mv" style="color:#8b5cf6;">1.8億</span></div>
+            </div>
+            <div class="vm-dcf-gap">
+              <div class="vm-dcf-gl"><div class="vm-dcf-gt">⚠ 価格乖離リスク</div><div class="vm-dcf-gd">売主希望5.0億 vs DCF評価2.2億</div></div>
+              <div><div class="vm-dcf-gp">+127%</div><div class="vm-dcf-gs">乖離率</div></div>
+            </div>
+          </div>
+          <!-- Multiple panel -->
+          <div class="vm-mult">
+            <div class="vm-mult-hd">
+              <div><div class="vm-mult-t">業種別マルチプル比較</div><div class="vm-mult-s">製造業 · EV/EBITDA</div></div>
+              <span class="vm-mult-b">AI参照</span>
+            </div>
+            <div class="vm-mult-body">
+              <div class="vm-mult-st">類似企業</div>
+              <div class="vm-mult-row hl"><span class="vm-mult-co own">アオバ精工（本件）</span><div class="vm-mult-bw"><div class="vm-mult-bg"><div class="vm-mult-bf own" style="width:58%;"></div></div></div><span class="vm-mult-v" style="color:#7dd3fc;">5.8x</span></div>
+              <div class="vm-mult-row"><span class="vm-mult-co">精密部品A社</span><div class="vm-mult-bw"><div class="vm-mult-bg"><div class="vm-mult-bf" style="width:72%;"></div></div></div><span class="vm-mult-v">7.2x</span></div>
+              <div class="vm-mult-row"><span class="vm-mult-co">金属加工B社</span><div class="vm-mult-bw"><div class="vm-mult-bg"><div class="vm-mult-bf" style="width:64%;"></div></div></div><span class="vm-mult-v">6.4x</span></div>
+              <div class="vm-mult-row"><span class="vm-mult-co">自動車部品C社</span><div class="vm-mult-bw"><div class="vm-mult-bg"><div class="vm-mult-bf" style="width:68%;"></div></div></div><span class="vm-mult-v">6.8x</span></div>
+              <div class="vm-mult-div"></div>
+              <div class="vm-mult-sum">
+                <div class="vm-mult-sr"><span class="vm-mult-sl">業種中央値</span><span class="vm-mult-sv">6.5x</span></div>
+                <div class="vm-mult-sr"><span class="vm-mult-sl">本件適用EV</span><span class="vm-mult-sv ac">2.3億円</span></div>
+                <div class="vm-mult-sr"><span class="vm-mult-sl">対中央値</span><span class="vm-mult-sv" style="color:#f59e0b;">−0.7x 割安</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 2.0 — Scoring (mockup left, text right) -->
+<section class="feat-section">
+  <div class="feat-split rev">
+    <div class="feat-text">
+      <div class="feat-num">2.0</div>
+      <div class="feat-heading">スコアリング —<br><span class="muted">LOI判断支援</span></div>
+      <p class="feat-desc">ハード面6軸＋ソフト面4軸で全案件を100点採点。担当者の感覚ではなく、御社の投資基準に基づいた根拠ある評価を。<br><br>「LOI基準まであと4点、価格確認QAシートで達成できます」まで提示し、次のアクションを自動提案します。</p>
+      <div class="feat-tags">
+        <span class="ftag">ハード面6軸</span>
+        <span class="ftag">ソフト面4軸</span>
+        <span class="ftag">LOIギャップ提案</span>
+        <span class="ftag">社内基準カスタマイズ</span>
+      </div>
+    </div>
+    <div class="feat-mock">
+      <div class="mock-wrap">
+        <!-- Scoring mockup -->
+        <div class="win-bar">
+          <span class="wd" style="background:#ef4444;"></span>
+          <span class="wd" style="background:#f59e0b;"></span>
+          <span class="wd" style="background:#10b981;"></span>
+          <span class="win-lbl">DealChord — スコアリング詳細</span>
+        </div>
+        <div class="sm-body">
+          <div class="msb sm-sb">
+            <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+            <div class="msb-sec">Pipeline</div>
+            <div class="msb-item act"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#f59e0b;"></span>データルーム</div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Connect</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#ea4335;"></span>Gmail</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+          </div>
+          <div class="sm-main">
+            <div class="sm-hd">
+              <div><div class="sm-hdt">案件パイプライン</div><div class="sm-hds">スコアリング詳細を表示中</div></div>
+            </div>
+            <div class="sm-kanban">
+              <div class="sm-kc"><div class="sm-kch">初期評価</div><div class="sm-kcard"><div class="sm-kco">株式会社アオバ精工</div><div class="sm-ksec">製造業 · 売上2.2億</div></div><div class="sm-kcard"><div class="sm-kco">テックフォース株式会社</div><div class="sm-ksec">SaaS · 売上4.1億</div></div></div>
+              <div class="sm-kc"><div class="sm-kch">TOP面談</div><div class="sm-kcard"><div class="sm-kco">アクシスメディカル</div><div class="sm-ksec">医療 · 売上3.5億</div></div></div>
+              <div class="sm-kc"><div class="sm-kch">LOI</div><div class="sm-kcard"><div class="sm-kco">デジタルコア株式会社</div><div class="sm-ksec">IT · 売上5.2億</div></div></div>
+            </div>
+          </div>
+          <!-- Score detail modal -->
+          <div class="sm-modal">
+            <div class="sm-modal-hd">
+              <div class="sm-modal-top">
+                <div><div class="sm-modal-co">株式会社アオバ精工</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:2px;">買手：株式会社アンドバッド　採点日：2026-03-30</div></div>
+                <div class="sm-modal-rings">
+                  <div class="sm-modal-ri"><div class="sm-modal-rl">ハード</div><div class="sm-modal-rr" style="border:2.5px solid #10b981;"><span class="sm-modal-rv">77</span></div></div>
+                  <div class="sm-modal-ri"><div class="sm-modal-rl">ソフト</div><div class="sm-modal-rr" style="border:2.5px solid #f59e0b;"><span class="sm-modal-rv">42</span></div></div>
+                  <div class="sm-modal-ri"><div class="sm-modal-rl">総合</div><div class="sm-modal-rr" style="border:2.5px solid #60a5fa;width:50px;height:50px;"><span class="sm-modal-rv" style="font-size:18px;">66</span></div></div>
+                </div>
+              </div>
+              <div class="sm-modal-tabs">
+                <button class="sm-modal-tab act">サマリ</button>
+                <button class="sm-modal-tab">ハード詳細</button>
+                <button class="sm-modal-tab">ソフト詳細</button>
+                <button class="sm-modal-tab">スコアアップ提案</button>
+              </div>
+            </div>
+            <div class="sm-modal-body">
+              <div class="sm-modal-gap">
+                <div><div class="sm-modal-gt">LOI基準（70点）まで あと4点</div><div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">最短：価格期待値の確認 ＋ 議事録2件追加</div></div>
+                <div class="sm-modal-gbar"><div class="sm-modal-gf"></div></div>
+                <div class="sm-modal-gpct">66/70</div>
+              </div>
+              <div class="sm-cols">
+                <div>
+                  <div class="sm-col-title">ハード面（77点）</div>
+                  <div class="sm-axis"><span class="sm-axis-name">① 戦略適合性</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:73%;background:#7F77DD;"></div></div><span class="sm-axis-val">22/30</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">② 財務魅力度</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:100%;background:#10b981;"></div></div><span class="sm-axis-val">15/15</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">③ シナジー</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:88%;background:#10b981;"></div></div><span class="sm-axis-val">22/25</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">④ 実行可能性</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:53%;background:#f59e0b;"></div></div><span class="sm-axis-val">8/15</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">⑤ 情報信頼度</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:80%;background:#94a3b8;"></div></div><span class="sm-axis-val">4/5</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">⑥ リスク控除</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:60%;background:#ef4444;"></div></div><span class="sm-axis-val">6/10</span></div>
+                </div>
+                <div>
+                  <div class="sm-col-title">ソフト面（42点）</div>
+                  <div class="sm-axis"><span class="sm-axis-name">① 売却意欲</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:40%;background:#f59e0b;"></div></div><span class="sm-axis-val">12/30</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">② 意思決定速度</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:64%;background:#10b981;"></div></div><span class="sm-axis-val">16/25</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">③ 価格期待値</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:24%;background:#ef4444;"></div></div><span class="sm-axis-val" style="color:#ef4444;">6/25</span></div>
+                  <div class="sm-axis"><span class="sm-axis-name">④ PMI協力姿勢</span><div class="sm-axis-bar"><div class="sm-axis-fill" style="width:40%;background:#f59e0b;"></div></div><span class="sm-axis-val">8/20</span></div>
+                  <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:9px;color:var(--text-dim);">情報源：議事録1件 / Gmail未連携 / 担当者入力あり</div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm-suggest-title">LOI基準まであと4点 — 推奨アクション</div>
+              <div class="sm-suggest"><div class="sm-suggest-chk"></div><div class="sm-suggest-txt">第2回TOP面談を設定し議事録を記録する</div><div class="sm-suggest-pt">+6点</div></div>
+              <div class="sm-suggest"><div class="sm-suggest-chk"></div><div class="sm-suggest-txt">価格期待値確認QAシートを送付する</div><div class="sm-suggest-pt">+8点</div></div>
+              <div class="sm-suggest"><div class="sm-suggest-chk"></div><div class="sm-suggest-txt">Gmail連携でメール応答速度を自動計測</div><div class="sm-suggest-pt">+3点</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 3.0 — Gmail Integration (text left, mockup right) -->
+<section class="feat-section">
+  <div class="feat-split">
+    <div class="feat-text">
+      <div class="feat-num">3.0</div>
+      <div class="feat-heading">Gmail連携 —<br><span class="muted">情報を自動で取り込む</span></div>
+      <p class="feat-desc">GmailでIMを受信すると、DealChordが自動検知。ワンクリックでAI解析・案件紐付けまで完結します。<br><br>メールの返信速度・文面トーンはソフト面スコアの「意思決定スピード」に自動反映。担当者が意識しなくても、やり取りがスコアに繋がります。</p>
+      <div class="feat-tags">
+        <span class="ftag">IM自動検知</span>
+        <span class="ftag">ワンクリック解析</span>
+        <span class="ftag">返信速度スコアリング</span>
+        <span class="ftag">Googleカレンダー連携</span>
+      </div>
+    </div>
+    <div class="feat-mock">
+      <div class="mock-wrap">
+        <!-- Gmail mockup -->
+        <div class="win-bar">
+          <span class="wd" style="background:#ef4444;"></span>
+          <span class="wd" style="background:#f59e0b;"></span>
+          <span class="wd" style="background:#10b981;"></span>
+          <span class="win-lbl">DealChord — 案件パイプライン</span>
+        </div>
+        <div class="gm-body">
+          <div class="msb gm-sb">
+            <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+            <div class="msb-sec">Pipeline</div>
+            <div class="msb-item act"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#f59e0b;"></span>データルーム</div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Connect</div>
+            <div class="msb-item" style="color:#fca5a5;"><span class="msb-dot" style="background:#ea4335;"></span>Gmail<span class="msb-cnt" style="color:#fca5a5;background:rgba(239,68,68,0.1);">3</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+          </div>
+          <div class="gm-main">
+            <div style="padding:7px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+              <span style="font-size:10.5px;font-weight:600;color:white;">案件パイプライン</span>
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:var(--accent);color:white;">＋ 追加</span>
+            </div>
+            <div class="gm-kanban-bg">
+              <div class="gm-kc">
+                <div class="gm-kch">初期評価 <span class="gm-cnt">4</span></div>
+                <div class="gm-card hl"><div class="gm-co">株式会社アオバ精工</div><div class="gm-sec">製造業 · 売上2.2億</div><div class="gm-meta"><span class="gm-sc sy">66</span><span class="gm-tag">後継者</span><span class="gm-ai">AI済</span></div></div>
+                <div class="gm-card dm"><div class="gm-co">テックフォース株式会社</div><div class="gm-sec">SaaS · 売上4.1億</div><div class="gm-meta"><span class="gm-sc sg">82</span></div></div>
+                <div class="gm-card dm"><div class="gm-co">北陸物流サービス</div><div class="gm-sec">物流 · 売上7.8億</div><div class="gm-meta"><span class="gm-sc sb">–</span></div></div>
+              </div>
+              <div class="gm-kc">
+                <div class="gm-kch">TOP面談 <span class="gm-cnt">3</span></div>
+                <div class="gm-card dm"><div class="gm-co">アクシスメディカル</div><div class="gm-sec">医療 · 売上3.5億</div><div class="gm-meta"><span class="gm-sc sg">78</span></div></div>
+                <div class="gm-card dm"><div class="gm-co">関西フードテック</div><div class="gm-sec">食品 · 売上1.8億</div><div class="gm-meta"><span class="gm-sc sy">61</span></div></div>
+              </div>
+              <div class="gm-kc">
+                <div class="gm-kch">LOI <span class="gm-cnt">2</span></div>
+                <div class="gm-card dm"><div class="gm-co">デジタルコア株式会社</div><div class="gm-sec">IT · 売上5.2億</div><div class="gm-meta"><span class="gm-sc sg">91</span></div></div>
+              </div>
+              <div class="gm-kc">
+                <div class="gm-kch">DD <span class="gm-cnt">1</span></div>
+                <div class="gm-card dm"><div class="gm-co">東京ライフサイエンス</div><div class="gm-sec">医療 · 売上9.1億</div><div class="gm-meta"><span class="gm-sc sg">88</span></div></div>
+              </div>
+            </div>
+          </div>
+          <!-- Gmail panel overlay -->
+          <div class="gm-panel">
+            <div class="gm-ph">
+              <div class="gm-phl">
+                <div class="gm-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M4 4l8 8 8-8" stroke="#ea4335" stroke-width="1.5" stroke-linecap="round"/><rect x="4" y="4" width="16" height="16" rx="1" stroke="#ea4335" stroke-width="1.5" fill="none"/></svg></div>
+                <div><div class="gm-pt">Gmail スレッド</div><div class="gm-ps">株式会社アオバ精工 · IM受領</div></div>
+              </div>
+              <span class="gm-dots">···</span>
+            </div>
+            <div class="gm-subj">
+              <div class="gm-sl">【IM送付】株式会社アオバ精工 概要書のご共有</div>
+              <div class="gm-mr"><span class="gm-bg">IM添付あり</span><span class="gm-bw">未解析</span><span class="gm-dt">本日 14:32</span></div>
+            </div>
+            <div class="gm-thread">
+              <div class="gm-msg">
+                <div class="gm-av" style="background:rgba(14,165,233,0.2);color:#7dd3fc;">FA</div>
+                <div class="gm-mc">
+                  <div class="gm-sr"><span class="gm-sn">山田 啓介</span><span class="gm-sd">GSXキャピタル</span><span class="gm-tm">14:32</span></div>
+                  <div class="gm-tx">お世話になっております。先日お話しした<strong>株式会社アオバ精工</strong>のIMをお送りします。製造業・売上2.2億、後継者問題での売却意向です。ご検討よろしくお願いします。</div>
+                  <div class="gm-att"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>IM_アオバ精工_概要書.pdf（2.1MB）</div>
+                </div>
+              </div>
+              <div class="gm-msg">
+                <div class="gm-av" style="background:rgba(139,92,246,0.2);color:#c4b5fd;">自</div>
+                <div class="gm-mc">
+                  <div class="gm-sr"><span class="gm-sn">田中 直樹</span><span class="gm-sd">自社</span><span class="gm-tm">15:10</span></div>
+                  <div class="gm-tx">山田様、ありがとうございます。確認の上、今週中にご連絡します。</div>
+                </div>
+              </div>
+            </div>
+            <div class="gm-aib">
+              <div class="gm-ail"><span class="gm-aidot"></span>DealChord AI が検知</div>
+              <div class="gm-ait">IMを自動取り込みしました。<strong>AI解析を開始</strong>してスコアリングに反映しますか？</div>
+            </div>
+            <div class="gm-acts">
+              <button class="gm-abtn p">AI解析を開始</button>
+              <button class="gm-abtn s">案件に紐付け</button>
+            </div>
+          </div>
+          <!-- Score mini -->
+          <div class="gm-score">
+            <div class="gm-sch"><div class="gm-sco">株式会社アオバ精工</div><div class="gm-scl">スコアリング</div></div>
+            <div class="gm-scb">
+              <div class="gm-scr">
+                <div class="gm-scri"><div class="gm-scrl">ハード</div><div class="gm-scrr" style="border:2px solid #10b981;"><span class="gm-scrv">77</span></div></div>
+                <div class="gm-scri"><div class="gm-scrl">ソフト</div><div class="gm-scrr" style="border:2px solid #f59e0b;"><span class="gm-scrv">42</span></div></div>
+                <div class="gm-scri"><div class="gm-scrl">総合</div><div class="gm-scrr" style="border:2px solid #60a5fa;"><span class="gm-scrv">66</span></div></div>
+              </div>
+              <div class="gm-sgb"><div class="gm-sgt">LOI基準まで あと4点</div><div class="gm-sgtr"><div class="gm-sgf"></div></div><div class="gm-sgs">価格確認QAシートで達成</div></div>
+              <div class="gm-sai"><div class="gm-sack"></div><div class="gm-satx">第2回面談設定・議事録記録</div><div class="gm-sapt">+6</div></div>
+              <div class="gm-sai"><div class="gm-sack"></div><div class="gm-satx">価格確認QAシート送付</div><div class="gm-sapt">+8</div></div>
+              <div class="gm-sai"><div class="gm-sack"></div><div class="gm-satx">Gmail連携で応答速度計測</div><div class="gm-sapt">+3</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 4.0 — Knowledge Base (mockup left, text right) -->
+<section class="feat-section">
+  <div class="feat-split rev">
+    <div class="feat-text">
+      <div class="feat-num">4.0</div>
+      <div class="feat-heading">ナレッジベース —<br><span class="muted">使うほど賢くなる</span></div>
+      <p class="feat-desc">検討した全案件が自動で蓄積。成立した理由、破談になった理由、DDで見つかったリスク。この積み重ねが、次の案件の判断精度を上げます。<br><br>「製造業×後継者問題の案件、価格乖離が破談理由の68%を占める」——過去の知識が、今まさに検討中の案件にリアルタイムで参照されます。</p>
+      <div class="feat-tags">
+        <span class="ftag">類似案件の自動参照</span>
+        <span class="ftag">成功・失敗パターン分析</span>
+        <span class="ftag">AIインサイト生成</span>
+        <span class="ftag">247件以上の検討データ蓄積</span>
+      </div>
+    </div>
+    <div class="feat-mock">
+      <div class="mock-wrap">
+        <div class="win-bar">
+          <span class="wd" style="background:#ef4444;"></span>
+          <span class="wd" style="background:#f59e0b;"></span>
+          <span class="wd" style="background:#10b981;"></span>
+          <span class="win-lbl">DealChord — ナレッジベース</span>
+        </div>
+        <div style="display:flex;background:var(--bg3);height:420px;position:relative;">
+          <!-- Sidebar -->
+          <div class="msb" style="width:148px;">
+            <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+            <div class="msb-sec">Pipeline</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#f59e0b;"></span>データルーム</div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Intelligence</div>
+            <div class="msb-item act-kb"><span class="msb-dot" style="background:#10b981;"></span>ナレッジベース<span class="msb-cnt" style="color:#6ee7b7;background:rgba(16,185,129,0.1);">247</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#c4b5fd;"></span>インサイト</div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Connect</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#ea4335;"></span>Gmail</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+          </div>
+          <!-- Knowledge list -->
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+            <div class="kb-hd">
+              <div><div class="kb-hdt">検討案件ナレッジベース</div><div class="kb-hds">過去の検討データが自動蓄積 — 現在の案件判断に自動参照されます</div></div>
+              <div style="display:flex;gap:5px;"><span class="kb-btn-s">フィルター</span><span class="kb-btn-s p">類似案件を探す</span></div>
+            </div>
+            <div class="kb-filters">
+              <span class="kb-filter act">すべて（247件）</span>
+              <span class="kb-filter">成立（89件）</span>
+              <span class="kb-filter">見送り（138件）</span>
+              <span class="kb-filter">製造業</span>
+              <span class="kb-filter">後継者問題</span>
+            </div>
+            <div class="kb-stats">
+              <div class="kb-stat"><div class="kb-stat-val">247</div><div class="kb-stat-lbl">総検討件数</div></div>
+              <div class="kb-stat"><div class="kb-stat-val" style="color:#10b981;">89</div><div class="kb-stat-lbl">成立件数</div></div>
+              <div class="kb-stat"><div class="kb-stat-val" style="color:#f87171;">138</div><div class="kb-stat-lbl">見送り件数</div></div>
+              <div class="kb-stat"><div class="kb-stat-val" style="color:#f59e0b;">36%</div><div class="kb-stat-lbl">成立率</div></div>
+              <div class="kb-stat"><div class="kb-stat-val" style="color:#c4b5fd;">6.4x</div><div class="kb-stat-lbl">平均EV/EBITDA</div></div>
+            </div>
+            <div class="kb-col-hd">
+              <span class="kb-ch" style="min-width:34px;">結果</span>
+              <span class="kb-ch" style="min-width:128px;">企業名</span>
+              <span class="kb-ch" style="min-width:52px;">業種</span>
+              <span class="kb-ch" style="flex:1;">タグ</span>
+              <span class="kb-ch" style="min-width:26px;">Pt</span>
+              <span class="kb-ch" style="min-width:48px;">日付</span>
+              <span class="kb-ch" style="min-width:32px;">類似度</span>
+            </div>
+            <div class="kb-list">
+              <div class="kb-row hl"><span class="kb-status st-win">成立</span><span class="kb-company">北関東サプライヤーズ株式会社</span><span class="kb-sector">製造業</span><div class="kb-tags2"><span class="kb-tag2">売上2.4億</span><span class="kb-tag2 match">後継者問題</span></div><span class="kb-score2">88</span><span class="kb-date2">2024.08</span><span class="kb-sim2" style="color:#10b981;">92%</span></div>
+              <div class="kb-row hl"><span class="kb-status st-loss">見送り</span><span class="kb-company">東海精機工業株式会社</span><span class="kb-sector">製造業</span><div class="kb-tags2"><span class="kb-tag2">売上1.9億</span><span class="kb-tag2 warn">価格乖離+134%</span></div><span class="kb-score2">71</span><span class="kb-date2">2024.03</span><span class="kb-sim2" style="color:#f59e0b;">84%</span></div>
+              <div class="kb-row hl"><span class="kb-status st-win">成立</span><span class="kb-company">中部部品製造株式会社</span><span class="kb-sector">製造業</span><div class="kb-tags2"><span class="kb-tag2">売上2.1億</span><span class="kb-tag2 match">後継者問題</span></div><span class="kb-score2">79</span><span class="kb-date2">2023.11</span><span class="kb-sim2" style="color:#10b981;">81%</span></div>
+              <div class="kb-row dm"><span class="kb-status st-hold">保留</span><span class="kb-company">関西テクノサービス株式会社</span><span class="kb-sector">SaaS</span><div class="kb-tags2"><span class="kb-tag2">売上4.1億</span><span class="kb-tag2">事業拡大</span></div><span class="kb-score2">82</span><span class="kb-date2">2024.10</span><span class="kb-sim2" style="color:var(--text-dim);">—</span></div>
+              <div class="kb-row dm"><span class="kb-status st-loss">見送り</span><span class="kb-company">九州物流ネットワーク株式会社</span><span class="kb-sector">物流</span><div class="kb-tags2"><span class="kb-tag2">売上7.8億</span><span class="kb-tag2 warn">DD懸念</span></div><span class="kb-score2">58</span><span class="kb-date2">2024.06</span><span class="kb-sim2" style="color:var(--text-dim);">—</span></div>
+              <div class="kb-row dm"><span class="kb-status st-win">成立</span><span class="kb-company">首都圏メディカルサポート株式会社</span><span class="kb-sector">医療</span><div class="kb-tags2"><span class="kb-tag2">売上3.5億</span><span class="kb-tag2">資金調達</span></div><span class="kb-score2">91</span><span class="kb-date2">2024.12</span><span class="kb-sim2" style="color:var(--text-dim);">—</span></div>
+            </div>
+          </div>
+          <!-- Similar cases overlay -->
+          <div class="sim-panel2">
+            <div class="sim-hd2">
+              <div class="sim-hd2-top"><div class="sim-label2"><span class="sim-dot2"></span>自動参照</div><span style="font-size:14px;color:rgba(255,255,255,0.3);">×</span></div>
+              <div class="sim-title2">アオバ精工に類似した<br>案件が3件見つかりました</div>
+              <div class="sim-sub2">後継者問題 × 売上1〜3億円でマッチング</div>
+            </div>
+            <div class="sim-case2">
+              <div class="sim-case2-top"><span class="sim-case2-name">北関東サプライヤーズ株式会社</span><span class="sim-result2 sim-r2-win">成立</span></div>
+              <div class="sim-tags2"><span class="sim-tag2">売上2.4億</span><span class="sim-tag2">後継者問題</span><span class="sim-tag2">88pt</span></div>
+              <div class="sim-learning2">事前にオーナーの退任後プランを確認したことで信頼関係が築かれ、<strong>価格交渉がスムーズに進んだ。</strong></div>
+              <div class="sim-match2"><div class="sim-bar2-track"><div class="sim-bar2-fill" style="width:92%;background:#10b981;"></div></div><span style="font-size:9px;font-weight:600;font-family:'DM Mono',monospace;color:#10b981;">92%</span></div>
+            </div>
+            <div class="sim-case2">
+              <div class="sim-case2-top"><span class="sim-case2-name">東海精機工業株式会社</span><span class="sim-result2 sim-r2-lose">見送り</span></div>
+              <div class="sim-tags2"><span class="sim-tag2">売上1.9億</span><span class="sim-tag2">後継者問題</span><span class="sim-tag2 bad">価格乖離+134%</span></div>
+              <div class="sim-learning2">希望価格がDCF評価の2.3倍。第2回面談で価格調整の余地を確認できず、<strong>LOI提出前に交渉決裂。</strong></div>
+              <div class="sim-match2"><div class="sim-bar2-track"><div class="sim-bar2-fill" style="width:84%;background:#f59e0b;"></div></div><span style="font-size:9px;font-weight:600;font-family:'DM Mono',monospace;color:#f59e0b;">84%</span></div>
+            </div>
+            <div class="sim-case2">
+              <div class="sim-case2-top"><span class="sim-case2-name">中部部品製造株式会社</span><span class="sim-result2 sim-r2-win">成立</span></div>
+              <div class="sim-tags2"><span class="sim-tag2">売上2.1億</span><span class="sim-tag2">後継者問題</span><span class="sim-tag2">79pt</span></div>
+              <div class="sim-learning2"><strong>設備の独立評価</strong>をバリュエーションに加えることで希望額との乖離を32%まで圧縮して成立。</div>
+              <div class="sim-match2"><div class="sim-bar2-track"><div class="sim-bar2-fill" style="width:81%;background:#10b981;"></div></div><span style="font-size:9px;font-weight:600;font-family:'DM Mono',monospace;color:#10b981;">81%</span></div>
+            </div>
+          </div>
+          <!-- AI Insight overlay -->
+          <div class="ins-panel2">
+            <div class="ins-hd2">
+              <div class="ins-label2"><span class="ins-ldot2"></span>AI インサイト</div>
+              <div class="ins-title2">製造業×後継者問題<br>87件の分析から</div>
+            </div>
+            <div class="ins-body2">
+              <div class="ins-rate-lbl2">このパターンの成立率</div>
+              <div class="ins-rate-val2">58%</div>
+              <div class="ins-rate-note2">製造業×後継者×売上1〜3億<br><span>全業種平均：44%より高い</span></div>
+              <div class="ins-div2"></div>
+              <div class="ins-break-lbl2">見送り理由の分布（同パターン）</div>
+              <div class="ins-bar2-row"><span class="ins-bar2-name">価格乖離</span><div class="ins-bar2-track"><div class="ins-bar2-fill" style="width:68%;background:#ef4444;"></div></div><span class="ins-bar2-pct" style="color:#f87171;">68%</span></div>
+              <div class="ins-bar2-row"><span class="ins-bar2-name">DD懸念</span><div class="ins-bar2-track"><div class="ins-bar2-fill" style="width:19%;background:#f59e0b;"></div></div><span class="ins-bar2-pct" style="color:#f59e0b;">19%</span></div>
+              <div class="ins-bar2-row"><span class="ins-bar2-name">先方都合</span><div class="ins-bar2-track"><div class="ins-bar2-fill" style="width:13%;background:#94a3b8;"></div></div><span class="ins-bar2-pct" style="color:#94a3b8;">13%</span></div>
+              <div class="ins-alert2">
+                <div class="ins-alert2-ttl">⚠ 今回の注意点</div>
+                <div class="ins-alert2-txt">現在の価格乖離率+127%は見送りケースと一致。<strong>第2回面談で価格調整の余地を確認</strong>することを強く推奨します。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 5.0 — Team Collaboration (text left, mockup right) -->
+<section class="feat-section">
+  <div class="feat-split">
+    <div class="feat-text">
+      <div class="feat-num">5.0</div>
+      <div class="feat-heading">チーム連携 —<br><span class="muted">組織で動く、M&A。</span></div>
+      <p class="feat-desc">ソーシングからクロージングまで、チーム全員が同じ情報で動けます。@メンションで担当者に即共有、フェーズ移行・スコア更新・コメントはSlackに自動通知。<br><br>「あの案件、今どこまで進んでる？」という会話をなくし、タイムラインで全経緯を一目で把握できます。</p>
+      <div class="feat-tags">
+        <span class="ftag">@メンション</span>
+        <span class="ftag">Slack自動通知</span>
+        <span class="ftag">フェーズタイムライン</span>
+        <span class="ftag">チームコメント</span>
+      </div>
+    </div>
+    <div class="feat-mock">
+      <div class="mock-wrap">
+        <div class="win-bar">
+          <span class="wd" style="background:#ef4444;"></span>
+          <span class="wd" style="background:#f59e0b;"></span>
+          <span class="wd" style="background:#10b981;"></span>
+          <span class="win-lbl">DealChord — タイムライン・チーム連携</span>
+        </div>
+        <div style="display:flex;background:var(--bg3);height:400px;position:relative;">
+          <!-- Sidebar -->
+          <div class="msb" style="width:148px;">
+            <div class="msb-logo"><div class="msb-lm">DC</div><span class="msb-lt">DealChord</span></div>
+            <div class="msb-sec">Pipeline</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#0ea5e9;"></span>案件一覧<span class="msb-cnt">12</span></div>
+            <div class="msb-item"><span class="msb-dot" style="background:#10b981;"></span>ターゲット</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#8b5cf6;"></span>AI Analyst</div>
+            <div class="msb-item act" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border-right:2px solid #8b5cf6;"><span class="msb-dot" style="background:#8b5cf6;"></span>タイムライン<span class="co-sb-notif"></span></div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Connect</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#ea4335;"></span>Gmail</div>
+            <div class="msb-item"><span class="msb-dot" style="background:#4285f4;"></span>カレンダー</div>
+            <div class="msb-item" style="color:#c4b5fd;"><span class="msb-dot" style="background:#611f69;"></span>Slack<span class="co-sb-notif"></span></div>
+            <div class="msb-div"></div>
+            <div class="msb-sec">Members</div>
+            <div class="msb-item"><div style="width:16px;height:16px;border-radius:50%;background:rgba(14,165,233,0.3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#7dd3fc;flex-shrink:0;">田</div>田中 直樹</div>
+            <div class="msb-item"><div style="width:16px;height:16px;border-radius:50%;background:rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#c4b5fd;flex-shrink:0;">鈴</div>鈴木 美咲</div>
+            <div class="msb-item"><div style="width:16px;height:16px;border-radius:50%;background:rgba(245,158,11,0.3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fcd34d;flex-shrink:0;">佐</div>佐藤 健一</div>
+          </div>
+          <!-- Timeline main -->
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+            <div class="co-tl-hd">
+              <div><div class="co-tl-hdt">株式会社アオバ精工 — タイムライン</div><div class="co-tl-hds">ソーシングからクロージングまでチームで共有</div></div>
+              <div style="display:flex;gap:5px;"><span class="co-tl-btn">@メンション</span><span class="co-tl-btn">Slackへ共有</span></div>
+            </div>
+            <div class="co-phase-bar">
+              <div class="co-phase done">ソーシング<span class="co-phase-line"></span></div>
+              <div class="co-phase done">初期評価<span class="co-phase-line"></span></div>
+              <div class="co-phase done">TOP面談<span class="co-phase-line"></span></div>
+              <div class="co-phase active">LOI検討<span class="co-phase-line"></span></div>
+              <div class="co-phase">DD</div>
+              <div class="co-phase">クロージング</div>
+            </div>
+            <div class="co-activity">
+              <div class="co-act">
+                <div class="co-act-av" style="background:rgba(14,165,233,0.25);color:#7dd3fc;">田</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+                    <span class="co-act-who">田中 直樹</span>
+                    <span class="co-act-badge" style="background:rgba(139,92,246,0.12);color:#c4b5fd;">LOI検討へ移行</span>
+                    <span class="co-act-when">2時間前</span>
+                  </div>
+                  <div class="co-act-what">スコアリング結果をもとに<strong>LOI検討フェーズに移行</strong>しました。総合スコア66点。</div>
+                </div>
+              </div>
+              <div class="co-act">
+                <div class="co-act-av" style="background:rgba(139,92,246,0.25);color:#c4b5fd;">鈴</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+                    <span class="co-act-who">鈴木 美咲</span>
+                    <span class="co-act-badge" style="background:rgba(14,165,233,0.12);color:#7dd3fc;">スコア更新</span>
+                    <span class="co-act-when">4時間前</span>
+                  </div>
+                  <div class="co-act-what">ソフト面スコアを更新。議事録追加で<strong>売却意欲スコア+8pt</strong>。</div>
+                </div>
+              </div>
+              <div class="co-act">
+                <div class="co-act-av" style="background:rgba(245,158,11,0.25);color:#fcd34d;">佐</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+                    <span class="co-act-who">佐藤 健一</span>
+                    <span class="co-act-badge" style="background:rgba(16,185,129,0.1);color:#6ee7b7;">資料追加</span>
+                    <span class="co-act-when">昨日</span>
+                  </div>
+                  <div class="co-act-what">財務3期分・事業計画書をデータルームに追加。<strong>AI解析済み。</strong></div>
+                </div>
+              </div>
+              <div class="co-act">
+                <div class="co-act-av" style="background:rgba(14,165,233,0.25);color:#7dd3fc;">田</div>
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+                    <span class="co-act-who">田中 直樹</span>
+                    <span class="co-act-when">3日前</span>
+                  </div>
+                  <div class="co-act-what">GSXキャピタル・山田様よりIMを受領。AI解析完了。バリュエーション2.2億円。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Mention panel overlay -->
+          <div class="co-mn-panel">
+            <div class="co-mn-hd">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="co-mn-tag">アオバ精工</span>
+                <div><div class="co-mn-title">コメント・メンション</div><div class="co-mn-sub">LOI検討フェーズ · 3名が参加中</div></div>
+              </div>
+              <span style="font-size:14px;color:rgba(255,255,255,0.25);">×</span>
+            </div>
+            <div class="co-mn-thread">
+              <div class="co-mn-msg">
+                <div class="co-mn-av" style="background:rgba(14,165,233,0.25);color:#7dd3fc;">田</div>
+                <div style="flex:1;">
+                  <div class="co-mn-top"><span class="co-mn-name">田中 直樹</span><span class="co-mn-role">M&A担当</span><span class="co-mn-time">14:32</span></div>
+                  <div class="co-mn-txt"><span class="co-mn-mention">@鈴木さん</span> LOI提出の方向で進めたいですが、価格乖離127%が気になります。類似案件の破談パターンと一致しているので確認お願いできますか？</div>
+                </div>
+              </div>
+              <div class="co-mn-msg">
+                <div class="co-mn-av" style="background:rgba(139,92,246,0.25);color:#c4b5fd;">鈴</div>
+                <div style="flex:1;">
+                  <div class="co-mn-top"><span class="co-mn-name">鈴木 美咲</span><span class="co-mn-role">アナリスト</span><span class="co-mn-time">14:48</span></div>
+                  <div class="co-mn-txt">ナレッジベースで確認しました。東海精機の破談ケースとほぼ同条件です。<span class="co-mn-mention">@佐藤さん</span> 第2回面談で価格の余地を確認してもらえますか？</div>
+                  <div class="co-mn-alert">⚠ 過去87件の類似案件で、価格乖離100%超えの案件のうち68%が価格交渉で破談。早期確認を推奨します。</div>
+                </div>
+              </div>
+              <div class="co-mn-msg">
+                <div class="co-mn-av" style="background:rgba(245,158,11,0.25);color:#fcd34d;">佐</div>
+                <div style="flex:1;">
+                  <div class="co-mn-top"><span class="co-mn-name">佐藤 健一</span><span class="co-mn-role">担当</span><span class="co-mn-time">15:10</span></div>
+                  <div class="co-mn-txt">承知しました。QAシートに価格調整の質問を追加してオーナーに送付します。</div>
+                  <div class="co-mn-reacts"><span class="co-mn-react">👍 2</span><span class="co-mn-react">✓ 対応中</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="co-mn-input">
+              <div class="co-mn-input-av">田</div>
+              <div class="co-mn-input-box"><span>@メンションでチームに共有...</span><span class="co-mn-send">送信</span></div>
+            </div>
+            <div class="co-mn-tl">
+              <div class="co-mn-tl-lbl">案件フェーズ</div>
+              <div class="co-mn-tl-bar">
+                <div class="co-mn-tl-dot done"></div>
+                <div class="co-mn-tl-ph" style="background:#10b981;"></div>
+                <div class="co-mn-tl-dot done"></div>
+                <div class="co-mn-tl-ph" style="background:#10b981;"></div>
+                <div class="co-mn-tl-dot done"></div>
+                <div class="co-mn-tl-ph" style="background:#10b981;"></div>
+                <div class="co-mn-tl-dot active"></div>
+                <div class="co-mn-tl-ph" style="background:rgba(255,255,255,0.07);"></div>
+                <div class="co-mn-tl-dot"></div>
+                <div class="co-mn-tl-ph" style="background:rgba(255,255,255,0.07);"></div>
+                <div class="co-mn-tl-dot"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:3px;">
+                <span style="font-size:7.5px;color:var(--text-dim);">ソーシング</span>
+                <span style="font-size:7.5px;color:#c4b5fd;font-weight:600;">LOI検討 ●</span>
+                <span style="font-size:7.5px;color:var(--text-dim);">クロージング</span>
+              </div>
+            </div>
+          </div>
+          <!-- Slack panel overlay -->
+          <div class="co-sl-panel">
+            <div class="co-sl-hd">
+              <div class="co-sl-icon">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="#9b59b6"><path d="M5.042 15.165a2.528 2.528 0 01-2.52 2.523A2.528 2.528 0 010 15.165a2.527 2.527 0 012.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 012.521-2.52 2.527 2.527 0 012.521 2.52v6.313A2.528 2.528 0 018.834 24a2.528 2.528 0 01-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 01-2.521-2.52A2.528 2.528 0 018.834 0a2.528 2.528 0 012.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 012.521 2.521 2.528 2.528 0 01-2.521 2.521H2.522A2.528 2.528 0 010 8.834a2.528 2.528 0 012.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 012.522-2.521A2.528 2.528 0 0124 8.834a2.528 2.528 0 01-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 01-2.523 2.521 2.527 2.527 0 01-2.52-2.521V2.522A2.527 2.527 0 0115.165 0a2.528 2.528 0 012.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 012.523 2.522A2.528 2.528 0 0115.165 24a2.527 2.527 0 01-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 01-2.52-2.523 2.526 2.526 0 012.52-2.52h6.313A2.527 2.527 0 0124 15.165a2.528 2.528 0 01-2.522 2.523h-6.313z"/></svg>
+              </div>
+              <div><div class="co-sl-title">Slack 連携</div><div class="co-sl-sub">#ma-deals</div></div>
+              <div class="co-sl-live"><span class="co-sl-live-dot"></span>連携中</div>
+            </div>
+            <div class="co-sl-body">
+              <div class="co-sl-msg">
+                <div class="co-sl-av" style="background:#0ea5e9;font-size:8px;">DC</div>
+                <div style="flex:1;">
+                  <div class="co-sl-who">DealChord <span class="co-sl-bot">Bot</span><span class="co-sl-tm">15:10</span></div>
+                  <div class="co-sl-txt">📊 <strong>アオバ精工</strong> がLOI検討フェーズに移行しました</div>
+                  <div class="co-sl-card">
+                    <div class="co-sl-card-t">株式会社アオバ精工</div>
+                    <div class="co-sl-card-r"><span class="co-sl-card-lbl">総合スコア</span><span class="co-sl-card-val" style="color:#f59e0b;">66点</span><span class="co-sl-card-badge" style="background:rgba(245,158,11,0.12);color:#f59e0b;">基準まで4点</span></div>
+                    <div class="co-sl-card-r"><span class="co-sl-card-lbl">担当</span><span class="co-sl-card-val" style="color:rgba(255,255,255,0.65);font-size:10px;">田中・鈴木・佐藤</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="co-sl-div"></div>
+              <div class="co-sl-msg">
+                <div class="co-sl-av" style="background:rgba(139,92,246,0.3);color:#c4b5fd;">鈴</div>
+                <div style="flex:1;">
+                  <div class="co-sl-who">鈴木 美咲<span class="co-sl-tm">15:12</span></div>
+                  <div class="co-sl-txt"><span style="color:#7dd3fc;">@佐藤さん</span> 価格乖離127%、類似破談ケースと一致。第2回面談で必ず確認を 🔴</div>
+                </div>
+              </div>
+              <div class="co-sl-div"></div>
+              <div class="co-sl-notif">
+                <div class="co-sl-notif-top"><span class="co-sl-notif-title">🔔 QAシート送付完了</span><span class="co-sl-notif-time">15:28</span></div>
+                <div class="co-sl-notif-txt">佐藤 健一 が<strong>価格調整確認QA</strong>を送付。回答後スコアが自動更新されます。</div>
+              </div>
+              <div class="co-sl-channel">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#611f69" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="co-sl-ch-name">#ma-deals</span>
+                <span class="co-sl-ch-count">3名 · 本日8件</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTELLIGENCE -->
+<div class="intel-wrap">
+  <div class="intel-label">DealChord Intelligence</div>
+  <h2>過去20年分の国内M&Aディールを<br><span class="muted">学習させた、独自のAI。</span></h2>
+  <p class="intel-body">
+    ChatGPTもClaudeも持っていないデータがある。<br>
+    成立した案件、破談になった案件、見送られた案件。<br>
+    国内の非公開ディール20年分の知識が、DealChordには蓄積されている。<br><br>
+    <strong>市場に出ない案件こそ、本物のデータだ。</strong><br><br>
+    使えば使うほど、DealChord Intelligenceは日本のM&A市場を深く知る。
+    これは、汎用AIとの決定的な違いです。
+  </p>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap">
+  <div class="cta-glow"></div>
+  <div class="fm-badge">
+    <span class="fm-badge-pulse"></span>
+    Foundation Member 募集中
+    <span class="fm-badge-sep"></span>
+    <span class="fm-badge-limit">先着20社限定</span>
+  </div>
+  <h2>御社のM&A判断を、<br><span class="muted">チームの共有資産にしませんか。</span></h2>
+  <p class="cta-sub">まず<em>無料のデモ</em>で、スコアリングとナレッジ蓄積の仕組みを<br>実際の案件データを使って体験いただけます。</p>
+  <div class="fm-benefits">
+    <div class="fm-benefit">
+      <div class="fm-benefit-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5.2L4.2 7.5L8 3" stroke="#0ea5e9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span><strong>永久割引 20%</strong></span>
+    </div>
+    <div class="fm-benefit-sep"></div>
+    <div class="fm-benefit">
+      <div class="fm-benefit-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5.2L4.2 7.5L8 3" stroke="#0ea5e9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span><strong>専任オンボーディング</strong>サポートつき</span>
+    </div>
+    <div class="fm-benefit-sep"></div>
+    <div class="fm-benefit">
+      <div class="fm-benefit-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5.2L4.2 7.5L8 3" stroke="#0ea5e9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span>正式ローンチ後も<strong>価格据え置き保証</strong></span>
+    </div>
+  </div>
+  <div>
+    <button class="fm-btn">Foundation Member としてデモを申し込む <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="fm-btn-sub">無料デモ · 30分 · キャンセル不要</div>
+  <div class="fm-progress-wrap">
+    <div class="fm-progress-label">
+      <span class="fm-progress-title">Foundation Member 枠</span>
+      <span class="fm-progress-count">12<span> / 20社</span></span>
+    </div>
+    <div class="fm-progress-track">
+      <div class="fm-progress-fill" id="fmProgressFill"></div>
+    </div>
+    <div class="fm-progress-seats">
+      <span class="fm-seats-left">残り 8 社</span>
+      <span class="fm-seats-right">Early Access Program</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMPANY -->
+<section class="company-section">
+  <div class="page">
+    <div class="company-inner">
+      <div class="company-toggle" id="companyToggle">
+        <div class="company-label">Company</div>
+        <div class="company-arrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 4.5L6 8L10 4.5" stroke="rgba(14,165,233,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="company-body" id="companyBody">
+        <div class="company-name">DealChord</div>
+        <table class="company-table">
+          <tr>
+            <td>サービス名</td>
+            <td>DealChord</td>
+          </tr>
+          <tr>
+            <td>代表</td>
+            <td>原　駿也</td>
+          </tr>
+          <tr>
+            <td>メール</td>
+            <td><a href="mailto:dealchord@gmail.com">dealchord@gmail.com</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+      <div class="footer-logo">
+    <img src="data:image/png;base64,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" height="15" alt="DealChord" style="display:block;opacity:0.6;">
+  </div>
+  <span class="footer-note">© 2026 DealChord. All rights reserved.　代表：原　駿也</span>
+</footer>
+
+</div>
+
+<!-- DEMO MODAL -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-badge"><span class="modal-badge-dot"></span>Foundation Member · 残り8社</div>
+      <div class="modal-title">30分の無料デモを申し込む</div>
+      <div class="modal-sub">実際の案件データを使って、<em>スコアリングとナレッジ蓄積</em>の仕組みをお見せします。</div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+      <div class="modal-seats">
+        <div class="modal-seats-bar"><div class="modal-seats-fill"></div></div>
+        <span class="modal-seats-txt">残り 8 社</span>
+        <span class="modal-seats-sub">/ 20社</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label class="form-label">会社名<span>*</span></label>
+          <input class="form-input" id="f-company" type="text" name="company" placeholder="株式会社〇〇" required>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">お名前<span>*</span></label>
+          <input class="form-input" id="f-name" type="text" name="name" placeholder="田中 直樹" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label class="form-label">役職</label>
+          <input class="form-input" id="f-title" type="text" name="title" placeholder="M&A部長">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">メールアドレス<span>*</span></label>
+          <input class="form-input" id="f-email" type="email" name="email" placeholder="tanaka@company.co.jp" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">年間のM&A検討案件数</label>
+        <select class="form-select" id="f-volume" name="deal_volume">
+          <option value="" disabled selected>選択してください</option>
+          <option>1〜5件</option>
+          <option>6〜20件</option>
+          <option>21〜50件</option>
+          <option>51件以上</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">デモ希望日時（任意）</label>
+        <input class="form-input" id="f-time" type="text" name="preferred_time" placeholder="例：平日午前、来週以降　など">
+      </div>
+
+      <div id="formError" style="display:none;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:7px;padding:10px 13px;font-size:12px;color:#f87171;margin-top:4px;">送信に失敗しました。時間をおいて再度お試しください。</div>
+
+      <button class="modal-submit" id="modalSubmit">
+        <span id="submitLabel">Foundation Member としてデモを申し込む</span>
+        <svg id="submitArrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="modal-note">送信後、1営業日以内にご連絡いたします。<br>個人情報は厳重に管理し、デモ調整以外には使用しません。</p>
+    </div>
+
+    <div class="modal-success" id="modalSuccess">
+      <div class="success-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11.5L9 16.5L18 6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="success-title">申し込みを受け付けました</div>
+      <p class="success-sub">
+        ご登録ありがとうございます。<br>
+        <em>1営業日以内</em>に担当者よりご連絡いたします。<br><br>
+        Foundation Member として、正式ローンチ後も<br>特別価格が適用されます。
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    /* progress bar */
+    var fill = document.getElementById('fmProgressFill');
+    if (fill) {
+      fill.style.width = '0%';
+      requestAnimationFrame(function() {
+        setTimeout(function() { fill.style.width = '60%'; }, 300);
+      });
+    }
+
+    /* modal open/close */
+    var overlay = document.getElementById('demoModal');
+    var closeBtn = document.getElementById('modalClose');
+    var submitBtn = document.getElementById('modalSubmit');
+    var modalBody = document.getElementById('modalBody');
+    var modalSuccess = document.getElementById('modalSuccess');
+
+    function openModal() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* attach to all CTA buttons */
+    document.querySelectorAll('.fm-btn, .btn-primary, .nav-cta').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    /* Company toggle */
+    var companyToggle = document.getElementById('companyToggle');
+    var companyBody = document.getElementById('companyBody');
+    if (companyToggle) {
+      companyToggle.addEventListener('click', function() {
+        companyToggle.classList.toggle('open');
+        companyBody.classList.toggle('open');
+      });
+    }
+
+    /* フリーメールドメインリスト */
+    var FREE_DOMAINS = [
+      'gmail.com','googlemail.com','yahoo.co.jp','yahoo.com','yahoo.jp',
+      'hotmail.com','hotmail.co.jp','outlook.com','outlook.jp','live.com',
+      'live.jp','icloud.com','me.com','mac.com','aol.com','msn.com',
+      'protonmail.com','proton.me','tutanota.com','yandex.com','yandex.ru',
+      'naver.com','kakao.com','163.com','126.com','qq.com',
+      'ezweb.ne.jp','docomo.ne.jp','softbank.ne.jp','au.com','i.softbank.jp',
+      'excite.co.jp','nifty.com','biglobe.ne.jp','infoseek.jp','dion.ne.jp'
+    ];
+
+    function isBusinessEmail(email) {
+      var domain = email.split('@')[1];
+      if (!domain) return false;
+      return FREE_DOMAINS.indexOf(domain.toLowerCase()) === -1;
+    }
+
+    /* フォームバリデーション */
+    function validateForm() {
+      var company = document.getElementById('f-company').value.trim();
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      if (!company || !name || !email) return { ok: false, msg: '会社名・お名前・メールアドレスは必須です。' };
+      if (!isBusinessEmail(email)) return { ok: false, msg: '会社のメールアドレスでご登録ください（Gmail・Yahoo等はご利用いただけません）。' };
+      return { ok: true };
+    }
+
+    function updateSeatCounts() {
+      if (fill) fill.style.width = '65%';
+      var lpCount = document.querySelector('.fm-progress-count');
+      if (lpCount) lpCount.innerHTML = '13<span> / 20社</span>';
+      var lpSeatsLeft = document.querySelector('.fm-seats-left');
+      if (lpSeatsLeft) lpSeatsLeft.textContent = '残り 7 社';
+      var modalBadge = document.querySelector('.modal-badge');
+      if (modalBadge) modalBadge.innerHTML = '<span class="modal-badge-dot"></span>Foundation Member · 残り7社';
+      var modalFill = document.querySelector('.modal-seats-fill');
+      if (modalFill) modalFill.style.width = '65%';
+      var modalSeatsLeft = document.querySelector('.modal-seats-txt');
+      if (modalSeatsLeft) modalSeatsLeft.textContent = '残り 7 社';
+    }
+
+    /* Formspree送信 */
+    var FORMSPREE_ID = 'xzdkazko'; /* ← ここにFormspreeのIDを貼る */
+
+    submitBtn.addEventListener('click', function() {
+      var errEl = document.getElementById('formError');
+      errEl.style.display = 'none';
+
+      var validation = validateForm();
+      if (!validation.ok) {
+        errEl.textContent = validation.msg;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      /* ローディング状態 */
+      submitBtn.disabled = true;
+      document.getElementById('submitLabel').textContent = '送信中...';
+      document.getElementById('submitArrow').style.display = 'none';
+
+      var data = {
+        company:        document.getElementById('f-company').value.trim(),
+        name:           document.getElementById('f-name').value.trim(),
+        title:          document.getElementById('f-title').value.trim(),
+        email:          document.getElementById('f-email').value.trim(),
+        deal_volume:    document.getElementById('f-volume').value,
+        preferred_time: document.getElementById('f-time').value.trim(),
+        _subject:       '[DealChord] Foundation Memberデモ申し込み'
+      };
+
+      fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function(res) {
+        if (res.ok) {
+          modalBody.classList.add('hide');
+          modalSuccess.classList.add('show');
+          updateSeatCounts();
+        } else {
+          throw new Error('server error');
+        }
+      })
+      .catch(function() {
+        submitBtn.disabled = false;
+        document.getElementById('submitLabel').textContent = 'Foundation Member としてデモを申し込む';
+        document.getElementById('submitArrow').style.display = '';
+        errEl.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+        errEl.style.display = 'block';
+      });
+    });
+  });
+</script>
+</body>
+</html>

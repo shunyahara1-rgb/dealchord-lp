@@ -165,8 +165,22 @@ h1 .muted { color: rgba(255,255,255,0.48); }
 h2 { font-size: 34px; font-weight: 700; letter-spacing: -0.8px; color: white; line-height: 1.2; margin-bottom: 8px; }
 h2 .muted { color: rgba(255,255,255,0.48); }
 
-.prob-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 32px; }
-.prob-card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 10px; padding: 20px 18px; }
+.prob-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 32px; }
+@keyframes prob-in {
+  from { opacity: 0; transform: translateY(14px) rotate(var(--tilt-from)); }
+  to   { opacity: 1; transform: translateY(0)    rotate(var(--tilt-to)); }
+}
+.prob-card {
+  background: rgba(255,255,255,0.025); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 18px;
+  opacity: 0; --tilt-from: -3deg; --tilt-to: 0deg;
+}
+.prob-card.prob-visible { animation: prob-in 0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
+.prob-card:nth-child(1) { --tilt-from: -4deg;   --tilt-to: -1.3deg; animation-delay: 0s; }
+.prob-card:nth-child(2) { --tilt-from:  3.2deg; --tilt-to:  0.8deg; animation-delay: 0.15s; }
+.prob-card:nth-child(3) { --tilt-from: -2.8deg; --tilt-to: -0.6deg; animation-delay: 0.30s; }
+.prob-card:nth-child(4) { --tilt-from:  3.5deg; --tilt-to:  1.0deg; animation-delay: 0.45s; background: rgba(14,165,233,0.06); border-color: rgba(14,165,233,0.25); }
+.prob-card:nth-child(4) .prob-title { color: #7dd3fc; }
 .prob-num { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 9px; font-family: 'DM Mono', monospace; }
 .prob-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1.5; margin-bottom: 6px; }
 .prob-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.65; }
@@ -850,7 +864,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
   <div class="hero-glow"></div>
   <div class="intel-badge">
     <span class="badge-pulse"></span>
-    過去20年分 国内M&Aディールを学習 — DealChord Intelligence
+    御社の投資基準で育てる、専用AIエージェント。
   </div>
   <h1>
     M&Aの判断は、<br>
@@ -942,6 +956,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
     <div class="prob-card"><div class="prob-num">01</div><div class="prob-title">判断が個人に依存している</div><div class="prob-desc">評価基準が担当者の頭の中にあり、退職や異動で失われる。</div></div>
     <div class="prob-card"><div class="prob-num">02</div><div class="prob-title">検討の軌跡が残らない</div><div class="prob-desc">なぜ進め、なぜ見送ったか。その理由が組織に蓄積されない。</div></div>
     <div class="prob-card"><div class="prob-num">03</div><div class="prob-title">経験が次に活かされない</div><div class="prob-desc">100件の経験があっても、101件目は1件目と同じ時間がかかる。</div></div>
+    <div class="prob-card"><div class="prob-num">04</div><div class="prob-title">案件の今が、いつでも、誰でも、一画面で。</div><div class="prob-desc">DealChordなら、担当者の記憶ではなくプラットフォームが案件を覚えている。</div></div>
   </div>
 </section>
 
@@ -1634,13 +1649,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <!-- INTELLIGENCE -->
 <div class="intel-wrap">
   <div class="intel-label">DealChord Intelligence</div>
-  <h2>過去20年分の国内M&Aディールを<br><span class="muted">学習させた、独自のAI。</span></h2>
+  <h2>御社の投資基準で育てる、<br><span class="muted">専用AIエージェント。</span></h2>
   <p class="intel-body">
-    ChatGPTもClaudeも持っていないデータがある。<br>
-    成立した案件、破談になった案件、見送られた案件。<br>
-    国内の非公開ディール20年分の知識が、DealChordには蓄積されている。<br><br>
-    <strong>市場に出ない案件こそ、本物のデータだ。</strong><br><br>
-    使えば使うほど、DealChord Intelligenceは日本のM&A市場を深く知る。
+    汎用AIが持つのは、世界中の平均的な知識。<br>
+    DealChordが学ぶのは、御社が検討し、判断し、蓄積してきた固有のデータ。<br><br>
+    <strong>1件目より10件目、10件目より50件目の精度が上がる。</strong><br><br>
+    御社が見送った理由、LOIを出した基準、DDで発見したリスク。<br>
+    その積み重ねが、御社だけのスコアリングモデルを形成していきます。<br><br>
     これは、汎用AIとの決定的な違いです。
   </p>
 </div>
@@ -1716,7 +1731,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           </tr>
           <tr>
             <td>メール</td>
-            <td><a href="mailto:dealchord@gmail.com">dealchord@gmail.com</a></td>
+            <td><a href="/cdn-cgi/l/email-protection#600405010c03080f120420070d01090c4e030f0d"><span class="__cf_email__" data-cfemail="e28687838e818a8d9086a2858f838b8ecc818d8f">[email&#160;protected]</span></a></td>
           </tr>
         </table>
       </div>
@@ -1812,7 +1827,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   window.addEventListener('load', function() {
     /* progress bar */
     var fill = document.getElementById('fmProgressFill');
@@ -1952,12 +1967,20 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
       .catch(function() {
         submitBtn.disabled = false;
         document.getElementById('submitLabel').textContent = 'Foundation Member としてデモを申し込む';
-        document.getElementById('submitArrow').style.display = '';
-        errEl.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
-        errEl.style.display = 'block';
-      });
+        document.getEle
+<script>
+(function(){
+  var cards = document.querySelectorAll('.prob-card');
+  var seen = false;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !seen){
+        seen = true;
+        cards.forEach(function(c){ c.classList.add('prob-visible'); });
+        io.disconnect();
+      }
     });
-  });
+  }, { threshold: 0.2 });
+  io.observe(document.querySelector('.prob-grid'));
+})();
 </script>
-</body>
-</html>

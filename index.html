@@ -866,7 +866,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 .fc-fork-right { position: relative; }
 .fc-fork-right::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: linear-gradient(to bottom, rgba(14,165,233,0.4), rgba(14,165,233,0.2)); }
 .fc-flow { max-width: 860px; margin: 0 auto; position: relative; }
-.fc-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; align-items: start; }
+.fc-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; }
 .fc-r1 { animation: fc-slide 0.5s ease 0.2s  both; }
 .fc-r2 { animation: fc-slide 0.5s ease 0.38s both; }
 .fc-r3 { animation: fc-slide 0.5s ease 0.56s both; }
@@ -906,11 +906,11 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 .fc-bottom-note.fc-old-note { color: rgba(255,255,255,0.55); border: 1px dashed rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
 .fc-bottom-note.fc-new-note { color: #38bdf8; border: 1px dashed rgba(14,165,233,0.25); background: rgba(14,165,233,0.04); }
 .fc-bottom-note strong { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
-.fc-metric { display: inline-flex; align-items: center; gap: 7px; margin: 10px 0 8px; padding: 8px 12px; background: rgba(14,165,233,0.08); border-radius: 6px; border-left: 3px solid #0ea5e9; }
-.fc-metric-before { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.35); text-decoration: line-through; white-space: nowrap; }
-.fc-metric-arrow { font-size: 11px; color: rgba(14,165,233,0.6); flex-shrink: 0; }
-.fc-metric-after { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -0.5px; text-shadow: 0 0 16px rgba(14,165,233,0.7); }
-.fc-metric-unit { font-family: 'DM Mono', monospace; font-size: 10px; color: #38bdf8; line-height: 1.4; white-space: nowrap; }
+.fc-metric { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 4px 12px 4px 10px; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3); border-radius: 20px; }
+.fc-metric-before { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.35); text-decoration: line-through; }
+.fc-metric-arrow { font-size: 10px; color: rgba(14,165,233,0.5); }
+.fc-metric-after { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 0 12px rgba(14,165,233,0.9); }
+.fc-metric-unit { font-family: 'DM Mono', monospace; font-size: 10px; color: #38bdf8; }
 </style>
 </head>
 <body>
@@ -1068,13 +1068,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 01</div>
           <div class="fc-step-title">AI解析 — 自動構造化</div>
           <div class="fc-step-desc">IMをアップロードするだけ。財務KPI・リスク所見・バリュエーション3手法を即時生成。</div>
-          <div class="fc-metric">
-            <span class="fc-metric-before">3時間</span>
-            <span class="fc-metric-arrow">→</span>
-            <span class="fc-metric-after">10</span>
-            <span class="fc-metric-unit">分で完了</span>
-          </div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>初回評価コスト 95% 削減</div>
+          <div class="fc-metric"><span class="fc-metric-before">3時間</span><span class="fc-metric-arrow">→</span><span class="fc-metric-after">10</span><span class="fc-metric-unit">分&nbsp;·&nbsp;初回評価95%削減</span></div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1094,13 +1088,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 02</div>
           <div class="fc-step-title">スコアリング — 100点採点</div>
           <div class="fc-step-desc">ハード面6軸・ソフト面4軸で定量評価。過去の類似案件と自動比較し、LOIギャップまで提示。</div>
-          <div class="fc-metric">
-            <span class="fc-metric-before">感覚</span>
-            <span class="fc-metric-arrow">→</span>
-            <span class="fc-metric-after">10</span>
-            <span class="fc-metric-unit">軸の定量スコア</span>
-          </div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>LOIギャップ・推奨アクションまで自動算出</div>
+          <div class="fc-metric"><span class="fc-metric-before">感覚</span><span class="fc-metric-arrow">→</span><span class="fc-metric-after">10</span><span class="fc-metric-unit">軸定量スコア&nbsp;·&nbsp;LOIギャップ自動算出</span></div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1120,13 +1108,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 03</div>
           <div class="fc-step-title">チーム全員がリアルタイムで把握</div>
           <div class="fc-step-desc">案件の今が、いつでも、誰でも、一画面で。担当者の記憶ではなくプラットフォームが覚えている。</div>
-          <div class="fc-metric">
-            <span class="fc-metric-before">都度問い合わせ</span>
-            <span class="fc-metric-arrow">→</span>
-            <span class="fc-metric-after">0</span>
-            <span class="fc-metric-unit">回（全員即時把握）</span>
-          </div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>引継ぎコスト 実質ゼロ</div>
+          <div class="fc-metric"><span class="fc-metric-before">都度問い合わせ</span><span class="fc-metric-arrow">→</span><span class="fc-metric-after">0</span><span class="fc-metric-unit">回&nbsp;·&nbsp;引継ぎコスト実質ゼロ</span></div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1146,13 +1128,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 04</div>
           <div class="fc-step-title">見送り → 組織ナレッジに蓄積</div>
           <div class="fc-step-desc">見送り理由・成功パターン・DDリスクがすべて自動記録。次の案件のAI精度が上がり、判断が速くなる。</div>
-          <div class="fc-metric">
-            <span class="fc-metric-before">1件目と同じ時間</span>
-            <span class="fc-metric-arrow">→</span>
-            <span class="fc-metric-after">∞</span>
-            <span class="fc-metric-unit">件分の知見を活用</span>
-          </div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>案件が増えるほど判断精度が上がる</div>
+          <div class="fc-metric"><span class="fc-metric-before">毎回ゼロから</span><span class="fc-metric-arrow">→</span><span class="fc-metric-after">∞</span><span class="fc-metric-unit">件分の知見を活用</span></div>
         </div>
       </div>
     </div>

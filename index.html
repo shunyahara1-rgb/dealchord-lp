@@ -173,13 +173,13 @@ h2 .muted { color: rgba(255,255,255,0.48); }
 .prob-card {
   background: rgba(255,255,255,0.025); border: 1px solid var(--border);
   border-radius: 10px; padding: 20px 18px;
-  opacity: 0; --tilt-from: -3deg; --tilt-to: 0deg;
+  animation: prob-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  --tilt-from: -3deg; --tilt-to: 0deg;
 }
-.prob-card.prob-visible { animation: prob-in 0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
-.prob-card:nth-child(1) { --tilt-from: -4deg;   --tilt-to: -1.3deg; animation-delay: 0s; }
-.prob-card:nth-child(2) { --tilt-from:  3.2deg; --tilt-to:  0.8deg; animation-delay: 0.15s; }
-.prob-card:nth-child(3) { --tilt-from: -2.8deg; --tilt-to: -0.6deg; animation-delay: 0.30s; }
-.prob-card:nth-child(4) { --tilt-from:  3.5deg; --tilt-to:  1.0deg; animation-delay: 0.45s; background: rgba(14,165,233,0.06); border-color: rgba(14,165,233,0.25); }
+.prob-card:nth-child(1) { --tilt-from: -4deg;   --tilt-to: -1.3deg; animation-delay: 0.2s; }
+.prob-card:nth-child(2) { --tilt-from:  3.2deg; --tilt-to:  0.8deg; animation-delay: 0.38s; }
+.prob-card:nth-child(3) { --tilt-from: -2.8deg; --tilt-to: -0.6deg; animation-delay: 0.56s; }
+.prob-card:nth-child(4) { --tilt-from:  3.5deg; --tilt-to:  1.0deg; animation-delay: 0.74s; background: rgba(14,165,233,0.06); border-color: rgba(14,165,233,0.25); }
 .prob-card:nth-child(4) .prob-title { color: #7dd3fc; }
 .prob-num { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 9px; font-family: 'DM Mono', monospace; }
 .prob-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1.5; margin-bottom: 6px; }
@@ -1968,19 +1968,3 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
         submitBtn.disabled = false;
         document.getElementById('submitLabel').textContent = 'Foundation Member としてデモを申し込む';
         document.getEle
-<script>
-(function(){
-  var cards = document.querySelectorAll('.prob-card');
-  var seen = false;
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting && !seen){
-        seen = true;
-        cards.forEach(function(c){ c.classList.add('prob-visible'); });
-        io.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-  io.observe(document.querySelector('.prob-grid'));
-})();
-</script>

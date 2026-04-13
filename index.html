@@ -186,19 +186,22 @@ h2 .muted { color: rgba(255,255,255,0.48); }
 .prob-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.65; }
 
 /* ── FEATURE SPLIT ── */
-.feat-section { padding: 72px 40px; border-top: 1px solid var(--border); }
+.feat-section { padding: 80px 40px; border-top: 1px solid var(--border); }
 .feat-split {
   display: flex; flex-direction: row;
-  gap: 56px; align-items: center;
+  gap: 72px; align-items: center;
+  max-width: 1100px; margin: 0 auto;
 }
-.feat-split .feat-text { flex: 1; }
+.feat-split .feat-text { flex: 1.3; }
 .feat-split .feat-mock { flex: 1; }
 .feat-split.rev { flex-direction: row-reverse; }
 
-.feat-num { font-size: 11px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.08em; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-variant-numeric: tabular-nums; margin-bottom: 10px; }
-.feat-heading { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: white; line-height: 1.25; margin-bottom: 14px; }
-.feat-heading .muted { color: rgba(255,255,255,0.4); }
-.feat-desc { font-size: 15.5px; color: rgba(255,255,255,0.72); line-height: 1.85; margin-bottom: 16px; }
+.feat-num { font-size: 10px; font-weight: 700; color: #0ea5e9; letter-spacing: 2px; font-family: 'DM Mono', monospace; text-transform: uppercase; margin-bottom: 16px; }
+.feat-heading { font-size: 30px; font-weight: 700; letter-spacing: -0.6px; color: white; line-height: 1.2; margin-bottom: 18px; }
+.feat-heading .muted { color: rgba(255,255,255,0.42); }
+.feat-desc { font-size: 16px; color: rgba(255,255,255,0.75); line-height: 1.9; margin-bottom: 20px; }
+.feat-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+.ftag { font-size: 11.5px; color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 11px; }
 .feat-tags { display: flex; gap: 7px; flex-wrap: wrap; }
 .ftag { font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px; }
 
@@ -1150,9 +1153,9 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <section class="feat-section">
   <div class="feat-split">
     <div class="feat-text">
-      <div class="feat-num">1.0</div>
-      <div class="feat-heading">AI Analyst —<br><span class="muted">自動解析</span></div>
-      <p class="feat-desc">IMをアップロードするだけで、財務・リスク・バリュエーションを自動構造化。ベテランが3時間かけていた初回評価を10分に短縮します。<br><br>DCF・マルチプル・純資産の3手法を含む6種類で自動計算し、売主希望価格との乖離率まで即座に提示。</p>
+      <div class="feat-num">1.0 — AI Analyst</div>
+      <div class="feat-heading">IMをアップロードするだけで、<br><span class="muted">初回評価が10分で完了する。</span></div>
+      <p class="feat-desc">財務・リスク・バリュエーションを自動構造化。DCF・マルチプル・純資産の3手法を含む6種類で自動計算し、売主希望価格との乖離率まで即座に提示。ベテランが3時間かけていた作業を、AIが代替します。</p>
       <div class="feat-tags">
         <span class="ftag">財務KPI抽出</span>
         <span class="ftag">リスク所見生成</span>
@@ -1269,9 +1272,9 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <section class="feat-section">
   <div class="feat-split rev">
     <div class="feat-text">
-      <div class="feat-num">2.0</div>
-      <div class="feat-heading">スコアリング —<br><span class="muted">LOI判断支援</span></div>
-      <p class="feat-desc">ハード面6軸＋ソフト面4軸で全案件を100点採点。担当者の感覚ではなく、御社の投資基準に基づいた根拠ある評価を。<br><br>「LOI基準まであと4点、価格確認QAシートで達成できます」まで提示し、次のアクションを自動提案します。</p>
+      <div class="feat-num">2.0 — スコアリング</div>
+      <div class="feat-heading">感覚ではなく、<br><span class="muted">根拠のある100点で判断する。</span></div>
+      <p class="feat-desc">ハード面6軸・ソフト面4軸で全案件を自動採点。御社の投資基準に基づいた定量評価により、「LOI基準まであと4点、価格確認QAシートで達成できます」という具体的な次のアクションまで提示します。</p>
       <div class="feat-tags">
         <span class="ftag">ハード面6軸</span>
         <span class="ftag">ソフト面4軸</span>
@@ -1372,9 +1375,9 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <section class="feat-section">
   <div class="feat-split">
     <div class="feat-text">
-      <div class="feat-num">3.0</div>
-      <div class="feat-heading">Gmail連携 —<br><span class="muted">情報を自動で取り込む</span></div>
-      <p class="feat-desc">GmailでIMを受信すると、DealChordが自動検知。ワンクリックでAI解析・案件紐付けまで完結します。<br><br>メールの返信速度・文面トーンはソフト面スコアの「意思決定スピード」に自動反映。担当者が意識しなくても、やり取りがスコアに繋がります。</p>
+      <div class="feat-num">3.0 — Gmail連携</div>
+      <div class="feat-heading">IMが届いた瞬間に、<br><span class="muted">AIが動き出す。</span></div>
+      <p class="feat-desc">GmailでIMを受信するとDealChordが自動検知し、ワンクリックでAI解析・案件紐付けまで完結。メールの返信速度・文面トーンはソフト面スコアに自動反映されるため、担当者が意識しなくてもやり取りが評価につながります。</p>
       <div class="feat-tags">
         <span class="ftag">IM自動検知</span>
         <span class="ftag">ワンクリック解析</span>
@@ -1495,9 +1498,9 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <section class="feat-section">
   <div class="feat-split rev">
     <div class="feat-text">
-      <div class="feat-num">4.0</div>
-      <div class="feat-heading">ナレッジベース —<br><span class="muted">使うほど賢くなる</span></div>
-      <p class="feat-desc">検討した全案件が自動で蓄積。成立した理由、破談になった理由、DDで見つかったリスク。この積み重ねが、次の案件の判断精度を上げます。<br><br>「製造業×後継者問題の案件、価格乖離が破談理由の68%を占める」——過去の知識が、今まさに検討中の案件にリアルタイムで参照されます。</p>
+      <div class="feat-num">4.0 — ナレッジベース</div>
+      <div class="feat-heading">検討した一件一件が、<br><span class="muted">御社専用のAIを育てる。</span></div>
+      <p class="feat-desc">成立した理由・破談になった理由・DDで見つかったリスク——全案件が自動蓄積され、今まさに検討中の案件にリアルタイム参照されます。「製造業×後継者問題、価格乖離が破談理由の68%」という知見が、次の判断を変えます。</p>
       <div class="feat-tags">
         <span class="ftag">類似案件の自動参照</span>
         <span class="ftag">成功・失敗パターン分析</span>
@@ -1626,9 +1629,9 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 <section class="feat-section">
   <div class="feat-split">
     <div class="feat-text">
-      <div class="feat-num">5.0</div>
-      <div class="feat-heading">チーム連携 —<br><span class="muted">組織で動く、M&A。</span></div>
-      <p class="feat-desc">ソーシングからクロージングまで、チーム全員が同じ情報で動けます。@メンションで担当者に即共有、フェーズ移行・スコア更新・コメントはSlackに自動通知。<br><br>「あの案件、今どこまで進んでる？」という会話をなくし、タイムラインで全経緯を一目で把握できます。</p>
+      <div class="feat-num">5.0 — チーム連携</div>
+      <div class="feat-heading">「あの案件、今どこ？」を<br><span class="muted">もう誰にも聞かせない。</span></div>
+      <p class="feat-desc">ソーシングからクロージングまで、チーム全員が同じ情報で動けます。フェーズ移行・スコア更新・コメントはSlackに自動通知。タイムラインで全経緯を一目で把握でき、属人的な情報管理を組織の共有財産に変えます。</p>
       <div class="feat-tags">
         <span class="ftag">@メンション</span>
         <span class="ftag">Slack自動通知</span>

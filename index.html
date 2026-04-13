@@ -841,6 +841,71 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 .gm-sack { width: 9px; height: 9px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0; margin-top: 1px; }
 .gm-satx { font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.35; flex: 1; }
 .gm-sapt { font-size: 7.5px; font-weight: 700; color: #10b981; font-family: 'DM Mono', monospace; }
+
+/* ── FLOW CHART SECTION ── */
+.flow-section { padding: 72px 40px; border-top: 1px solid var(--border); }
+.flow-section .fc-header { text-align: center; margin-bottom: 48px; }
+.flow-section .fc-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: #0ea5e9; text-transform: uppercase; margin-bottom: 12px; }
+.flow-section .fc-label { display: block; }
+.flow-section .fc-title { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.3px; line-height: 1.2; }
+.flow-section .fc-title span { color: #38bdf8; }
+.fc-col-headers { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; max-width: 860px; margin: 0 auto 20px; }
+.fc-col-hd { text-align: center; padding: 10px 20px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; }
+.fc-col-hd.fc-old { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.65); }
+.fc-col-hd.fc-new { background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3); color: #38bdf8; }
+.fc-body { max-width: 860px; margin: 0 auto; position: relative; }
+.fc-col-bg-old { position: absolute; top: 0; bottom: 0; left: 0; width: calc(50% - 28px); background: rgba(255,255,255,0.012); border-radius: 12px; pointer-events: none; }
+.fc-col-bg-new { position: absolute; top: 0; bottom: 0; right: 0; width: calc(50% - 28px); background: rgba(14,165,233,0.03); border-radius: 12px; pointer-events: none; }
+.fc-shared-step { display: flex; justify-content: center; }
+.fc-shared-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); border-radius: 10px; padding: 14px 28px; text-align: center; }
+.fc-shared-box .fc-s-label { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.28); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.fc-shared-box .fc-s-title { font-size: 14px; font-weight: 600; color: #fff; }
+.fc-fork { display: grid; grid-template-columns: 1fr 56px 1fr; height: 36px; }
+.fc-fork-left { position: relative; }
+.fc-fork-left::before { content: ''; position: absolute; top: 0; right: 50%; width: 1px; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.08)); }
+.fc-fork-right { position: relative; }
+.fc-fork-right::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: linear-gradient(to bottom, rgba(14,165,233,0.4), rgba(14,165,233,0.2)); }
+.fc-flow { max-width: 860px; margin: 0 auto; position: relative; }
+.fc-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; }
+.fc-r1 { animation: fc-slide 0.5s ease 0.2s  both; }
+.fc-r2 { animation: fc-slide 0.5s ease 0.38s both; }
+.fc-r3 { animation: fc-slide 0.5s ease 0.56s both; }
+.fc-r4 { animation: fc-slide 0.5s ease 0.74s both; }
+@keyframes fc-slide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fc-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 0 8px; }
+.fc-connector::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(255,255,255,0.08); }
+.fc-vs { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; color: rgba(255,255,255,0.28); letter-spacing: 1px; background: var(--bg); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); z-index: 2; position: relative; }
+.fc-card { padding: 18px 22px; border-radius: 8px; margin: 2px 4px; }
+.fc-card.fc-old-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); }
+.fc-card.fc-new-card { background: rgba(14,165,233,0.07); border: 1px solid rgba(14,165,233,0.22); }
+.fc-step-num { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px; margin-bottom: 7px; }
+.fc-old-card .fc-step-num { color: rgba(255,255,255,0.5); }
+.fc-new-card .fc-step-num { color: rgba(14,165,233,0.7); }
+.fc-step-title { font-size: 13.5px; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+.fc-old-card .fc-step-title { color: rgba(255,255,255,0.88); }
+.fc-new-card .fc-step-title { color: #fff; }
+.fc-step-desc { font-size: 11.5px; line-height: 1.65; }
+.fc-old-card .fc-step-desc { color: rgba(255,255,255,0.68); }
+.fc-new-card .fc-step-desc { color: rgba(255,255,255,0.62); }
+.fc-badge { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 600; font-family: 'DM Mono', monospace; }
+.fc-badge-old { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.65); }
+.fc-badge-new { background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.3); color: #38bdf8; }
+.fc-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+.fc-badge-old .fc-dot { background: rgba(255,255,255,0.55); }
+.fc-badge-new .fc-dot { background: #0ea5e9; box-shadow: 0 0 6px #0ea5e9; }
+.fc-arrow-row { display: grid; grid-template-columns: 1fr 56px 1fr; height: 28px; }
+.fc-arr-old-wrap, .fc-arr-new-wrap { display: flex; align-items: center; justify-content: center; }
+.fc-arr-old, .fc-arr-new { width: 1px; height: 100%; margin: 0 auto; position: relative; }
+.fc-arr-old { background: rgba(255,255,255,0.1); }
+.fc-arr-new { background: rgba(14,165,233,0.3); }
+.fc-arr-old::after, .fc-arr-new::after { content: '▾'; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); font-size: 8px; line-height: 1; }
+.fc-arr-old::after { color: rgba(255,255,255,0.3); }
+.fc-arr-new::after { color: #0ea5e9; }
+.fc-bottom { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 56px 1fr; padding-top: 4px; }
+.fc-bottom-note { text-align: center; padding: 14px 16px; border-radius: 8px; font-size: 11px; line-height: 1.6; }
+.fc-bottom-note.fc-old-note { color: rgba(255,255,255,0.55); border: 1px dashed rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
+.fc-bottom-note.fc-new-note { color: #38bdf8; border: 1px dashed rgba(14,165,233,0.25); background: rgba(14,165,233,0.04); }
+.fc-bottom-note strong { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
 </style>
 </head>
 <body>
@@ -957,6 +1022,122 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
     <div class="prob-card"><div class="prob-num">02</div><div class="prob-title">検討の軌跡が残らない</div><div class="prob-desc">なぜ進め、なぜ見送ったか。その理由が組織に蓄積されない。</div></div>
     <div class="prob-card"><div class="prob-num">03</div><div class="prob-title">経験が次に活かされない</div><div class="prob-desc">100件の経験があっても、101件目は1件目と同じ時間がかかる。</div></div>
     <div class="prob-card"><div class="prob-num">04</div><div class="prob-title">案件の今が、いつでも、誰でも、一画面で。</div><div class="prob-desc">DealChordなら、担当者の記憶ではなくプラットフォームが案件を覚えている。</div></div>
+  </div>
+</section>
+
+<!-- FLOW CHART -->
+<section class="flow-section">
+  <div class="fc-header">
+    <span class="fc-label">Process Transformation</span>
+    <div class="fc-title">M&amp;Aの検討プロセスが、<span>根本から変わる。</span></div>
+  </div>
+  <div class="fc-col-headers">
+    <div class="fc-col-hd fc-old">従来の進め方</div>
+    <div></div>
+    <div class="fc-col-hd fc-new">DealChord</div>
+  </div>
+  <div class="fc-body">
+    <div class="fc-col-bg-old"></div>
+    <div class="fc-col-bg-new"></div>
+    <div class="fc-shared-step">
+      <div class="fc-shared-box">
+        <div class="fc-s-label">Start</div>
+        <div class="fc-s-title">📄 案件情報資料（IM）受領</div>
+      </div>
+    </div>
+    <div class="fc-fork">
+      <div class="fc-fork-left"></div>
+      <div></div>
+      <div class="fc-fork-right"></div>
+    </div>
+    <div class="fc-flow">
+      <div class="fc-row fc-r1">
+        <div class="fc-card fc-old-card">
+          <div class="fc-step-num">STEP 01</div>
+          <div class="fc-step-title">手作業で読み込み・転記</div>
+          <div class="fc-step-desc">担当者がExcelに手入力。財務数値の抽出だけで半日〜数日。</div>
+          <div class="fc-badge fc-badge-old"><span class="fc-dot"></span>2〜3日</div>
+        </div>
+        <div class="fc-connector"><span class="fc-vs">VS</span></div>
+        <div class="fc-card fc-new-card">
+          <div class="fc-step-num">STEP 01</div>
+          <div class="fc-step-title">AI解析 — 自動構造化</div>
+          <div class="fc-step-desc">IMをアップロードするだけ。財務KPI・リスク所見・バリュエーション3手法を即時生成。</div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>10分</div>
+        </div>
+      </div>
+      <div class="fc-arrow-row">
+        <div class="fc-arr-old-wrap"><div class="fc-arr-old"></div></div>
+        <div></div>
+        <div class="fc-arr-new-wrap"><div class="fc-arr-new"></div></div>
+      </div>
+      <div class="fc-row fc-r2">
+        <div class="fc-card fc-old-card">
+          <div class="fc-step-num">STEP 02</div>
+          <div class="fc-step-title">感覚と経験による評価</div>
+          <div class="fc-step-desc">評価基準は担当者の頭の中。同じ案件でも人によって結論が変わる。</div>
+          <div class="fc-badge fc-badge-old"><span class="fc-dot"></span>属人的</div>
+        </div>
+        <div class="fc-connector"><span class="fc-vs">VS</span></div>
+        <div class="fc-card fc-new-card">
+          <div class="fc-step-num">STEP 02</div>
+          <div class="fc-step-title">スコアリング — 100点採点</div>
+          <div class="fc-step-desc">ハード面6軸・ソフト面4軸で定量評価。過去の類似案件と自動比較し、LOIギャップまで提示。</div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>根拠ある判断</div>
+        </div>
+      </div>
+      <div class="fc-arrow-row">
+        <div class="fc-arr-old-wrap"><div class="fc-arr-old"></div></div>
+        <div></div>
+        <div class="fc-arr-new-wrap"><div class="fc-arr-new"></div></div>
+      </div>
+      <div class="fc-row fc-r3">
+        <div class="fc-card fc-old-card">
+          <div class="fc-step-num">STEP 03</div>
+          <div class="fc-step-title">メール・口頭で状況共有</div>
+          <div class="fc-step-desc">情報が分散。担当者が変わると引継ぎゼロ。CxOが確認するたびに担当者へ問い合わせ。</div>
+          <div class="fc-badge fc-badge-old"><span class="fc-dot"></span>情報分散</div>
+        </div>
+        <div class="fc-connector"><span class="fc-vs">VS</span></div>
+        <div class="fc-card fc-new-card">
+          <div class="fc-step-num">STEP 03</div>
+          <div class="fc-step-title">チーム全員がリアルタイムで把握</div>
+          <div class="fc-step-desc">案件の今が、いつでも、誰でも、一画面で。担当者の記憶ではなくプラットフォームが覚えている。</div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>組織で動く</div>
+        </div>
+      </div>
+      <div class="fc-arrow-row">
+        <div class="fc-arr-old-wrap"><div class="fc-arr-old"></div></div>
+        <div></div>
+        <div class="fc-arr-new-wrap"><div class="fc-arr-new"></div></div>
+      </div>
+      <div class="fc-row fc-r4">
+        <div class="fc-card fc-old-card">
+          <div class="fc-step-num">STEP 04</div>
+          <div class="fc-step-title">見送り → 記録なし</div>
+          <div class="fc-step-desc">なぜ断ったか、どこが問題だったか。次の案件には何も活かされない。100件やっても101件目は1件目と同じ。</div>
+          <div class="fc-badge fc-badge-old"><span class="fc-dot"></span>経験が消える</div>
+        </div>
+        <div class="fc-connector"><span class="fc-vs">VS</span></div>
+        <div class="fc-card fc-new-card">
+          <div class="fc-step-num">STEP 04</div>
+          <div class="fc-step-title">見送り → 組織ナレッジに蓄積</div>
+          <div class="fc-step-desc">見送り理由・成功パターン・DDリスクがすべて自動記録。次の案件のAI精度が上がり、判断が速くなる。</div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>使うほど賢くなる</div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-bottom">
+      <div class="fc-bottom-note fc-old-note">
+        <strong>結果：経験が消え続ける組織</strong>
+        人が変わるたびにリセット。M&amp;Aの知見は個人に帰属したまま。
+      </div>
+      <div></div>
+      <div class="fc-bottom-note fc-new-note">
+        <strong>結果：使うほど賢くなる専用AIエージェント</strong>
+        御社の投資哲学がDealChordに蓄積され、判断精度が上がり続ける。
+      </div>
+    </div>
   </div>
 </section>
 

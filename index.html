@@ -866,13 +866,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 .fc-fork-right { position: relative; }
 .fc-fork-right::before { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: linear-gradient(to bottom, rgba(14,165,233,0.4), rgba(14,165,233,0.2)); }
 .fc-flow { max-width: 860px; margin: 0 auto; position: relative; }
-.fc-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; }
+.fc-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; align-items: start; }
 .fc-r1 { animation: fc-slide 0.5s ease 0.2s  both; }
 .fc-r2 { animation: fc-slide 0.5s ease 0.38s both; }
 .fc-r3 { animation: fc-slide 0.5s ease 0.56s both; }
 .fc-r4 { animation: fc-slide 0.5s ease 0.74s both; }
 @keyframes fc-slide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.fc-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 0 8px; }
+.fc-connector { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 20px; position: relative; }
 .fc-connector::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(255,255,255,0.08); }
 .fc-vs { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; color: rgba(255,255,255,0.28); letter-spacing: 1px; background: var(--bg); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); z-index: 2; position: relative; }
 .fc-card { padding: 18px 22px; border-radius: 8px; margin: 2px 4px; }

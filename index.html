@@ -32,6 +32,7 @@ body {
   font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  zoom: 1.1;
 }
 
 .page { max-width: 1100px; margin: 0 auto; }
@@ -167,19 +168,18 @@ h2 .muted { color: rgba(255,255,255,0.48); }
 
 .prob-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 32px; }
 @keyframes prob-in {
-  from { opacity: 0; transform: translateY(14px) rotate(var(--tilt-from)); }
-  to   { opacity: 1; transform: translateY(0)    rotate(var(--tilt-to)); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .prob-card {
   background: rgba(255,255,255,0.025); border: 1px solid var(--border);
   border-radius: 10px; padding: 20px 18px;
-  animation: prob-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
-  --tilt-from: -3deg; --tilt-to: 0deg;
+  animation: prob-in 0.5s ease both;
 }
-.prob-card:nth-child(1) { --tilt-from: -4deg;   --tilt-to: -1.3deg; animation-delay: 0.2s; }
-.prob-card:nth-child(2) { --tilt-from:  3.2deg; --tilt-to:  0.8deg; animation-delay: 0.38s; }
-.prob-card:nth-child(3) { --tilt-from: -2.8deg; --tilt-to: -0.6deg; animation-delay: 0.56s; }
-.prob-card:nth-child(4) { --tilt-from:  3.5deg; --tilt-to:  1.0deg; animation-delay: 0.74s; background: rgba(14,165,233,0.06); border-color: rgba(14,165,233,0.25); }
+.prob-card:nth-child(1) { animation-delay: 0.2s; }
+.prob-card:nth-child(2) { animation-delay: 0.35s; }
+.prob-card:nth-child(3) { animation-delay: 0.5s; }
+.prob-card:nth-child(4) { animation-delay: 0.65s; background: rgba(14,165,233,0.06); border-color: rgba(14,165,233,0.25); }
 .prob-card:nth-child(4) .prob-title { color: #7dd3fc; }
 .prob-num { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 9px; font-family: 'DM Mono', monospace; }
 .prob-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1.5; margin-bottom: 6px; }

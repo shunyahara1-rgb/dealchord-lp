@@ -2013,7 +2013,7 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   window.addEventListener('load', function() {
     /* progress bar */
     var fill = document.getElementById('fmProgressFill');
@@ -2153,4 +2153,12 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
       .catch(function() {
         submitBtn.disabled = false;
         document.getElementById('submitLabel').textContent = 'Foundation Member としてデモを申し込む';
-        document.getEle
+        document.getElementById('submitArrow').style.display = '';
+        errEl.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+        errEl.style.display = 'block';
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -198,7 +198,7 @@ h2 .muted { color: rgba(255,255,255,0.48); }
 .feat-num { font-size: 11px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.08em; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-variant-numeric: tabular-nums; margin-bottom: 10px; }
 .feat-heading { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: white; line-height: 1.25; margin-bottom: 14px; }
 .feat-heading .muted { color: rgba(255,255,255,0.4); }
-.feat-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+.feat-desc { font-size: 15.5px; color: rgba(255,255,255,0.72); line-height: 1.85; margin-bottom: 16px; }
 .feat-tags { display: flex; gap: 7px; flex-wrap: wrap; }
 .ftag { font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; padding: 3px 9px; }
 
@@ -906,6 +906,11 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
 .fc-bottom-note.fc-old-note { color: rgba(255,255,255,0.55); border: 1px dashed rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
 .fc-bottom-note.fc-new-note { color: #38bdf8; border: 1px dashed rgba(14,165,233,0.25); background: rgba(14,165,233,0.04); }
 .fc-bottom-note strong { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
+.fc-metric { display: flex; align-items: center; gap: 8px; margin: 12px 0 8px; padding: 12px 16px; background: rgba(14,165,233,0.08); border-radius: 8px; border-left: 3px solid #0ea5e9; }
+.fc-metric-before { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.35); text-decoration: line-through; white-space: nowrap; }
+.fc-metric-arrow { font-size: 12px; color: rgba(14,165,233,0.6); flex-shrink: 0; }
+.fc-metric-after { font-family: 'DM Mono', monospace; font-size: 32px; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -1px; text-shadow: 0 0 20px rgba(14,165,233,0.8), 0 0 40px rgba(14,165,233,0.4); }
+.fc-metric-unit { font-family: 'DM Mono', monospace; font-size: 11px; color: #38bdf8; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -1063,7 +1068,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 01</div>
           <div class="fc-step-title">AI解析 — 自動構造化</div>
           <div class="fc-step-desc">IMをアップロードするだけ。財務KPI・リスク所見・バリュエーション3手法を即時生成。</div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>10分</div>
+          <div class="fc-metric">
+            <span class="fc-metric-before">3時間</span>
+            <span class="fc-metric-arrow">→</span>
+            <span class="fc-metric-after">10</span>
+            <span class="fc-metric-unit">分で完了</span>
+          </div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>初回評価コスト 95% 削減</div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1083,7 +1094,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 02</div>
           <div class="fc-step-title">スコアリング — 100点採点</div>
           <div class="fc-step-desc">ハード面6軸・ソフト面4軸で定量評価。過去の類似案件と自動比較し、LOIギャップまで提示。</div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>根拠ある判断</div>
+          <div class="fc-metric">
+            <span class="fc-metric-before">感覚</span>
+            <span class="fc-metric-arrow">→</span>
+            <span class="fc-metric-after">10</span>
+            <span class="fc-metric-unit">軸の定量スコア</span>
+          </div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>LOIギャップ・推奨アクションまで自動算出</div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1103,7 +1120,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 03</div>
           <div class="fc-step-title">チーム全員がリアルタイムで把握</div>
           <div class="fc-step-desc">案件の今が、いつでも、誰でも、一画面で。担当者の記憶ではなくプラットフォームが覚えている。</div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>組織で動く</div>
+          <div class="fc-metric">
+            <span class="fc-metric-before">都度問い合わせ</span>
+            <span class="fc-metric-arrow">→</span>
+            <span class="fc-metric-after">0</span>
+            <span class="fc-metric-unit">回（全員即時把握）</span>
+          </div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>引継ぎコスト 実質ゼロ</div>
         </div>
       </div>
       <div class="fc-arrow-row">
@@ -1123,7 +1146,13 @@ footer { border-top: 1px solid var(--border); padding: 22px 40px; display: flex;
           <div class="fc-step-num">STEP 04</div>
           <div class="fc-step-title">見送り → 組織ナレッジに蓄積</div>
           <div class="fc-step-desc">見送り理由・成功パターン・DDリスクがすべて自動記録。次の案件のAI精度が上がり、判断が速くなる。</div>
-          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>使うほど賢くなる</div>
+          <div class="fc-metric">
+            <span class="fc-metric-before">1件目と同じ時間</span>
+            <span class="fc-metric-arrow">→</span>
+            <span class="fc-metric-after">∞</span>
+            <span class="fc-metric-unit">件分の知見を活用</span>
+          </div>
+          <div class="fc-badge fc-badge-new"><span class="fc-dot"></span>案件が増えるほど判断精度が上がる</div>
         </div>
       </div>
     </div>

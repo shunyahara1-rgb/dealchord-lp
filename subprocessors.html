@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サブプロセッサーリスト | DealChord</title>
+<style>
+:root {
+  --navy:   #1B3A5C;
+  --blue:   #2563A8;
+  --accent: #3B82C4;
+  --light:  #EEF5FB;
+  --border: #D0DEE9;
+  --text:   #1A1A1A;
+  --sub:    #5A6878;
+  --bg:     #F7FAFD;
+  --white:  #FFFFFF;
+  --green:  #1A6634;
+  --greenl: #EAF5EE;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+}
+
+/* ── Nav ── */
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  color: var(--sub);
+  text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--navy); }
+.nav-links a.active { color: var(--blue); font-weight: 600; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--navy);
+  color: var(--white);
+  padding: 64px 40px 56px;
+}
+.hero-inner { max-width: 860px; margin: 0 auto; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  padding: 4px 14px;
+  letter-spacing: .04em;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.hero p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,.78);
+  max-width: 640px;
+  line-height: 1.8;
+}
+.hero-meta {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,.6);
+}
+.hero-meta strong { color: rgba(255,255,255,.9); }
+
+/* ── Content ── */
+.content { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+
+/* ── Section ── */
+.section { margin-bottom: 48px; }
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.section-desc {
+  font-size: 0.87rem;
+  color: var(--sub);
+  margin-bottom: 20px;
+}
+
+/* ── Table ── */
+.sp-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  font-size: 0.87rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.sp-table thead th {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: .03em;
+  padding: 13px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+.sp-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .12s;
+}
+.sp-table tbody tr:last-child { border-bottom: none; }
+.sp-table tbody tr:hover { background: var(--bg); }
+.sp-table td {
+  padding: 14px 16px;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.sp-table td:first-child {
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.company-name {
+  font-weight: 700;
+  color: var(--text);
+}
+.company-country {
+  font-size: 0.78rem;
+  color: var(--sub);
+  margin-top: 1px;
+}
+.purpose-text { color: var(--text); }
+.location-text { color: var(--sub); font-size: 0.82rem; }
+.cert-badge {
+  display: inline-block;
+  background: var(--greenl);
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 2px 2px 2px 0;
+  letter-spacing: .02em;
+}
+.cert-dpa {
+  background: var(--light);
+  color: var(--blue);
+}
+
+/* ── AI Special row ── */
+.ai-row td:first-child { color: var(--blue); }
+
+/* ── Notice boxes ── */
+.notice-box {
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  font-size: 0.87rem;
+  line-height: 1.8;
+}
+.notice-blue {
+  background: var(--light);
+  border-left: 4px solid var(--blue);
+}
+.notice-green {
+  background: var(--greenl);
+  border-left: 4px solid var(--green);
+}
+.notice-box .notice-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+.notice-blue .notice-title { color: var(--blue); }
+.notice-green .notice-title { color: var(--green); }
+
+/* ── Process section ── */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.process-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.process-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.process-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.process-text {
+  font-size: 0.82rem;
+  color: var(--sub);
+  line-height: 1.7;
+}
+
+/* ── Contact ── */
+.contact-row {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.contact-text p { font-size: 0.87rem; color: var(--sub); margin-top: 4px; }
+.contact-btn {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.contact-btn:hover { background: var(--blue); }
+
+/* ── Footer ── */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.5);
+  text-align: center;
+  font-size: 0.78rem;
+  padding: 28px;
+}
+footer a { color: rgba(255,255,255,.6); text-decoration: none; }
+footer a:hover { color: #fff; }
+.footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 14px; }
+
+@media (max-width: 680px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 40px 20px; }
+  .content { padding: 32px 20px 60px; }
+  .process-grid { grid-template-columns: 1fr; }
+  .contact-row { flex-direction: column; align-items: flex-start; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">DealChord</a>
+  <ul class="nav-links">
+    <li><a href="/terms">利用規約</a></li>
+    <li><a href="/ai-policy">AIポリシー</a></li>
+    <li><a href="/subprocessors" class="active">サブプロセッサー</a></li>
+    <li><a href="/privacy">プライバシー</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">Legal / Compliance</span>
+    <h1>サブプロセッサーリスト</h1>
+    <p>DealChordはサービス提供にあたり、以下の第三者データ処理事業者（サブプロセッサー）を利用しています。お客様のデータがどの事業者で処理されるかを完全に開示します。</p>
+    <div class="hero-meta">
+      <span>最終更新：<strong>2026年4月27日</strong></span>
+      <span>次回レビュー予定：<strong>2026年10月</strong></span>
+      <span>準拠法：<strong>個人情報保護法・GDPR</strong></span>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- Data pledge -->
+  <div class="notice-green section">
+    <div class="notice-title">データ保護の基本方針</div>
+    <strong>お客様のデータはお客様のためにのみ使用します。</strong><br>
+    当社は、お客様のデータを他のお客様のサービス改善・AI学習・マーケティング等のいかなる目的にも使用しません。すべてのサブプロセッサーに対し、この原則を契約上の義務として課しています。
+  </div>
+
+  <!-- AI Subprocessor -->
+  <div class="section">
+    <div class="section-title">AIモデル処理</div>
+    <div class="section-desc">AI機能（分析・PMI計画生成・DD要約等）に利用するサブプロセッサーです。AI機能を有効化した案件のデータのみが処理されます。</div>
+    <table class="sp-table">
+      <thead>
+        <tr>
+          <th style="width:130px">事業者名</th>
+          <th>処理内容</th>
+          <th>データ保管地</th>
+          <th>安全管理措置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ai-row">
+          <td>
+            <div class="company-name">Anthropic, Inc.</div>
+            <div class="company-country">米国・サンフランシスコ</div>
+          </td>
+          <td class="purpose-text">
+            AI機能（案件分析・PMI計画生成・DD要約・リスク評価）のモデル推論処理<br>
+            <small style="color:#5A6878">※ AIを有効化した案件のデータのみ処理。AIモデルの訓練には使用しません。</small>
+          </td>
+          <td>
+            <div class="location-text">米国（AWS us-east-1）</div>
+            <div class="location-text">Zero Data Retention（ZDR）適用</div>
+          </td>
+          <td>
+            <span class="cert-badge">SOC 2 Type II</span>
+            <span class="cert-badge">DPA締結済</span>
+            <span class="cert-badge cert-dpa">学習利用禁止</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Infrastructure -->
+  <div class="section">
+    <div class="section-title">インフラストラクチャ・データベース</div>
+    <div class="section-desc">データの保存・認証・ファイル管理に利用するサブプロセッサーです。</div>
+    <table class="sp-table">
+      <thead>
+        <tr>
+          <th style="width:130px">事業者名</th>
+          <th>処理内容</th>
+          <th>データ保管地</th>
+          <th>安全管理措置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="company-name">Supabase, Inc.</div>
+            <div class="company-country">米国（AWS ホスト）</div>
+          </td>
+          <td class="purpose-text">データベース管理・ユーザー認証・リアルタイムデータ同期</td>
+          <td>
+            <div class="location-text">日本（AWS ap-northeast-1 東京）</div>
+          </td>
+          <td>
+            <span class="cert-badge">SOC 2 Type II</span>
+            <span class="cert-badge">ISO 27001</span>
+            <span class="cert-badge cert-dpa">DPA締結済</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Amazon Web Services, Inc.</div>
+            <div class="company-country">米国・シアトル</div>
+          </td>
+          <td class="purpose-text">ファイルストレージ（S3）・CDN・サーバーインフラ（EC2/Lambda）</td>
+          <td>
+            <div class="location-text">日本（ap-northeast-1 東京）</div>
+          </td>
+          <td>
+            <span class="cert-badge">SOC 2 Type II</span>
+            <span class="cert-badge">ISO 27001</span>
+            <span class="cert-badge">ISMAP</span>
+            <span class="cert-badge cert-dpa">DPA締結済</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Integrations -->
+  <div class="section">
+    <div class="section-title">オプション連携サービス（ユーザー設定）</div>
+    <div class="section-desc">以下はDealChordがデータをアクセスするサブプロセッサーではなく、利用者が任意で接続するサードパーティサービスです。データ処理はDealChordではなく<strong>各サービスとの利用者自身の契約</strong>に基づきます。</div>
+    <table class="sp-table">
+      <thead>
+        <tr>
+          <th style="width:130px">サービス</th>
+          <th>DealChordとの連携内容</th>
+          <th>データ管理の主体</th>
+          <th>留意事項</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="company-name">Slack</div>
+            <div class="company-country">Salesforce, Inc.（米国）</div>
+          </td>
+          <td class="purpose-text">案件通知・チームへのアラート送信（利用者が接続を設定した場合のみ）</td>
+          <td><div class="location-text">利用者とSlackの契約に基づく<br>DealChordは仲介のみ</div></td>
+          <td>
+            <span class="cert-badge cert-dpa">連携オプション</span><br>
+            <small style="color:#5A6878;font-size:0.78rem">送信内容・範囲は利用者が設定</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Gmail<br>（Google Workspace）</div>
+            <div class="company-country">Google LLC（米国）</div>
+          </td>
+          <td class="purpose-text">案件関連メールの送受信・カレンダー連携（利用者が接続を設定した場合のみ）</td>
+          <td><div class="location-text">利用者とGoogleの契約に基づく<br>DealChordは仲介のみ</div></td>
+          <td>
+            <span class="cert-badge cert-dpa">連携オプション</span><br>
+            <small style="color:#5A6878;font-size:0.78rem">Googleのプライバシーポリシー適用</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Microsoft 365<br>（Outlook / Teams）</div>
+            <div class="company-country">Microsoft Corp.（米国）</div>
+          </td>
+          <td class="purpose-text">メール・カレンダー・Teams通知連携（利用者が接続を設定した場合のみ）</td>
+          <td><div class="location-text">利用者とMicrosoftの契約に基づく<br>DealChordは仲介のみ</div></td>
+          <td>
+            <span class="cert-badge cert-dpa">連携オプション</span><br>
+            <small style="color:#5A6878;font-size:0.78rem">Microsoft製品利用規約適用</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="notice-box notice-blue" style="margin-top:14px">
+      <div class="notice-title">連携サービスについて</div>
+      上記の連携は利用者が任意で有効化するものです。DealChordはこれらのサービスを「サブプロセッサー」として利用するのではなく、利用者の指示に従ってAPIを通じてデータを転送する役割を担います。各サービスに送信されるデータの範囲は利用者自身が設定・管理し、各サービスの利用規約・プライバシーポリシーが適用されます。
+    </div>
+  </div>
+
+  <!-- Change Process -->
+  <div class="section">
+    <div class="section-title">サブプロセッサーの変更プロセス</div>
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-num">01</div>
+        <div class="process-title">30日前に事前通知</div>
+        <div class="process-text">新たなサブプロセッサーを追加・既存を変更する場合、変更の30日前に登録メールアドレスおよびサービス内通知にてお知らせします。</div>
+      </div>
+      <div class="process-card">
+        <div class="process-num">02</div>
+        <div class="process-title">15日以内に異議申立</div>
+        <div class="process-text">変更に懸念がある場合、通知後15日以内に privacy@dealchord.jp へ書面（メール可）でご連絡ください。</div>
+      </div>
+      <div class="process-card">
+        <div class="process-num">03</div>
+        <div class="process-title">解決しない場合の対応</div>
+        <div class="process-text">異議が解決しない場合、利用規約第17条に従い解約することができます。前払い済み未消化期間分の料金を返金します。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notice -->
+  <div class="notice-box notice-blue section" style="margin-bottom:32px">
+    <div class="notice-title">個人情報保護法・越境移転について</div>
+    Anthropic, Inc.（米国）への個人データ送信は、個人情報保護法第28条に基づく安全管理措置（データ処理契約・機密保持条項）を講じた上で実施しています。日本国内データ（Supabase/AWS 東京リージョン）については原則として国外移転を行いません。
+  </div>
+
+  <!-- Contact -->
+  <div class="section">
+    <div class="section-title">お問い合わせ</div>
+    <div class="contact-row">
+      <div class="contact-text">
+        <strong style="color:var(--navy)">サブプロセッサーに関するご質問</strong>
+        <p>特定のサブプロセッサーのデータ処理詳細・DPAのコピー・セキュリティ報告書の開示をご希望の場合はお問い合わせください。</p>
+      </div>
+      <a class="contact-btn" href="mailto:privacy@dealchord.jp">privacy@dealchord.jp</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/terms">利用規約</a>
+    <a href="/ai-policy">AIポリシー</a>
+    <a href="/subprocessors">サブプロセッサー</a>
+    <a href="/privacy">プライバシーポリシー</a>
+    <a href="/terms-changelog">改定履歴</a>
+  </div>
+  <div>&copy; 2026 DealChord株式会社　|　東京都○○区○○ x-x-x</div>
+</footer>
+
+</body>
+</html>
